@@ -21,12 +21,16 @@ export default class Game extends Component {
   getModeComponent = gameType => {
     switch (gameType) {
       case "singlePlayer":
-        return <SinglePlayer {...this.props} />;
+        return <SinglePlayer key="SinglePlayer" {...this.props} />;
       case "multiPlayer":
-        return <MultiPlayer {...this.props} />;
+        return <MultiPlayer key="MultiPlayer" {...this.props} />;
       default:
         return (
-          <StartScreen changeGameType={this.changeGameType} {...this.props} />
+          <StartScreen
+            key="StartScreen"
+            changeGameType={this.changeGameType}
+            {...this.props}
+          />
         );
     }
   };
@@ -34,16 +38,14 @@ export default class Game extends Component {
   render() {
     const { gameType } = this.state;
 
-    return (
-      <div className="game">
-        <LogoUI
-          gameType={gameType}
-          changeGameType={this.changeGameType}
-          {...this.props}
-        />
-
-        {this.getModeComponent(gameType)}
-      </div>
-    );
+    return [
+      <LogoUI
+        key="LogoUI"
+        gameType={gameType}
+        changeGameType={this.changeGameType}
+        {...this.props}
+      />,
+      this.getModeComponent(gameType),
+    ];
   }
 }
