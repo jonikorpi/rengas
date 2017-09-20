@@ -39,10 +39,10 @@ export default class Clock extends Component {
     const { turn } = this.state;
 
     return [
-      <GameUI key={"GameUI"} turn={turn} {...this.props} />,
-      <PlayerUI key={"PlayerUI"} turn={turn} {...this.props} />,
-      <Vision key={"Vision"} turn={turn} {...this.props} />,
-      <Memory key={"Memory"} turn={turn} {...this.props} />,
+      <GameUI key="GameUI" turn={turn} {...this.props} />,
+      <PlayerUI key="PlayerUI" turn={turn} {...this.props} />,
+      <Vision key="Vision" turn={turn} {...this.props} />,
+      <Memory key="Memory" turn={turn} {...this.props} />,
     ];
   }
 }
