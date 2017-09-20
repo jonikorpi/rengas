@@ -5311,6 +5311,10 @@ react-error-overlay@^2.0.1:
     settle-promise "1.0.0"
     source-map "0.5.6"
 
+react-network@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-network/-/react-network-1.0.1.tgz#f169dbaf00216e100c14fc89542bb2e0efc59769"
+
 react-scripts@1.0.13:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-1.0.13.tgz#a51d775a4b195ab2653c562b735735c8f70cba0e"

@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.0.0-rc.3",
     "react-dom": "^16.0.0-rc.3",
+    "react-network": "^1.0.1",
     "react-scripts": "1.0.13",
     "serve": "latest",
     "source-map-explorer": "^1.4.0"

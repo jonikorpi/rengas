@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import Network from "react-network";
+import Game from "./Game";
 
-class App extends Component {
+export default class App extends Component {
   render() {
-    return <div>hi</div>;
+    return (
+      <Network
+        render={({ online }) => <Game userID={null} online={online} />}
+      />
+    );
   }
 }
-
-export default App;
