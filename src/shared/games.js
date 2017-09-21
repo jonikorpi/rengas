@@ -1,6 +1,7 @@
 const rules = {
   worldWidth: 7,
   plateLength: 21,
+  minimumPlateLength: 5,
   secondsPerTurn: 10,
 };
 

@@ -37,8 +37,11 @@ export default class Clock extends Component {
 
   render() {
     const { turn } = this.state;
-    const worldLength =
-      this.props.playerCount * rules.plateLength - Math.floor(turn / 2);
+    const { playerCount } = this.props;
+    const worldLength = Math.max(
+      playerCount * rules.plateLength - Math.floor(10 * turn),
+      rules.minimumPlateLength * playerCount
+    );
 
     return [
       <GameUI key="GameUI" turn={turn} {...this.props} />,
