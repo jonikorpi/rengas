@@ -1,18 +1,24 @@
 const rules = {
-  worldWidth: 8,
-  plateLength: 16,
+  worldWidth: 7,
+  plateLength: 21,
+  secondsPerTurn: 10,
 };
 
 const createFreshGameState = players => {
   const startTime = Date.now();
 
   return {
-    startedAt: startTime,
+    details: {
+      startedAt: startTime,
+      playerCount: players.length,
+    },
     players: players.reduce((players, playerID, index) => {
       players[playerID] = {
         canSee: {
           [Math.floor(rules.worldWidth / 2)]: {
-            [index * rules.plateLength + rules.plateLength / 2]: true,
+            [Math.floor(
+              index * rules.plateLength + rules.plateLength / 2
+            )]: true,
           },
         },
         lastCommand: startTime,
@@ -22,9 +28,9 @@ const createFreshGameState = players => {
     }, {}),
     world: players.reduce((world, playerID, index) => {
       world[Math.floor(rules.worldWidth / 2)] = {
-        [index * rules.plateLength + rules.plateLength / 2]: {
-          tile: {},
-          unit: {},
+        [Math.floor(index * rules.plateLength + rules.plateLength / 2)]: {
+          tile: { type: "tileType" },
+          unit: { unitID: "unitID" },
         },
       };
       return world;

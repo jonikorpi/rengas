@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import World from "./World";
 import GameUI from "./GameUI";
 import PlayerUI from "./PlayerUI";
 import Vision from "./Vision";
 import Memory from "./Memory";
-
-const secondsPerTurn = 10;
+import { rules } from "../shared/games.js";
 
 export default class Clock extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export default class Clock extends Component {
 
   refreshTurn = () => {
     const currentTurn = Math.floor(
-      (Date.now() - this.props.startedAt) / secondsPerTurn / 1000
+      (Date.now() - this.props.startedAt) / rules.secondsPerTurn / 1000
     );
 
     if (currentTurn !== this.state.turn) {
@@ -37,12 +37,26 @@ export default class Clock extends Component {
 
   render() {
     const { turn } = this.state;
+    const worldLength =
+      this.props.playerCount * rules.plateLength - Math.floor(turn / 2);
 
     return [
       <GameUI key="GameUI" turn={turn} {...this.props} />,
       <PlayerUI key="PlayerUI" turn={turn} {...this.props} />,
-      <Vision key="Vision" turn={turn} {...this.props} />,
-      <Memory key="Memory" turn={turn} {...this.props} />,
+      <World key="World" worldLength={worldLength}>
+        <Vision
+          key="Vision"
+          turn={turn}
+          worldLength={worldLength}
+          {...this.props}
+        />
+        <Memory
+          key="Memory"
+          turn={turn}
+          worldLength={worldLength}
+          {...this.props}
+        />
+      </World>,
     ];
   }
 }

@@ -18,7 +18,8 @@ export default class SinglePlayer extends Component {
         {...this.state}
         {...this.props}
         player={this.state.gameState.players[singlePlayerUserID]}
-        startedAt={this.state.gameState.startedAt}
+        startedAt={this.state.gameState.details.startedAt}
+        playerCount={this.state.gameState.details.playerCount}
         userID={singlePlayerUserID}
       />
     );

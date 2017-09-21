@@ -1,7 +1,22 @@
 import React, { PureComponent } from "react";
+import { rules } from "../shared/games.js";
 
 export default class Tile extends PureComponent {
   render() {
-    return "Tile";
+    const { x, y, worldLength } = this.props;
+
+    return (
+      <div
+        className={`tile ${y > worldLength / 2 ? "tile-lower" : "tile-upper"}`}
+        style={{
+          left: `${100 / rules.worldWidth * x}vw`,
+          width: `${100 / rules.worldWidth}vw`,
+          top: `${100 / rules.worldWidth * y}vw`,
+          height: `${100 / rules.worldWidth}vw`,
+        }}
+      >
+        {x},{y}
+      </div>
+    );
   }
 }

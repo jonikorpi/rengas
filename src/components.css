@@ -1,5 +1,5 @@
 #root {
-  height: 300vh;
+  min-height: 100vh;
 }
 
 .logoUI {
@@ -17,10 +17,18 @@
   padding: 0.25rem;
 }
 
+.world {
+}
+
 .playerUI {
   position: fixed;
   bottom: 2rem;
   left: 0;
   right: 0;
   text-align: center;
+}
+
+.tile {
+  position: absolute;
+  outline: 1px solid;
 }
