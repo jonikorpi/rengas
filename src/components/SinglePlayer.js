@@ -1,12 +1,26 @@
 import React, { Component } from "react";
 import Clock from "./Clock";
+import { createFreshGameState, singlePlayerUserID } from "../shared/games.js";
 
 export default class SinglePlayer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      commands: {},
+      gameState: createFreshGameState([singlePlayerUserID]),
+    };
+  }
+
   render() {
     return (
-      <Clock startedAt={Date.now()}>
-        <p>Single-player</p>
-      </Clock>
+      <Clock
+        {...this.state}
+        {...this.props}
+        player={this.state.gameState.players[singlePlayerUserID]}
+        startedAt={this.state.gameState.startedAt}
+        userID={singlePlayerUserID}
+      />
     );
   }
 }

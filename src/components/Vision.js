@@ -2,6 +2,6 @@ import React, { Component } from "react";
 
 export default class Vision extends Component {
   render() {
-    return "Vision";
+    return <pre>{JSON.stringify(this.props, null, 2)}</pre>;
   }
 }
