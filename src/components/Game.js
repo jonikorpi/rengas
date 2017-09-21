@@ -9,7 +9,7 @@ export default class Game extends Component {
     super(props);
 
     this.state = {
-      gameType: null,
+      gameType: "singlePlayer",
       joinedGames: null,
     };
   }
