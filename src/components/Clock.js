@@ -47,18 +47,8 @@ export default class Clock extends Component {
       <GameUI key="GameUI" turn={turn} {...this.props} />,
       <PlayerUI key="PlayerUI" turn={turn} {...this.props} />,
       <World key="World" worldLength={worldLength}>
-        <Vision
-          key="Vision"
-          turn={turn}
-          worldLength={worldLength}
-          {...this.props}
-        />
-        <Memory
-          key="Memory"
-          turn={turn}
-          worldLength={worldLength}
-          {...this.props}
-        />
+        <Vision turn={turn} worldLength={worldLength} {...this.props} />
+        <Memory turn={turn} worldLength={worldLength} {...this.props} />
       </World>,
     ];
   }
