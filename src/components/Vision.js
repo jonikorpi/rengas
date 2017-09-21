@@ -4,21 +4,30 @@ import Unit from "./Unit";
 
 export default class Vision extends Component {
   render() {
-    const { canSee } = this.props.player;
-    const { world } = this.props.gameState;
+    const { tiles, units } = this.props;
 
-    return Object.keys(canSee).map(x => {
-      return Object.keys(canSee[x]).map(y => {
-        return (
-          <Tile
-            key={`${x},${y}`}
-            {...this.props}
-            x={x}
-            y={y}
-            {...world[x][y].tile}
-          />
-        );
-      });
-    });
+    return [
+      tiles.map(tile => (
+        <Tile
+          key={`${tile.x},${tile.y}`}
+          {...this.props}
+          x={tile.x}
+          y={tile.y}
+          {...tile}
+        />
+      )),
+      units.map(
+        unit =>
+          unit ? (
+            <Unit
+              key={`${unit.x},${unit.y}`}
+              {...this.props}
+              x={unit.x}
+              y={unit.y}
+              {...unit}
+            />
+          ) : null
+      ),
+    ];
   }
 }

@@ -21,6 +21,7 @@ const createFreshGameState = players => {
               index * rules.plateLength + rules.plateLength / 2
             )]: true,
           },
+          0: { 0: true },
         },
         lastCommand: startTime,
         lastMana: 0,

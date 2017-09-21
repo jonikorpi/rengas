@@ -13,13 +13,49 @@ export default class SinglePlayer extends Component {
   }
 
   render() {
+    const gameState = this.state.gameState;
+    const { canSee } = gameState.players[singlePlayerUserID];
+
+    const tiles = Object.keys(canSee)
+      .reduce((tiles, x) => {
+        return tiles.concat(
+          Object.keys(canSee[x]).map(y => {
+            const tile = gameState.world[x] && gameState.world[x][y].tile;
+
+            return {
+              ...tile,
+              x: +x,
+              y: +y,
+            };
+          })
+        );
+      }, [])
+      .filter(tile => tile.type);
+
+    const units = Object.keys(canSee)
+      .reduce((units, x) => {
+        return units.concat(
+          Object.keys(canSee[x]).map(y => {
+            const unit = gameState.world[x] && gameState.world[x][y].unit;
+
+            return {
+              ...unit,
+              x: +x,
+              y: +y,
+            };
+          })
+        );
+      }, [])
+      .filter(unit => unit.unitID);
+
     return (
       <Clock
-        {...this.state}
         {...this.props}
-        player={this.state.gameState.players[singlePlayerUserID]}
-        startedAt={this.state.gameState.details.startedAt}
-        playerCount={this.state.gameState.details.playerCount}
+        tiles={tiles}
+        units={units}
+        commands={this.state.commands}
+        startedAt={gameState.details.startedAt}
+        playerCount={gameState.details.playerCount}
         userID={singlePlayerUserID}
       />
     );

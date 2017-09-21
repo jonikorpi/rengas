@@ -7,7 +7,7 @@ export default class Tile extends PureComponent {
 
     return (
       <div
-        className={`tile ${y > worldLength / 2 ? "tile-lower" : "tile-upper"}`}
+        className={`tile ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
           left: `${100 / rules.worldWidth * x}vw`,
           width: `${100 / rules.worldWidth}vw`,

@@ -29,3 +29,9 @@
   position: absolute;
   outline: 1px solid;
 }
+
+.unit {
+  will-change: transform;
+  background: grey;
+  border-radius: 50%;
+}
