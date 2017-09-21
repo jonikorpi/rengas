@@ -2,6 +2,6 @@ import React, { PureComponent } from "react";
 
 export default class GameUI extends PureComponent {
   render() {
-    return "Turn " + this.props.turn;
+    return <div className="gameUI">Turn {this.props.turn}</div>;
   }
 }
