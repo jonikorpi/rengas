@@ -15,7 +15,7 @@ export default class StartScreen extends Component {
         </button>
 
         <button
-          disabled={!online}
+          disabled
           onClick={() => {
             changeGameType("multiPlayer");
           }}

@@ -7,27 +7,29 @@ export default class Vision extends Component {
     const { tiles, units } = this.props;
 
     return [
-      tiles.map(tile => (
-        <Tile
-          key={`${tile.x},${tile.y}`}
-          {...this.props}
-          x={tile.x}
-          y={tile.y}
-          {...tile}
-        />
-      )),
-      units.map(
-        unit =>
-          unit ? (
-            <Unit
-              key={`${unit.x},${unit.y}`}
-              {...this.props}
-              x={unit.x}
-              y={unit.y}
-              {...unit}
-            />
-          ) : null
-      ),
+      tiles &&
+        tiles.map(tile => (
+          <Tile
+            key={`${tile.x},${tile.y}`}
+            {...this.props}
+            x={tile.x}
+            y={tile.y}
+            {...tile}
+          />
+        )),
+      units &&
+        units.map(
+          unit =>
+            unit ? (
+              <Unit
+                key={`${unit.x},${unit.y}`}
+                {...this.props}
+                x={unit.x}
+                y={unit.y}
+                {...unit}
+              />
+            ) : null
+        ),
     ];
   }
 }

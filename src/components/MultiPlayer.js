@@ -4,9 +4,14 @@ import Clock from "./Clock";
 export default class MultiPlayer extends Component {
   render() {
     return (
-      <Clock startedAt={Date.now()}>
-        <p>Multi-player</p>
-      </Clock>
+      <Clock
+        {...this.props}
+        // tiles={tiles}
+        // units={units}
+        // commands={this.state.commands}
+        // startedAt={gameState.details.startedAt}
+        // playerCount={gameState.details.playerCount}
+      />
     );
   }
 }
