@@ -14,6 +14,7 @@
 }
 
 .world {
+  position: relative;
   outline: 1px solid;
   height: calc(var(--worldLength) * var(--tileSize) * 1vmin);
 }
