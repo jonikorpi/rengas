@@ -7,7 +7,11 @@ export default class World extends PureComponent {
       <div
         className="world"
         style={{
-          height: `${100 / rules.worldWidth * this.props.worldLength}vw`,
+          "--tileSize": 100 / rules.worldWidth,
+          "--worldLength": this.props.worldLength,
+          "--worldWidth": rules.worldWidth,
+          "--plateLength": rules.plateLength,
+          "--minimumPlateLength": rules.minimumPlateLength,
         }}
       >
         {this.props.children}

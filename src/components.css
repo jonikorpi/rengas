@@ -15,6 +15,7 @@
 
 .world {
   min-height: 100vh;
+  height: calc(var(--worldLength) * var(--tileSize) * 1vmin);
 }
 
 .playerUI {
@@ -27,6 +28,10 @@
 
 .tile {
   position: absolute;
+  left: calc(var(--tileSize) * var(--x) * 1vw);
+  top: calc(var(--tileSize) * var(--y) * 1vmin);
+  width: calc(var(--tileSize) * 1vw);
+  height: calc(var(--tileSize) * 1vmin);
   outline: 1px solid;
 }
 
@@ -34,4 +39,11 @@
   will-change: transform;
   background: grey;
   border-radius: 50%;
+  transform: translate3d(
+    calc(var(--tileSize) * var(--x) * 1vw),
+    calc(var(--tileSize) * var(--y) * 1vmin),
+    0
+  );
+  width: calc(var(--tileSize) * 1vw);
+  height: calc(var(--tileSize) * 1vmin);
 }

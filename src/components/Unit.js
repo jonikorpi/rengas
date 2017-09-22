@@ -9,11 +9,8 @@ export default class Unit extends PureComponent {
       <div
         className={`unit ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
-          transform: `translate3d(${100 / rules.worldWidth * x}vw, ${100 /
-            rules.worldWidth *
-            y}vw, 0)`,
-          width: `${100 / rules.worldWidth}vw`,
-          height: `${100 / rules.worldWidth}vw`,
+          "--x": x,
+          "--y": y,
         }}
       >
         {unitID}
