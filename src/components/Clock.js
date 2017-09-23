@@ -6,6 +6,10 @@ import Vision from "./Vision";
 import Memory from "./Memory";
 import { rules } from "../shared/games.js";
 
+const calculateTurn = startedAt => {
+  return (Date.now() - startedAt) / rules.secondsPerTurn / 1000;
+};
+
 export default class Clock extends Component {
   constructor(props) {
     super(props);
@@ -24,9 +28,7 @@ export default class Clock extends Component {
   }
 
   refreshTurn = () => {
-    const currentTurn = Math.floor(
-      (Date.now() - this.props.startedAt) / rules.secondsPerTurn / 1000
-    );
+    const currentTurn = Math.floor(calculateTurn(this.props.startedAt));
 
     if (currentTurn !== this.state.turn) {
       this.setState({
@@ -37,19 +39,30 @@ export default class Clock extends Component {
 
   render() {
     const { turn } = this.state;
-    const { playerCount } = this.props;
+    const { playerCount, player, startedAt } = this.props;
+    const { lastMana, lastCommand, reserveMana } = player;
+
     const worldLength = Math.max(
       playerCount * rules.plateLength - Math.floor(turn),
       rules.minimumPlateLength * playerCount
     );
 
+    const exactTurn = calculateTurn(startedAt);
+
     return [
-      <GameUI key="GameUI" turn={turn} {...this.props} />,
-      <PlayerUI key="PlayerUI" turn={turn} {...this.props} />,
       <World key="World" worldLength={worldLength}>
         <Vision turn={turn} worldLength={worldLength} {...this.props} />
         <Memory turn={turn} worldLength={worldLength} {...this.props} />
       </World>,
+      <GameUI key="GameUI" turn={turn} exactTurn={exactTurn} />,
+      <PlayerUI
+        key="PlayerUI"
+        exactTurn={exactTurn}
+        turn={turn}
+        lastMana={lastMana}
+        lastCommand={lastCommand}
+        reserveMana={reserveMana}
+      />,
     ];
   }
 }

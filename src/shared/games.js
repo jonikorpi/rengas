@@ -3,6 +3,7 @@ const rules = {
   plateLength: 21,
   minimumPlateLength: 5,
   secondsPerTurn: 10,
+  maxMana: 10,
 };
 
 const createFreshGameState = players => {
@@ -23,8 +24,9 @@ const createFreshGameState = players => {
           },
           0: { 0: true },
         },
-        lastCommand: startTime,
+        lastCommand: 0,
         lastMana: 0,
+        reserveMana: 0,
       };
       return players;
     }, {}),

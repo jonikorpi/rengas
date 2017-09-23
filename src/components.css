@@ -7,24 +7,83 @@
 }
 
 .gameUI {
+  pointer-events: none;
   position: fixed;
   bottom: 0;
-  left: 0;
   padding: 0.25rem;
+}
+
+.playerUI {
+  pointer-events: none;
+  position: fixed;
+  bottom: 2rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.manaBar {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.reserveMana {
+  position: absolute;
+  right: 100%;
+}
+
+.currentMana {
+  display: flex;
+}
+
+.mana {
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 262ms ease-out;
+  transform: scale(0.764);
+  color: transparent;
+  text-align: center;
+}
+
+.mana.notFilled {
+  background-color: grey;
+  transform: scale(0.382);
+}
+
+.mana.current {
+  color: black;
+}
+
+.manaRegen {
+  position: absolute;
+  left: calc(10% * var(--position));
+  top: 0;
+  outline: 1px solid skyblue;
+  height: 100%;
+  width: 10%;
+}
+
+@keyframes manaRegen {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.manaRegen.overloading {
+  outline-color: red;
 }
 
 .world {
   position: relative;
   outline: 1px solid;
   height: calc(var(--worldLength) * var(--tileSize) * 1vmin);
-}
-
-.playerUI {
-  position: fixed;
-  bottom: 2rem;
-  left: 0;
-  right: 0;
-  text-align: center;
 }
 
 .tile {

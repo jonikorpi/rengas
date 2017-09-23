@@ -56,6 +56,7 @@ export default class SinglePlayer extends Component {
         commands={this.state.commands}
         startedAt={gameState.details.startedAt}
         playerCount={gameState.details.playerCount}
+        player={gameState.players[singlePlayerUserID]}
         userID={singlePlayerUserID}
       />
     );
