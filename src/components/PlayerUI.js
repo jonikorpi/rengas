@@ -1,15 +1,13 @@
 import React, { PureComponent } from "react";
+import Mana from "./Mana";
 import { rules } from "../shared/games.js";
 
 export default class PlayerUI extends PureComponent {
   render() {
-    const { turn, exactTurn, lastCommand, lastMana, reserveMana } = this.props;
+    const { turn, exactTurn, usedMana, reserveMana } = this.props;
 
-    const exactMana = exactTurn - lastCommand + lastMana;
-    const mana = Math.max(
-      0,
-      Math.min(Math.floor(exactTurn - lastCommand + lastMana), rules.maxMana)
-    );
+    const exactMana = exactTurn * rules.manaPerTurn - usedMana;
+    const mana = Math.max(0, Math.min(Math.floor(exactMana), rules.maxMana));
     const overloading = exactMana >= rules.maxMana;
 
     const duration =
@@ -18,35 +16,41 @@ export default class PlayerUI extends PureComponent {
     return (
       <div className="playerUI">
         <div className="manaBar">
-          <div className="reserveMana">(+{reserveMana})</div>
+          <div className="reserveMana">
+            <div className="reserveManaPlus">+</div>
+            <Mana hidden={!reserveMana} filled={true} current={true}>
+              {reserveMana}
+            </Mana>
+          </div>
+          <div className="overloadingMana">
+            <Mana
+              hidden={!overloading}
+              overloading={true}
+              fillingIn={overloading && duration}
+              repeatingFill={true}
+            >
+              X
+            </Mana>
+          </div>
 
-          {/* TODO: two rotating halves */}
-          <div
-            className={`manaRegen ${overloading
-              ? "overloading"
-              : "notOverloading"}`}
-            style={{
-              "--position": mana,
-              "--duration": `${duration}s`,
-            }}
-          />
-        </div>
+          <div className="currentMana">
+            {[...Array(rules.maxMana)].map((nada, index) => {
+              const number = index + 1;
+              const filled = number <= mana;
+              const current = number === mana;
+              const next = number === mana + 1;
 
-        <div className="currentMana">
-          {[...Array(rules.maxMana)].map((nada, index) => {
-            const filled = index + 1 <= mana;
-            const current = index + 1 === mana;
-
-            return (
-              <div
-                className={`mana ${filled ? "filled" : "notFilled"} ${current
-                  ? "current"
-                  : "notCurrent"}`}
-              >
-                {index + 1}
-              </div>
-            );
-          })}
+              return (
+                <Mana
+                  filled={filled}
+                  current={current || (overloading && number === rules.maxMana)}
+                  fillingIn={next && duration}
+                >
+                  {number}
+                </Mana>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

@@ -40,7 +40,7 @@ export default class Clock extends Component {
   render() {
     const { turn } = this.state;
     const { playerCount, player, startedAt } = this.props;
-    const { lastMana, lastCommand, reserveMana } = player;
+    const { usedMana, reserveMana } = player;
 
     const worldLength = Math.max(
       playerCount * rules.plateLength - Math.floor(turn),
@@ -59,8 +59,7 @@ export default class Clock extends Component {
         key="PlayerUI"
         exactTurn={exactTurn}
         turn={turn}
-        lastMana={lastMana}
-        lastCommand={lastCommand}
+        usedMana={usedMana}
         reserveMana={reserveMana}
       />,
     ];
