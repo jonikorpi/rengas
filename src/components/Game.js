@@ -39,13 +39,13 @@ export default class Game extends Component {
     const { gameType } = this.state;
 
     return [
+      this.getModeComponent(gameType),
       <LogoUI
         key="LogoUI"
         gameType={gameType}
         changeGameType={this.changeGameType}
         {...this.props}
       />,
-      this.getModeComponent(gameType),
     ];
   }
 }
