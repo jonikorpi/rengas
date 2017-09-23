@@ -5,7 +5,7 @@ const rules = {
   secondsPerTurn: 10,
   manaPerTurn: 1,
   maxMana: 10,
-  startingMana: 1,
+  startingMana: 0,
 };
 
 const createFreshGameState = players => {

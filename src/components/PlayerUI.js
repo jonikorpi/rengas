@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import Mana from "./Mana";
+import classNames from "classnames";
 import { rules } from "../shared/games.js";
 
 export default class PlayerUI extends PureComponent {
@@ -16,9 +17,14 @@ export default class PlayerUI extends PureComponent {
     return (
       <div className="playerUI">
         <div className="manaBar">
-          <div className="reserveMana">
+          <div
+            className={classNames({
+              reserveMana: true,
+              hidden: !reserveMana > 0,
+            })}
+          >
             <div className="reserveManaPlus">+</div>
-            <Mana hidden={!reserveMana} filled={true} current={true}>
+            <Mana filled={true} current={true}>
               {reserveMana}
             </Mana>
           </div>
@@ -42,6 +48,7 @@ export default class PlayerUI extends PureComponent {
 
               return (
                 <Mana
+                  key={index}
                   filled={filled}
                   current={current || (overloading && number === rules.maxMana)}
                   fillingIn={next && duration}
