@@ -5,7 +5,7 @@ export default class GameUI extends PureComponent {
     const { turn, exactTurn } = this.props;
 
     return (
-      <div className="gameUI">
+      <div className="gameUI safeAreaMargins">
         Turn {turn} ({exactTurn})
       </div>
     );

@@ -5,7 +5,7 @@ export default class LogoUI extends Component {
     const { gameType, changeGameType, online } = this.props;
 
     return (
-      <div className="logoUI">
+      <div className="logoUI safeAreaMargins">
         {online ? "Online" : "Offline"}
 
         {gameType && (

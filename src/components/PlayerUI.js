@@ -15,7 +15,7 @@ export default class PlayerUI extends PureComponent {
       rules.secondsPerTurn - rules.secondsPerTurn * (exactTurn - turn);
 
     return (
-      <div className="playerUI">
+      <div className="playerUI safeAreaMargins">
         <div className="manaBar">
           <div
             className={classNames({
