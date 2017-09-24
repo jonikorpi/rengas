@@ -1,0 +1,71 @@
+.progressClock {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.progressClockHalf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.progressClockLeft {
+  left: 0;
+}
+.progressClockRight {
+  right: 0;
+}
+
+.progressClockFill {
+  background-color: currentcolor;
+  position: absolute;
+  top: -100%;
+  bottom: -100%;
+  left: -150%;
+  right: -150%;
+  will-change: transform;
+  transform: rotateZ(-180deg);
+}
+
+.progressClockLeft .progressClockFill {
+  right: -1px;
+  transform-origin: right center;
+  animation: leftFill 1s linear both;
+}
+
+.progressClockRight .progressClockFill {
+  left: -1px;
+  transform-origin: left center;
+  animation: rightFill 1s linear both;
+}
+
+@keyframes rightFill {
+  50%,
+  91% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
+@keyframes leftFill {
+  0%,
+  50% {
+    transform: rotateZ(-180deg);
+  }
+  91% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}

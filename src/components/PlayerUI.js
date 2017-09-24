@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
-import Mana from "./Mana";
 import classNames from "classnames";
+
+import Mana from "./Mana";
 import { rules } from "../shared/games.js";
 
 export default class PlayerUI extends PureComponent {
@@ -23,19 +24,8 @@ export default class PlayerUI extends PureComponent {
               hidden: !reserveMana > 0,
             })}
           >
-            <div className="reserveManaPlus">+</div>
             <Mana filled={true} current={true}>
-              {reserveMana}
-            </Mana>
-          </div>
-          <div className="overloadingMana">
-            <Mana
-              hidden={!overloading}
-              overloading={true}
-              fillingIn={overloading && duration}
-              repeatingFill={true}
-            >
-              X
+              +{reserveMana}
             </Mana>
           </div>
 
@@ -57,6 +47,16 @@ export default class PlayerUI extends PureComponent {
                 </Mana>
               );
             })}
+          </div>
+
+          <div className="overloadingMana">
+            <Mana
+              hidden={!overloading}
+              overloading={true}
+              fillingIn={overloading && duration}
+            >
+              X
+            </Mana>
           </div>
         </div>
       </div>

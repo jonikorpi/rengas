@@ -1,33 +1,39 @@
 import React from "react";
 import classNames from "classnames";
 
+import ProgressClock from "./ProgressClock";
+
 const Mana = ({
   filled,
   current,
-  fillingIn,
-  repeatingFill,
   overloading,
   hidden,
   children,
+  fillingIn,
 }) => {
+  const clockVisible = !hidden && (fillingIn || overloading);
+
   return (
-    <div
-      className={classNames({
-        mana: true,
-        current: current,
-        filled: filled,
-        overloading: overloading,
-        hidden: hidden,
-      })}
-      style={{
-        animation:
-          fillingIn &&
-          `manaFilling ${fillingIn}s ease-in ${repeatingFill
-            ? "infinite"
-            : 1} both`,
-      }}
-    >
-      {children}
+    <div className="manaContainer">
+      {clockVisible && (
+        <ProgressClock
+          color={overloading ? "red" : "white"}
+          duration={`${fillingIn}s`}
+          repeat={overloading}
+        />
+      )}
+
+      <div
+        className={classNames({
+          mana: true,
+          current: current,
+          filled: filled,
+          overloading: overloading,
+          hidden: hidden,
+        })}
+      >
+        {children}
+      </div>
     </div>
   );
 };

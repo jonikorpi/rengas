@@ -20,7 +20,7 @@ export default class Clock extends Component {
   }
 
   componentDidMount() {
-    this.timer = setInterval(this.refreshTurn, 10 * 1000 / 60);
+    this.timer = setInterval(this.refreshTurn, 6 * 1000 / 60);
   }
 
   componentWillUnmount() {
