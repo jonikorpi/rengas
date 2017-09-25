@@ -1,12 +1,21 @@
 import React, { PureComponent } from "react";
+import { rules } from "../shared/games.js";
 
 export default class GameUI extends PureComponent {
   render() {
-    const { turn, exactTurn } = this.props;
+    const { turn } = this.props;
 
     return (
-      <div className="gameUI safeAreaMargins">
-        Turn {turn} ({exactTurn})
+      <div className="gameUI">
+        <div className="turnBar">
+          <div
+            className="turnBarFill"
+            style={{
+              animationDuration: rules.secondsPerTurn + "s",
+            }}
+          />
+        </div>
+        <div className="turnUI">{turn}</div>
       </div>
     );
   }

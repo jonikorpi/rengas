@@ -17,8 +17,8 @@
   http://codepen.io/CrocoDillon/pen/jgmwt?editors=0010 */
 
 html {
-  font-size: 133%; /* Fallback: used if browser doesn't support calc() */
-  font-size: calc(1.14em + 0.2vw + 0.2vh + 0.1vmin);
+  font-size: 150%; /* Fallback: used if browser doesn't support calc() */
+  font-size: calc(0.75em + 0.6vw + 0.6vh + 0.3vmin);
 
   /* Colors and other variables often needed by CSS go here,
      as a single source of truth, but still accessible
@@ -37,9 +37,4 @@ html {
 body {
   line-height: 1rem;
   font-size: 0.8rem; /* = line-height of 1.25 */
-}
-
-.safeAreaMargins {
-  margin: constant(safe-area-inset-top) constant(safe-area-inset-right)
-    constant(safe-area-inset-bottom) constant(safe-area-inset-left);
 }

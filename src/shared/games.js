@@ -2,10 +2,9 @@ const rules = {
   worldWidth: 7,
   plateLength: 21,
   minimumPlateLength: 5,
-  secondsPerTurn: 10,
-  manaPerTurn: 1,
+  secondsPerTurn: 60,
   maxMana: 10,
-  startingMana: 1,
+  startingMana: 5,
 };
 
 const createFreshGameState = players => {
@@ -26,8 +25,8 @@ const createFreshGameState = players => {
           },
           0: { 0: true },
         },
-        usedMana: 0,
-        reserveMana: rules.startingMana,
+        mana: rules.startingMana,
+        lastUsedManaAt: startTime,
       };
       return players;
     }, {}),

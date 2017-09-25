@@ -6,8 +6,10 @@ import Vision from "./Vision";
 import Memory from "./Memory";
 import { rules } from "../shared/games.js";
 
-const calculateTurn = startedAt => {
-  return (Date.now() - startedAt) / rules.secondsPerTurn / 1000;
+const calculateTurn = (startedAt, when = Date.now()) => {
+  return Math.floor(
+    Math.max(0, (when - startedAt) / rules.secondsPerTurn / 1000)
+  );
 };
 
 export default class Clock extends Component {
@@ -40,27 +42,26 @@ export default class Clock extends Component {
   render() {
     const { turn } = this.state;
     const { playerCount, player, startedAt } = this.props;
-    const { usedMana, reserveMana } = player;
+    const { mana, lastUsedManaAt } = player;
 
     const worldLength = Math.max(
       playerCount * rules.plateLength - Math.floor(turn),
       rules.minimumPlateLength * playerCount
     );
 
-    const exactTurn = calculateTurn(startedAt);
-
     return [
       <World key="World" worldLength={worldLength}>
         <Vision turn={turn} worldLength={worldLength} {...this.props} />
         <Memory turn={turn} worldLength={worldLength} {...this.props} />
       </World>,
-      <GameUI key="GameUI" turn={turn} exactTurn={exactTurn} />,
+      <GameUI key="GameUI" turn={turn} startedAt={startedAt} />,
       <PlayerUI
         key="PlayerUI"
-        exactTurn={exactTurn}
-        turn={turn}
-        usedMana={usedMana}
-        reserveMana={reserveMana}
+        mana={
+          calculateTurn(startedAt, lastUsedManaAt) === turn
+            ? mana
+            : rules.maxMana
+        }
       />,
     ];
   }

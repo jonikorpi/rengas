@@ -6,15 +6,13 @@ export default class LogoUI extends Component {
 
     return (
       <div className="logoUI safeAreaMargins">
-        {online ? "Online" : "Offline"}
-
         {gameType && (
           <button
             onClick={() => {
               changeGameType(null);
             }}
           >
-            Quit game
+            Quit
           </button>
         )}
       </div>
