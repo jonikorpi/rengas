@@ -15,7 +15,7 @@ export default class GameUI extends PureComponent {
             }}
           />
         </div>
-        <div className="turnUI">{turn}</div>
+        <div className="turnUI text-shadow">{turn}</div>
       </div>
     );
   }

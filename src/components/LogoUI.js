@@ -8,6 +8,7 @@ export default class LogoUI extends Component {
       <div className="logoUI safeAreaMargins">
         {gameType && (
           <button
+            className="text-shadow"
             onClick={() => {
               changeGameType(null);
             }}
