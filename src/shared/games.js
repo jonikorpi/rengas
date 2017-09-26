@@ -20,7 +20,7 @@ const listTilesInRange = ({ x, y, range = 1 }) => {
 
       // Doesn't take into account world length
       const isLikelyInWorld =
-        thisX <= rules.worldWidth && thisX >= 0 && thisY >= 0;
+        thisX < rules.worldWidth && thisX >= 0 && thisY >= 0;
 
       if (isInRange && isLikelyInWorld) {
         tiles.push({ x: thisX, y: thisY });
