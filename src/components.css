@@ -107,32 +107,31 @@
 .world {
   position: relative;
   outline: 1px solid;
-  height: calc(var(--worldLength) * var(--tileSize) * 1vmin);
+  --tileHeight: 0.618vh;
+  height: calc(var(--worldLength) * var(--tileSize) * var(--tileHeight));
+  max-height: calc(var(--worldLength) * var(--tileSize) * 1vw);
 }
 
-.tile {
-  position: absolute;
-  left: calc(var(--tileSize) * var(--x) * 1vw);
-  top: calc(var(--tileSize) * var(--y) * 1vmin);
-  width: calc(var(--tileSize) * 1vw);
-  height: calc(var(--tileSize) * 1vmin);
-  background-color: var(--black);
-}
-
+.tile,
 .unit {
   position: absolute;
   left: 0;
   top: 0;
+  width: calc(var(--tileSize) * 1vw);
+  height: calc(var(--tileSize) * var(--tileHeight));
+  max-height: calc(var(--tileSize) * 1vw);
+}
+
+.tile {
+  transform: translate(calc(var(--x) * 100%), calc(var(--y) * 100%));
+  background-color: var(--black);
+}
+
+.unit {
   will-change: transform;
   border-radius: 50%;
   background-color: var(--white);
-  transform: translate3d(
-    calc(var(--tileSize) * var(--x) * 1vw),
-    calc(var(--tileSize) * var(--y) * 1vmin),
-    0
-  );
-  width: calc(var(--tileSize) * 1vw);
-  height: calc(var(--tileSize) * 1vmin);
+  transform: translate3d(calc(var(--x) * 100%), calc(var(--y) * 100%), 0);
 }
 
 .debug {
