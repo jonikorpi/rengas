@@ -13,7 +13,7 @@ export default class Unit extends PureComponent {
           "--y": y,
         }}
       >
-        {unitID}
+        <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
       </div>
     );
   }

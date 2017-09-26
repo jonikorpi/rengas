@@ -9,13 +9,7 @@ export default class Vision extends Component {
     return [
       tiles &&
         tiles.map(tile => (
-          <Tile
-            key={`${tile.x},${tile.y}`}
-            {...this.props}
-            x={tile.x}
-            y={tile.y}
-            {...tile}
-          />
+          <Tile key={`${tile.x},${tile.y}`} x={tile.x} y={tile.y} {...tile} />
         )),
       units &&
         units.map(
@@ -23,7 +17,6 @@ export default class Vision extends Component {
             unit ? (
               <Unit
                 key={`${unit.x},${unit.y}`}
-                {...this.props}
                 x={unit.x}
                 y={unit.y}
                 {...unit}

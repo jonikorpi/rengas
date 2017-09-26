@@ -29,12 +29,13 @@ html {
 
   --black: black;
   --white: white;
+  --grey: grey;
   --danger: red;
 
-  --water: grey;
+  --water: hsl(0, 0%, 23.6%);
 
   font-family: var(--fontFamily);
-  background-color: var(--black);
+  background-color: var(--water);
   color: var(--white);
 }
 

@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import Clock from "./Clock";
-import { createFreshGameState, singlePlayerUserID } from "../shared/games.js";
+import {
+  rules,
+  getFreshGameState,
+  addPlayerToGameState,
+  singlePlayerUserID,
+} from "../shared/games.js";
 
 export default class SinglePlayer extends Component {
   constructor(props) {
@@ -8,19 +13,29 @@ export default class SinglePlayer extends Component {
 
     this.state = {
       commands: {},
-      gameState: createFreshGameState([singlePlayerUserID]),
+      gameState: addPlayerToGameState(
+        {
+          playerID: singlePlayerUserID,
+          startingX: Math.floor(Math.random() * rules.worldWidth),
+        },
+        getFreshGameState(Date.now())
+      ),
     };
   }
 
   render() {
     const gameState = this.state.gameState;
-    const { canSee } = gameState.players[singlePlayerUserID];
+    const { visibleTiles } = gameState.players[singlePlayerUserID];
 
-    const tiles = Object.keys(canSee)
+    const tiles = Object.keys(visibleTiles)
       .reduce((tiles, x) => {
         return tiles.concat(
-          Object.keys(canSee[x]).map(y => {
-            const tile = gameState.world[x] && gameState.world[x][y].tile;
+          Object.keys(visibleTiles[x]).map(y => {
+            const tile = (gameState.world[x] &&
+              gameState.world[x][y] &&
+              gameState.world[x][y].tile) || {
+                type: "water",
+              };
 
             return {
               ...tile,
@@ -32,11 +47,14 @@ export default class SinglePlayer extends Component {
       }, [])
       .filter(tile => tile.type);
 
-    const units = Object.keys(canSee)
+    const units = Object.keys(visibleTiles)
       .reduce((units, x) => {
         return units.concat(
-          Object.keys(canSee[x]).map(y => {
-            const unit = gameState.world[x] && gameState.world[x][y].unit;
+          Object.keys(visibleTiles[x]).map(y => {
+            const unit =
+              gameState.world[x] &&
+              gameState.world[x][y] &&
+              gameState.world[x][y].unit;
 
             return {
               ...unit,

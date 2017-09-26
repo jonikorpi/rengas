@@ -13,7 +13,7 @@ export default class Tile extends PureComponent {
           "--y": y,
         }}
       >
-        {x},{y}
+        <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
       </div>
     );
   }

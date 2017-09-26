@@ -1,47 +1,110 @@
+import uuid from "uuid/v4";
+
 const rules = {
-  worldWidth: 7,
-  plateLength: 21,
+  worldWidth: 8,
+  plateLength: 36,
   minimumPlateLength: 5,
   secondsPerTurn: 60,
   maxMana: 10,
-  startingMana: 5,
 };
 
-const createFreshGameState = players => {
-  const startTime = Date.now();
+const listTilesInRange = ({ x, y, range = 1 }) => {
+  const tiles = [];
 
+  for (let xOffset = -range; xOffset <= range; xOffset++) {
+    for (let yOffset = -range; yOffset <= range; yOffset++) {
+      const thisX = Math.floor(x + xOffset);
+      const thisY = Math.floor(y + yOffset);
+      const isInRange =
+        Math.sqrt(Math.pow(x - thisX, 2) + Math.pow(y - thisY, 2)) <= range;
+
+      // Doesn't take into account world length
+      const isLikelyInWorld =
+        thisX <= rules.worldWidth && thisX >= 0 && thisY >= 0;
+
+      if (isInRange && isLikelyInWorld) {
+        tiles.push({ x: thisX, y: thisY });
+      }
+    }
+  }
+
+  return tiles;
+};
+
+const getVisibleTilesForPlayer = (gameState, playerID) => {
+  let units = [];
+
+  Object.keys(gameState.world).forEach(x => {
+    Object.keys(gameState.world[x]).forEach(y => {
+      const unit = { ...gameState.world[x][y].unit };
+      unit.x = +x;
+      unit.y = +y;
+
+      if (unit && unit.playerID === playerID) {
+        units.push(unit);
+      }
+    });
+  });
+
+  return units.reduce((visibleTiles, unit) => {
+    listTilesInRange(unit).forEach(({ x, y }) => {
+      if (y <= gameState.details.playerCount * rules.plateLength) {
+        visibleTiles[x] = visibleTiles[x] || {};
+        visibleTiles[x][y] = true;
+      }
+    });
+
+    return visibleTiles;
+  }, {});
+};
+
+const getStartingYByIndex = index =>
+  Math.floor(index * rules.plateLength + rules.plateLength / 2);
+
+const getFreshGameState = startTime => {
   return {
     details: {
       startedAt: startTime,
-      playerCount: players.length,
+      playerCount: 0,
     },
-    players: players.reduce((players, playerID, index) => {
-      players[playerID] = {
-        canSee: {
-          [Math.floor(rules.worldWidth / 2)]: {
-            [Math.floor(
-              index * rules.plateLength + rules.plateLength / 2
-            )]: true,
-          },
-          0: { 0: true },
-        },
-        mana: rules.startingMana,
-        lastUsedManaAt: startTime,
-      };
-      return players;
-    }, {}),
-    world: players.reduce((world, playerID, index) => {
-      world[Math.floor(rules.worldWidth / 2)] = {
-        [Math.floor(index * rules.plateLength + rules.plateLength / 2)]: {
-          tile: { type: "tileType" },
-          unit: { unitID: "unitID" },
-        },
-      };
-      return world;
-    }, {}),
+    players: {},
+    world: {},
   };
+};
+
+const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
+  const gameState = { ...currentGameState };
+  const startingLocation = {
+    x: startingX,
+    y: getStartingYByIndex(gameState.details.playerCount),
+  };
+
+  listTilesInRange({ ...startingLocation, range: 1.5 }).forEach(({ x, y }) => {
+    gameState.world[x] = gameState.world[x] || {};
+    gameState.world[x][y] = {
+      tile: {
+        type: "land",
+      },
+    };
+  });
+
+  gameState.world[startingLocation.x][startingLocation.y].unit = {
+    unitID: uuid(),
+    playerID: playerID,
+    type: "cityCenter",
+    range: 2,
+  };
+
+  gameState.details.playerCount++;
+  gameState.players[playerID] = {
+    visibleTiles: getVisibleTilesForPlayer(gameState, playerID),
+    mana: 0,
+    lastUsedManaAt: Date.now(),
+  };
+
+  return gameState;
 };
 
 const singlePlayerUserID = "solo";
 
-export { rules, createFreshGameState, singlePlayerUserID };
+export { rules, getFreshGameState, addPlayerToGameState, singlePlayerUserID };

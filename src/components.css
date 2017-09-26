@@ -124,8 +124,8 @@
   left: 0;
   top: 0;
   will-change: transform;
-  background-color: var(--white);
   border-radius: 50%;
+  background-color: var(--white);
   transform: translate3d(
     calc(var(--tileSize) * var(--x) * 1vw),
     calc(var(--tileSize) * var(--y) * 1vmin),
@@ -133,4 +133,25 @@
   );
   width: calc(var(--tileSize) * 1vw);
   height: calc(var(--tileSize) * 1vmin);
+}
+
+.debug {
+  font-size: 0.5rem;
+  line-height: 0.75rem;
+  white-space: pre;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  background-color: var(--black);
+  padding: 0.5rem;
+}
+
+.debug:hover {
+  opacity: 1;
+  z-index: 100;
+  right: auto;
+  bottom: auto;
 }

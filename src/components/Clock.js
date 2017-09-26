@@ -44,10 +44,7 @@ export default class Clock extends Component {
     const { playerCount, player, startedAt } = this.props;
     const { mana, lastUsedManaAt } = player;
 
-    const worldLength = Math.max(
-      playerCount * rules.plateLength - Math.floor(turn),
-      rules.minimumPlateLength * playerCount
-    );
+    const worldLength = playerCount * rules.plateLength;
 
     return [
       <World key="World" worldLength={worldLength}>
