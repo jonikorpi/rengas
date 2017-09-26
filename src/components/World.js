@@ -15,6 +15,8 @@ export default class World extends PureComponent {
         }}
       >
         {this.props.children}
+
+        <div className="worldShadow" />
       </div>
     );
   }
