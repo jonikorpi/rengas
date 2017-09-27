@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { rules } from "../shared/games.js";
+import { rules } from "../shared/helpers.js"
 
 export default class GameUI extends PureComponent {
   render() {

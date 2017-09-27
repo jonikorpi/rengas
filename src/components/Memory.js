@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Tile from "./Tile";
 import Unit from "./Unit";
-import { rules } from "../shared/games.js";
+import { rules } from "../shared/helpers.js"
 
 export default class Memory extends Component {
   render() {

@@ -5,7 +5,7 @@ import {
   getFreshGameState,
   addPlayerToGameState,
   singlePlayerUserID,
-} from "../shared/games.js";
+} from "../shared/helpers.js";
 
 export default class SinglePlayer extends Component {
   constructor(props) {

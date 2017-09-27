@@ -4,7 +4,7 @@ import GameUI from "./GameUI";
 import PlayerUI from "./PlayerUI";
 import Vision from "./Vision";
 import Memory from "./Memory";
-import { rules } from "../shared/games.js";
+import { rules } from "../shared/helpers.js";
 
 const calculateTurn = (startedAt, when = Date.now()) => {
   return Math.floor(

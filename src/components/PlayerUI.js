@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 
 import Mana from "./Mana";
-import { rules } from "../shared/games.js";
+import { rules } from "../shared/helpers.js"
 
 export default class PlayerUI extends PureComponent {
   render() {
