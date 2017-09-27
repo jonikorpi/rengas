@@ -139,16 +139,23 @@
   height: 100%;
 }
 
+.svg {
+  position: absolute;
+  left: -100%;
+  top: -100%;
+  width: 300%;
+  height: 300%;
+  z-index: var(--z);
+  transform: translateY(calc(var(--z) * -1vw));
+}
+
 .tile {
   left: calc(var(--x) * 100%);
   top: calc(var(--y) * 100%);
-  background-color: var(--black);
 }
 
 .unit {
   will-change: transform;
-  border-radius: 50%;
-  background-color: var(--white);
   transform: translate3d(calc(var(--x) * 100%), calc(var(--y) * 100%), 0);
 }
 
