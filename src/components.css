@@ -112,6 +112,13 @@
   max-height: calc(var(--worldLength) * var(--tileSize) * 1vw);
 }
 
+.worldSizer {
+  width: calc(var(--tileSize) * 1vw);
+  height: calc(var(--tileSize) * var(--tileHeight));
+  max-height: calc(var(--tileSize) * 1vw);
+  position: relative;
+}
+
 .worldShadow {
   position: absolute;
   left: 0;
@@ -128,13 +135,13 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: calc(var(--tileSize) * 1vw);
-  height: calc(var(--tileSize) * var(--tileHeight));
-  max-height: calc(var(--tileSize) * 1vw);
+  width: 100%;
+  height: 100%;
 }
 
 .tile {
-  transform: translate(calc(var(--x) * 100%), calc(var(--y) * 100%));
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
   background-color: var(--black);
 }
 
