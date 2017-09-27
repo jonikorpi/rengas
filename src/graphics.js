@@ -8,18 +8,19 @@ const random = (number = 1, seed = 1) => {
   return Math.abs((rand - Math.floor(rand)) * number);
 };
 
-const getSeed = ({ x, y }) => {
+const getSeed = (x, y) => {
   return Math.abs(x * 13 * (y * 53));
 };
 
-const baseTile = ({ x, y }) => {
-  let seed = getSeed({ x: x, y: y });
-  const baseCoordinate = 256 / 2;
-  const radius = 32;
+const baseTile = inputSeed => {
+  let seed = inputSeed;
+  const baseCoordinate = config.tileSize / 2;
+  const radius = config.tileSize / 12;
 
-  const directions = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+  const cornerDirections = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+  const lineDirections = [[1, 0], [0, 1], [-1, 0], [0, -1]];
 
-  const corners = directions
+  const corners = cornerDirections
     .map(direction => [
       // Spread into rectangle
       direction[0] * baseCoordinate,
@@ -27,11 +28,32 @@ const baseTile = ({ x, y }) => {
     ])
     .map((corner, index) => [
       // Push corners
-      corner[0] + radius * directions[index][0] * random(1, seed++),
-      corner[1] + radius * directions[index][1] * random(1, seed++),
+      corner[0] + radius * cornerDirections[index][0] * random(1, seed++),
+      corner[1] + radius * cornerDirections[index][1] * random(1, seed++),
     ]);
 
-  return corners;
+  // Add randomly offset points along the edges
+  const shape = corners.reduce((points, corner, cornerIndex) => {
+    points.push(corner);
+    const pointCount = 2 + Math.floor(random(5, seed++));
+
+    const pointsAlongLine = [...Array(pointCount)].map((nada, index) => {
+      const alongLine = config.tileSize / pointCount * index + 1;
+      const away = random(radius, seed++);
+      const x = lineDirections[cornerIndex][0]
+        ? alongLine * lineDirections[cornerIndex][0]
+        : away * cornerDirections[cornerIndex][0];
+      const y = lineDirections[cornerIndex][1]
+        ? alongLine * lineDirections[cornerIndex][1]
+        : away * cornerDirections[cornerIndex][1];
+
+      return [corner[0] + x, corner[1] + y];
+    });
+
+    return points.concat(pointsAlongLine);
+  }, []);
+
+  return shape;
 };
 
 export { config, random, getSeed, baseTile };
