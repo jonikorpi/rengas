@@ -19,17 +19,16 @@ const baseTile = ({ x, y }) => {
 
   const directions = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
 
-  // Spread
   const corners = directions
-    // Spread into rectangle
     .map(direction => [
+      // Spread into rectangle
       direction[0] * baseCoordinate,
       direction[1] * baseCoordinate,
     ])
-    // Push corners
     .map((corner, index) => [
-      corner[0] + radius * directions[index][0] * random(1, seed + index),
-      corner[1] + radius * directions[index][1] * random(1, seed + index * 2),
+      // Push corners
+      corner[0] + radius * directions[index][0] * random(1, seed++),
+      corner[1] + radius * directions[index][1] * random(1, seed++),
     ]);
 
   return corners;
