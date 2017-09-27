@@ -34,28 +34,19 @@ export default class Tile extends PureComponent {
             strokeWidth="1.5%"
             strokeLinejoin="round"
             strokeLinecap="round"
-            transform="scale(1.146)"
           />
         </SVG>
 
         <SVG z={-3}>
-          <polygon
-            points={this.baseTile}
-            fill="#333"
-            transform="scale(1.146)"
-          />
+          <polygon points={this.baseTile} fill="#333" />
         </SVG>
 
         <SVG z={-2}>
-          <polygon points={this.baseTile} fill="#666" transform="scale(1.09)" />
+          <polygon points={this.baseTile} fill="#666" />
         </SVG>
 
         <SVG z={-1}>
-          <polygon
-            points={this.baseTile}
-            fill="#999"
-            transform="scale(1.056)"
-          />
+          <polygon points={this.baseTile} fill="#999" />
         </SVG>
 
         <SVG>
