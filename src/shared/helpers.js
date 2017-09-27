@@ -8,6 +8,15 @@ const rules = {
   maxMana: 10,
 };
 
+const random = (number = 1, seed = 1) => {
+  const rand = Math.sin(seed) * 10000;
+  return Math.abs((rand - Math.floor(rand)) * number);
+};
+
+const getSeed = ({ x, y }) => {
+  return Math.abs(x * 13 * (y * 53));
+};
+
 const listTilesInRange = ({ x, y, range = 1 }) => {
   const tiles = [];
 
