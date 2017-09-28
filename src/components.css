@@ -150,8 +150,8 @@
 
 .svg {
   position: absolute;
-  left: calc(var(--tileCanvasMultiplier) * 100% / -3);
-  top: calc(var(--tileCanvasMultiplier) * 100% / -3);
+  left: calc(var(--tileCanvasMultiplier) * 100% / -4);
+  top: calc(var(--tileCanvasMultiplier) * 100% / -4);
   width: calc(var(--tileCanvasMultiplier) * 100%);
   height: calc(var(--tileCanvasMultiplier) * 100%);
   transform: translateY(calc(var(--z) * (-1vw + 0.75vmin)))
