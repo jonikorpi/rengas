@@ -13,7 +13,7 @@ const random = (number = 1, seed = 1) => {
 };
 
 const getSeed = (x, y) => {
-  return Math.abs(x * 13 * (y * 53));
+  return Math.abs((x + 11) * 13 * ((y + 7) * 53));
 };
 
 const baseTile = inputSeed => {
