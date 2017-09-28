@@ -14,8 +14,6 @@ const World = ({ children, worldLength }) => {
       }}
     >
       <div className="worldSizer">{children}</div>
-
-      <div className="worldShadow" />
     </div>
   );
 };
