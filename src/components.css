@@ -135,7 +135,7 @@
   width: 300%;
   height: 300%;
   transform: translateY(calc(var(--z) * (-1vw + 0.75vmin)))
-    scale(calc(1 - var(--z) * 0.034));
+    scale(calc(1 - (var(--z) - var(--groundLevel)) * 0.034));
 }
 
 .tile {

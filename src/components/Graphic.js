@@ -39,6 +39,11 @@ const Graphic = ({
           strokeWidth={strokeWidth || "3.5%"}
         />
       );
+
+    case "water":
+      return (
+        <polygon points={points} {...defaults} fill={fill || "var(--water)"} />
+      );
   }
 };
 

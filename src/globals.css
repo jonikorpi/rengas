@@ -35,7 +35,7 @@ html {
   --water: hsl(0, 0%, 23.6%);
 
   font-family: var(--fontFamily);
-  background-color: var(--water);
+  background-color: var(--black);
   color: var(--white);
 }
 

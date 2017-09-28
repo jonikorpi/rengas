@@ -1,4 +1,6 @@
 import React from "react";
+
+import { config } from "../graphics.js";
 import { rules } from "../shared/helpers.js";
 
 const World = ({ children, worldLength }) => {
@@ -11,6 +13,8 @@ const World = ({ children, worldLength }) => {
         "--worldWidth": rules.worldWidth,
         "--plateLength": rules.plateLength,
         "--minimumPlateLength": rules.minimumPlateLength,
+        "--waterLevel": config.waterLevel,
+        "--groundLevel": config.groundLevel,
       }}
     >
       <div className="worldSizer">{children}</div>

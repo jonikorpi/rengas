@@ -1,6 +1,8 @@
 const config = {
   tileSize: 256,
   tileCanvasMultiplier: 3,
+  waterLevel: 0,
+  groundLevel: 3,
 };
 
 const random = (number = 1, seed = 1) => {
