@@ -77,7 +77,7 @@ const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
     y: getStartingYByIndex(gameState.details.playerCount),
   };
 
-  listTilesInRange({ ...startingLocation, range: 1.5 }).forEach(({ x, y }) => {
+  listTilesInRange({ ...startingLocation, range: 2 }).forEach(({ x, y }) => {
     gameState.world[x] = gameState.world[x] || {};
     gameState.world[x][y] = {
       tile: {

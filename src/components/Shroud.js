@@ -19,7 +19,12 @@ const Shroud = ({ x, y, worldLength }) => {
       }}
     >
       <SVG z={config.groundLevel} zIndex={config.shroudLevel} scale={0}>
-        <Graphic type="shroud" points={points} fill="var(--shroud)" />
+        <Graphic
+          type="shroud"
+          points={points}
+          fill="var(--shroud)"
+          strokeWidth="3%"
+        />
       </SVG>
     </div>
   );
