@@ -8,7 +8,7 @@ const viewBox = `-${tileWidth / 2} -${tileWidth / 2} ${tileWidth} ${tileWidth}`;
 const SVG = ({ children, z, zIndex, style, className }) => {
   return (
     <svg
-      className={"svg " + className}
+      className={`svg ${className ? className : ""}`}
       shapeRendering="optimizeSpeed"
       preserveAspectRatio="none"
       viewBox={viewBox}
