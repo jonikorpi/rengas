@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   font-size: 0.5rem;
+  z-index: 100;
 }
 
 .gameUI {
@@ -23,6 +24,7 @@
   padding: max(0.5rem, constant(safe-area-inset-top))
     max(0.5rem, constant(safe-area-inset-right)) 0
     max(0.5rem, constant(safe-area-inset-left));
+  z-index: 100;
 }
 
 .turnBar {
@@ -70,6 +72,7 @@
   right: 0;
   display: flex;
   justify-content: center;
+  z-index: 100;
 }
 
 .manaBar {
