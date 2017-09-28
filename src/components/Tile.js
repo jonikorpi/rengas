@@ -1,12 +1,13 @@
 import React, { PureComponent } from "react";
 
-import SVG from "./SVG";
+import TileType from "./TileType";
 import { rules } from "../shared/helpers.js";
 import { config, baseTile, getSeed, random } from "../graphics.js";
 
 export default class Tile extends PureComponent {
   constructor(props) {
     super(props);
+
     const { x, y } = props;
 
     this.seed = getSeed(x, y);
@@ -16,7 +17,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const { x, y, worldLength } = this.props;
+    const { x, y, worldLength, type } = this.props;
 
     return (
       <div
@@ -26,33 +27,7 @@ export default class Tile extends PureComponent {
           "--y": y,
         }}
       >
-        <SVG z={-3} zIndex={-4}>
-          <polygon
-            points={this.baseTile}
-            fill="var(--white)"
-            stroke="var(--white)"
-            strokeWidth="1.5%"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </SVG>
-
-        <SVG z={-3}>
-          <polygon points={this.baseTile} fill="#333" />
-        </SVG>
-
-        <SVG z={-2}>
-          <polygon points={this.baseTile} fill="#666" />
-        </SVG>
-
-        <SVG z={-1}>
-          <polygon points={this.baseTile} fill="#999" />
-        </SVG>
-
-        <SVG>
-          <polygon points={this.baseTile} fill="#fff" />
-        </SVG>
-
+        <TileType type={type} baseTile={this.baseTile} seed={this.seed} />
         <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
       </div>
     );

@@ -15,7 +15,7 @@ const getSeed = (x, y) => {
 const baseTile = inputSeed => {
   let seed = inputSeed;
   const baseCoordinate = config.tileSize / 2;
-  const radius = config.tileSize / 12;
+  const radius = config.tileSize / 16;
 
   const cornerDirections = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
   const lineDirections = [[1, 0], [0, 1], [-1, 0], [0, -1]];
