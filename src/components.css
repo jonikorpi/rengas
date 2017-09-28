@@ -105,27 +105,47 @@
 }
 
 .world {
+  overflow: hidden;
+  pointer-events: none;
   position: relative;
   outline: 1px solid;
   --tileHeight: 0.618vh;
   height: calc(var(--worldLength) * var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--worldLength) * var(--tileSize) * 1vw);
+  min-height: calc(var(--worldLength) * var(--tileSize) * 0.25vw);
 }
 
 .worldSizer {
   width: calc(var(--tileSize) * 1vw);
   height: calc(var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--tileSize) * 1vw);
+  min-height: calc(var(--tileSize) * 0.25vw);
   position: relative;
 }
 
 .tile,
-.unit {
+.unit,
+.shroud {
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+}
+
+.tile,
+.shroud {
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+}
+
+.unit {
+  will-change: transform;
+  transform: translate3d(calc(var(--x) * 100%), calc(var(--y) * 100%), 0);
+}
+
+.shroud {
+  z-index: var(--shroudLevel);
 }
 
 .svg {
@@ -135,17 +155,7 @@
   width: 300%;
   height: 300%;
   transform: translateY(calc(var(--z) * (-1vw + 0.75vmin)))
-    scale(calc(1 - (var(--z) - var(--groundLevel)) * 0.034));
-}
-
-.tile {
-  left: calc(var(--x) * 100%);
-  top: calc(var(--y) * 100%);
-}
-
-.unit {
-  will-change: transform;
-  transform: translate3d(calc(var(--x) * 100%), calc(var(--y) * 100%), 0);
+    scale(calc(1 + (var(--scale)) * 0.021));
 }
 
 .debug {

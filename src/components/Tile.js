@@ -28,6 +28,7 @@ export default class Tile extends PureComponent {
         }}
       >
         <TileType type={type} baseTile={this.baseTile} seed={this.seed} />
+
         <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
       </div>
     );

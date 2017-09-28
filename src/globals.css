@@ -32,6 +32,7 @@ html {
   --grey: grey;
   --danger: red;
 
+  --shroud: black;
   --water: hsl(0, 0%, 23.6%);
 
   font-family: var(--fontFamily);

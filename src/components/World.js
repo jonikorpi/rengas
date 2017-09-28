@@ -15,6 +15,7 @@ const World = ({ children, worldLength }) => {
         "--minimumPlateLength": rules.minimumPlateLength,
         "--waterLevel": config.waterLevel,
         "--groundLevel": config.groundLevel,
+        "--shroudLevel": config.shroudLevel,
       }}
     >
       <div className="worldSizer">{children}</div>

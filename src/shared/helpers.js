@@ -48,10 +48,8 @@ const getVisibleTilesForPlayer = (gameState, playerID) => {
 
   return units.reduce((visibleTiles, unit) => {
     listTilesInRange(unit).forEach(({ x, y }) => {
-      if (y <= gameState.details.playerCount * rules.plateLength) {
-        visibleTiles[x] = visibleTiles[x] || {};
-        visibleTiles[x][y] = true;
-      }
+      visibleTiles[x] = visibleTiles[x] || {};
+      visibleTiles[x][y] = true;
     });
 
     return visibleTiles;
@@ -92,7 +90,7 @@ const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
     unitID: uuid(),
     playerID: playerID,
     type: "cityCenter",
-    range: 2,
+    range: 2.5,
   };
 
   gameState.details.playerCount++;

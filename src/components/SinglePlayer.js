@@ -7,6 +7,33 @@ import {
   singlePlayerUserID,
 } from "../shared/helpers.js";
 
+const getNeighbour = (visibleTiles, x, y, xOffset, yOffset) => {
+  return visibleTiles[x + xOffset] && visibleTiles[x + xOffset][y + yOffset]
+    ? true
+    : false;
+};
+
+const getNeighbours = (visibleTiles, x, y) => {
+  const directions = [
+    [-1, -1],
+    [0, -1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [-1, 1],
+    [-1, 0],
+  ];
+
+  return directions.map(direction => {
+    return {
+      x: x + direction[0],
+      y: y + direction[1],
+      empty: !getNeighbour(visibleTiles, x, y, direction[0], direction[1]),
+    };
+  });
+};
+
 export default class SinglePlayer extends Component {
   constructor(props) {
     super(props);
@@ -66,11 +93,41 @@ export default class SinglePlayer extends Component {
       }, [])
       .filter(unit => unit.unitID);
 
+    const shroudList = tiles.reduce((shrouds, { x, y }) => {
+      getNeighbours(visibleTiles, x, y)
+        // Doesn't take into account world length
+        .filter(
+          neighbour =>
+            neighbour.empty &&
+            neighbour.x >= 0 &&
+            neighbour.x < rules.worldWidth &&
+            neighbour.y >= 0
+        )
+        .forEach(({ x, y }) => {
+          shrouds[x] = shrouds[x] || {};
+          shrouds[x][y] = true;
+        });
+
+      return shrouds;
+    }, {});
+
+    const shrouds = Object.keys(shroudList).reduce((shrouds, x) => {
+      return shrouds.concat(
+        Object.keys(shroudList[x]).map(y => {
+          return {
+            x: +x,
+            y: +y,
+          };
+        })
+      );
+    }, []);
+
     return (
       <Clock
         {...this.props}
         tiles={tiles}
         units={units}
+        shrouds={shrouds}
         commands={this.state.commands}
         startedAt={gameState.details.startedAt}
         playerCount={gameState.details.playerCount}

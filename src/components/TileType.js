@@ -11,19 +11,20 @@ const TileType = ({ type, baseTile, seed }) => {
     default:
     case "plains":
       return [
-        <SVG key={key++} z={config.waterLevel} zIndex={config.waterLevel - 1}>
+        <SVG
+          key={key++}
+          z={config.waterLevel}
+          scale={2}
+          zIndex={config.waterLevel - 1}
+        >
           <Graphic type="waterLine" points={baseTile} />
         </SVG>,
 
-        <SVG key={key++} z={config.waterLevel}>
+        <SVG key={key++} z={config.waterLevel} scale={2}>
           <Graphic type="ground" fill="#333" points={baseTile} />
         </SVG>,
 
-        <SVG key={key++} z={config.waterLevel + 1}>
-          <Graphic type="ground" fill="#666" points={baseTile} />
-        </SVG>,
-
-        <SVG key={key++} z={config.waterLevel + 2}>
+        <SVG key={key++} z={config.waterLevel + 1} scale={1}>
           <Graphic type="ground" fill="#999" points={baseTile} />
         </SVG>,
 
@@ -34,7 +35,7 @@ const TileType = ({ type, baseTile, seed }) => {
 
     case "water":
       return (
-        <SVG zIndex={config.waterLevel - 2}>
+        <SVG zIndex={config.waterLevel - 2} scale={10}>
           <Graphic type="water" points={baseTile} />
         </SVG>
       );

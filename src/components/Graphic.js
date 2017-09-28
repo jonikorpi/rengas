@@ -44,6 +44,9 @@ const Graphic = ({
       return (
         <polygon points={points} {...defaults} fill={fill || "var(--water)"} />
       );
+
+    case "shroud":
+      return <polygon points={points} {...defaults} {...rounding} />;
   }
 };
 

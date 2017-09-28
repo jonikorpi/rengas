@@ -5,7 +5,7 @@ import { config } from "../graphics.js";
 const tileWidth = config.tileSize * config.tileCanvasMultiplier;
 const viewBox = `-${tileWidth / 2} -${tileWidth / 2} ${tileWidth} ${tileWidth}`;
 
-const SVG = ({ children, z, zIndex, style, className }) => {
+const SVG = ({ children, z, zIndex, scale, style, className }) => {
   return (
     <svg
       className={`svg ${className ? className : ""}`}
@@ -14,6 +14,7 @@ const SVG = ({ children, z, zIndex, style, className }) => {
       viewBox={viewBox}
       style={{
         "--z": z || 0,
+        "--scale": scale || 0,
         zIndex: zIndex || z || 0,
         ...style,
       }}
