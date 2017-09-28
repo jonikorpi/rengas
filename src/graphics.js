@@ -1,6 +1,6 @@
 const config = {
   tileSize: 256,
-  tileCanvasMultiplier: 3,
+  tileCanvasMultiplier: 2,
   waterLevel: -2,
   groundLevel: 0,
   shroudLevel: 20,

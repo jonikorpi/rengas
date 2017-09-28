@@ -14,6 +14,7 @@ const SVG = ({ children, z, zIndex, scale, style, className }) => {
       viewBox={viewBox}
       style={{
         "--z": z || 0,
+        "--tileCanvasMultiplier": config.tileCanvasMultiplier,
         "--scale": scale || 0,
         zIndex: zIndex || z || 0,
         ...style,
