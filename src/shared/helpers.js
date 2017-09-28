@@ -90,7 +90,7 @@ const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
     unitID: uuid(),
     playerID: playerID,
     type: "cityCenter",
-    range: 2.5,
+    range: 3.5,
   };
 
   gameState.details.playerCount++;

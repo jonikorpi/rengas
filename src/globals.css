@@ -33,6 +33,9 @@ html {
   --danger: red;
 
   --shroud: black;
+  --wall: hsl(0, 0%, 33.333%);
+  --wallShadow: hsl(0, 0%, 25%);
+  --wallShadowBelow: hsl(0, 0%, 20%);
   --water: hsl(0, 0%, 23.6%);
 
   font-family: var(--fontFamily);

@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 
+import SVG from "./SVG";
+import Graphic from "./Graphic";
 import TileType from "./TileType";
 import { rules } from "../shared/helpers.js";
 import { config, baseTile, getSeed, random } from "../graphics.js";
@@ -18,6 +20,7 @@ export default class Tile extends PureComponent {
 
   render() {
     const { x, y, worldLength, type } = this.props;
+    const onEdge = x === 0 ? -1 : x === rules.worldWidth - 1 ? 1 : null;
 
     return (
       <div
@@ -29,7 +32,42 @@ export default class Tile extends PureComponent {
       >
         <TileType type={type} baseTile={this.baseTile} seed={this.seed} />
 
-        <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
+        {onEdge && (
+          <div className="wall" style={{ "--edgeDirection": onEdge }}>
+            <SVG z={config.groundLevel} zIndex={config.waterLevel - 1}>
+              <Graphic type="waterLine" points={this.baseTile} />
+            </SVG>
+            <SVG
+              z={config.groundLevel}
+              zIndex={config.groundLevel - 1}
+              scale={0.5}
+            >
+              <Graphic
+                type="wall"
+                points={this.baseTile}
+                fill="var(--wallShadowBelow)"
+              />
+            </SVG>
+            <SVG
+              z={config.groundLevel + 3}
+              zIndex={config.shroudLevel - 2}
+              scale={-2}
+            >
+              <Graphic
+                type="wall"
+                points={this.baseTile}
+                fill="var(--wallShadow)"
+              />
+            </SVG>
+            <SVG
+              z={config.groundLevel + 5}
+              zIndex={config.shroudLevel - 1}
+              scale={-4}
+            >
+              <Graphic type="wall" points={this.baseTile} fill="var(--wall)" />
+            </SVG>
+          </div>
+        )}
       </div>
     );
   }

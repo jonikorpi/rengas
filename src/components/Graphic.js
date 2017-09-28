@@ -47,6 +47,9 @@ const Graphic = ({
 
     case "shroud":
       return <polygon points={points} {...defaults} {...rounding} />;
+
+    case "wall":
+      return <polygon points={points} {...defaults} {...rounding} />;
   }
 };
 
