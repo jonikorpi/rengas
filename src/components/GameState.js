@@ -9,6 +9,11 @@ import {
   listTilesInRange,
 } from "../shared/helpers.js";
 
+const getTile = (world, x, y) =>
+  (world[x] && world[x][y] && world[x][y].tile) || {
+    type: "water",
+  };
+
 const isTileVisible = (visibleTiles, x, y) =>
   visibleTiles[x] && visibleTiles[x][y];
 
@@ -35,16 +40,17 @@ export default class SinglePlayer extends Component {
       .reduce((tiles, x) => {
         return tiles.concat(
           Object.keys(visibleTiles[x]).map(y => {
-            const tile = (gameState.world[x] &&
-              gameState.world[x][y] &&
-              gameState.world[x][y].tile) || {
-                type: "water",
-              };
-
             return {
-              ...tile,
+              ...getTile(gameState.world, x, y),
               x: +x,
               y: +y,
+              shoreVisible:
+                listTilesInRange({ x: +x, y: +y }).reduce((count, tile) => {
+                  return getTile(gameState.world, tile.x, tile.y).type ===
+                    "water"
+                    ? count + 1
+                    : count;
+                }, 0) > 0,
             };
           })
         );

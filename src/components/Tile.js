@@ -20,7 +20,7 @@ export default class Tile extends PureComponent {
   }
 
   render() {
-    const { x, y, worldLength, type } = this.props;
+    const { x, y, worldLength, type, shoreVisible } = this.props;
     const onEdge = x === 0 ? -1 : x === rules.worldWidth - 1 ? 1 : null;
 
     return (
@@ -32,7 +32,12 @@ export default class Tile extends PureComponent {
           "--random": this.random,
         }}
       >
-        <TileType type={type} baseTile={this.baseTile} seed={this.seed} />
+        <TileType
+          type={type}
+          baseTile={this.baseTile}
+          seed={this.seed}
+          shoreVisible={shoreVisible}
+        />
 
         {onEdge && (
           <div className="wall" style={{ "--edgeDirection": onEdge }}>

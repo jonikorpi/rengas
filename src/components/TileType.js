@@ -4,30 +4,36 @@ import SVG from "./SVG";
 import Graphic from "./Graphic";
 import { config } from "../graphics.js";
 
-const TileType = ({ type, baseTile, seed }) => {
+const TileType = ({ type, baseTile, seed, shoreVisible }) => {
   let key = 0;
 
   switch (type) {
     default:
     case "plains":
       return [
-        <SVG
-          key={key++}
-          className="waterLine"
-          z={config.waterLevel}
-          scale={4}
-          zIndex={config.waterLevel - 1}
-        >
-          <Graphic type="waterLine" points={baseTile} />
-        </SVG>,
+        shoreVisible && (
+          <SVG
+            key={key++}
+            className="waterLine"
+            z={config.waterLevel}
+            scale={4}
+            zIndex={config.waterLevel - 1}
+          >
+            <Graphic type="waterLine" points={baseTile} />
+          </SVG>
+        ),
 
-        <SVG key={key++} z={config.waterLevel} scale={2}>
-          <Graphic type="ground" fill="#333" points={baseTile} />
-        </SVG>,
+        shoreVisible && (
+          <SVG key={key++} z={config.waterLevel} scale={2}>
+            <Graphic type="ground" fill="#333" points={baseTile} />
+          </SVG>
+        ),
 
-        <SVG key={key++} z={config.waterLevel + 1} scale={1}>
-          <Graphic type="ground" fill="#999" points={baseTile} />
-        </SVG>,
+        shoreVisible && (
+          <SVG key={key++} z={config.waterLevel + 1} scale={1}>
+            <Graphic type="ground" fill="#999" points={baseTile} />
+          </SVG>
+        ),
 
         <SVG key={key++} z={config.groundLevel}>
           <Graphic type="ground" fill="#fff" points={baseTile} />
