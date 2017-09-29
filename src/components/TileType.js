@@ -13,8 +13,9 @@ const TileType = ({ type, baseTile, seed }) => {
       return [
         <SVG
           key={key++}
+          className="waterLine"
           z={config.waterLevel}
-          scale={2}
+          scale={4}
           zIndex={config.waterLevel - 1}
         >
           <Graphic type="waterLine" points={baseTile} />

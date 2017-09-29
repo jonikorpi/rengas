@@ -34,9 +34,9 @@ const Graphic = ({
         <polygon
           points={points}
           {...defaults}
-          fill={fill || "var(--white)"}
-          stroke={stroke || "var(--white)"}
-          strokeWidth={strokeWidth || "3.5%"}
+          fill={fill || "none"}
+          stroke={stroke || "var(--wave)"}
+          strokeWidth={strokeWidth || "1%"}
         />
       );
 

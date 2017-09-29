@@ -5,23 +5,26 @@ import { config } from "../graphics.js";
 const tileWidth = config.tileSize * config.tileCanvasMultiplier;
 const viewBox = `-${tileWidth / 2} -${tileWidth / 2} ${tileWidth} ${tileWidth}`;
 
-const SVG = ({ children, z, zIndex, scale, style, className }) => {
+const SVG = ({ children, z, zIndex, scale, className }) => {
   return (
-    <svg
-      className={`svg ${className ? className : ""}`}
-      shapeRendering="optimizeSpeed"
-      preserveAspectRatio="none"
-      viewBox={viewBox}
+    <div
+      className={`svgContainer ${className ? className : ""}`}
       style={{
         "--z": z || 0,
         "--tileCanvasMultiplier": config.tileCanvasMultiplier,
         "--scale": scale || 0,
         zIndex: zIndex || z || 0,
-        ...style,
       }}
     >
-      {children}
-    </svg>
+      <svg
+        className="svg"
+        shapeRendering="optimizeSpeed"
+        preserveAspectRatio="none"
+        viewBox={viewBox}
+      >
+        {children}
+      </svg>
+    </div>
   );
 };
 

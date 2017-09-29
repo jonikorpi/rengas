@@ -37,6 +37,7 @@ html {
   --wallShadow: hsl(0, 0%, 25%);
   --wallShadowBelow: hsl(0, 0%, 20%);
   --water: hsl(0, 0%, 23.6%);
+  --wave: hsl(0, 0%, 85.4%);
 
   font-family: var(--fontFamily);
   background-color: var(--black);

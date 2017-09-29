@@ -16,6 +16,7 @@ export default class Tile extends PureComponent {
     this.baseTile = baseTile(this.seed++)
       .join(" ")
       .toString();
+    this.random = random(1, this.seed++);
   }
 
   render() {
@@ -28,13 +29,19 @@ export default class Tile extends PureComponent {
         style={{
           "--x": x,
           "--y": y,
+          "--random": this.random,
         }}
       >
         <TileType type={type} baseTile={this.baseTile} seed={this.seed} />
 
         {onEdge && (
           <div className="wall" style={{ "--edgeDirection": onEdge }}>
-            <SVG z={config.groundLevel} zIndex={config.waterLevel - 1}>
+            <SVG
+              className="waterLine"
+              z={config.groundLevel}
+              scale={2}
+              zIndex={config.waterLevel - 1}
+            >
               <Graphic type="waterLine" points={this.baseTile} />
             </SVG>
             <SVG
