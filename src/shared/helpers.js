@@ -90,7 +90,7 @@ const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
     unitID: uuid(),
     playerID: playerID,
     type: "cityCenter",
-    range: 3.5,
+    range: 3,
   };
 
   gameState.details.playerCount++;
@@ -105,4 +105,11 @@ const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
 
 const singlePlayerUserID = "solo";
 
-export { rules, getFreshGameState, addPlayerToGameState, singlePlayerUserID };
+export {
+  rules,
+  getFreshGameState,
+  addPlayerToGameState,
+  singlePlayerUserID,
+  listTilesInRange,
+  getVisibleTilesForPlayer,
+};

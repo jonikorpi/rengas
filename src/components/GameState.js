@@ -6,33 +6,25 @@ import {
   getFreshGameState,
   addPlayerToGameState,
   singlePlayerUserID,
+  listTilesInRange,
 } from "../shared/helpers.js";
 
-const getNeighbour = (visibleTiles, x, y, xOffset, yOffset) => {
-  return visibleTiles[x + xOffset] && visibleTiles[x + xOffset][y + yOffset]
-    ? true
-    : false;
-};
+const isTileVisible = (visibleTiles, x, y) =>
+  visibleTiles[x] && visibleTiles[x][y];
 
 const getNeighbours = (visibleTiles, x, y) => {
-  const directions = [
-    [-1, -1],
-    [0, -1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
-    [0, 1],
-    [-1, 1],
-    [-1, 0],
-  ];
-
-  return directions.map(direction => {
-    return {
-      x: x + direction[0],
-      y: y + direction[1],
-      empty: !getNeighbour(visibleTiles, x, y, direction[0], direction[1]),
-    };
-  });
+  return (
+    listTilesInRange({ x: x, y: y, range: 1.5 })
+      .map(tile => {
+        return {
+          x: tile.x,
+          y: tile.y,
+          visible: !!isTileVisible(visibleTiles, tile.x, tile.y),
+        };
+      })
+      // Doesn't take into account world length
+      .filter(tile => tile.x >= 0 && tile.x < rules.worldWidth && tile.y >= 0)
+  );
 };
 
 export default class SinglePlayer extends Component {
@@ -80,14 +72,7 @@ export default class SinglePlayer extends Component {
 
     const shroudList = tiles.reduce((shrouds, { x, y }) => {
       getNeighbours(visibleTiles, x, y)
-        // Doesn't take into account world length
-        .filter(
-          neighbour =>
-            neighbour.empty &&
-            neighbour.x >= 0 &&
-            neighbour.x < rules.worldWidth &&
-            neighbour.y >= 0
-        )
+        .filter(tile => !tile.visible)
         .forEach(({ x, y }) => {
           shrouds[x] = shrouds[x] || {};
           shrouds[x][y] = true;
