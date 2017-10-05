@@ -20,7 +20,7 @@
 }
 
 .gameUI {
-  pointer-events: none;
+  /*pointer-events: none;*/
   position: fixed;
   top: 0;
   left: 0;
@@ -75,7 +75,7 @@
 }
 
 .playerUI {
-  pointer-events: none;
+  /*pointer-events: none;*/
   position: fixed;
   top: 0.5rem;
   left: 0;
@@ -125,7 +125,6 @@
 
 .world {
   overflow: hidden;
-  pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;
@@ -186,6 +185,7 @@
   height: calc(var(--tileCanvasMultiplier) * 100%);
   transform: translateY(calc(var(--z) * (-1vw + 0.75vmin)))
     scale(calc(1 + (var(--scale)) * 0.021));
+  pointer-events: none;
   /* Slows scrolling! */ /*will-change: transform;*/
 }
 
