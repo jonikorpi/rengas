@@ -7,7 +7,7 @@ const rules = {
   maxMana: 10,
 };
 
-const listTilesInRange = ({ x, y, range = 1 }) => {
+const listTilesInRange = ({ x, y, range = 1, areaLength }) => {
   const tiles = [];
 
   for (let xOffset = -range; xOffset <= range; xOffset++) {
@@ -19,7 +19,10 @@ const listTilesInRange = ({ x, y, range = 1 }) => {
 
       // Doesn't take into account area length
       const isLikelyInArea =
-        thisX < rules.areaWidth && thisX >= 0 && thisY >= 0;
+        thisX < rules.areaWidth &&
+        thisX >= 0 &&
+        thisY >= 0 &&
+        thisY < areaLength;
 
       if (isInRange && isLikelyInArea) {
         tiles.push({ x: thisX, y: thisY });
@@ -46,7 +49,10 @@ const getVisibleTilesForPlayer = (gameState, playerID) => {
   });
 
   return units.reduce((visibleTiles, unit) => {
-    listTilesInRange(unit).forEach(({ x, y }) => {
+    listTilesInRange({
+      ...unit,
+      areaLength: gameState.details.areaLength,
+    }).forEach(({ x, y }) => {
       visibleTiles[x] = visibleTiles[x] || {};
       visibleTiles[x][y] = true;
     });
@@ -69,14 +75,18 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
   const gameState = { ...currentArea };
   const startingLocation = {
     x: startingX,
-    y: rules.worldLength,
+    y: gameState.details.areaLength - 1,
   };
 
-  listTilesInRange({ ...startingLocation, range: 7 }).forEach(({ x, y }) => {
+  listTilesInRange({
+    ...startingLocation,
+    range: 2,
+    areaLength: gameState.details.areaLength,
+  }).forEach(({ x, y }) => {
     gameState.locations[x] = gameState.locations[x] || {};
     gameState.locations[x][y] = {
       tile: {
-        type: "land",
+        type: "water",
       },
     };
   });
@@ -84,7 +94,7 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
   gameState.locations[startingLocation.x][startingLocation.y].unit = {
     unitID: uuid(),
     playerID: playerID,
-    type: "cityCenter",
+    type: "ship",
     range: 10,
   };
 

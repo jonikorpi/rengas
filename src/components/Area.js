@@ -1,33 +1,29 @@
 import React from "react";
 
 import Clock from "./Clock";
-import {
-  rules,
-  singlePlayerUserID,
-  listTilesInRange,
-} from "../shared/helpers.js";
+import { singlePlayerUserID, listTilesInRange } from "../shared/helpers.js";
 
 const getTile = (locations, x, y) =>
   (locations[x] && locations[x][y] && locations[x][y].tile) || {
-    type: "water",
+    type: "land",
   };
 
 const isTileVisible = (visibleTiles, x, y) =>
   visibleTiles[x] && visibleTiles[x][y];
 
-const getNeighbours = (visibleTiles, x, y) => {
-  return (
-    listTilesInRange({ x: x, y: y, range: 1.5 })
-      .map(tile => {
-        return {
-          x: tile.x,
-          y: tile.y,
-          visible: !!isTileVisible(visibleTiles, tile.x, tile.y),
-        };
-      })
-      // Doesn't take into account area length
-      .filter(tile => tile.x >= 0 && tile.x < rules.areaWidth && tile.y >= 0)
-  );
+const getNeighbours = (visibleTiles, x, y, areaLength) => {
+  return listTilesInRange({
+    x: x,
+    y: y,
+    range: 1.5,
+    areaLength: areaLength,
+  }).map(tile => {
+    return {
+      x: tile.x,
+      y: tile.y,
+      visible: !!isTileVisible(visibleTiles, tile.x, tile.y),
+    };
+  });
 };
 
 export default class Area extends React.Component {
@@ -43,7 +39,11 @@ export default class Area extends React.Component {
               x: +x,
               y: +y,
               shoreVisible:
-                listTilesInRange({ x: +x, y: +y }).reduce((count, tile) => {
+                listTilesInRange({
+                  x: +x,
+                  y: +y,
+                  areaLength: gameState.details.areaLength,
+                }).reduce((count, tile) => {
                   return getTile(gameState.locations, tile.x, tile.y).type ===
                     "water"
                     ? count + 1
@@ -75,7 +75,7 @@ export default class Area extends React.Component {
       .filter(unit => unit.unitID);
 
     const shroudList = tiles.reduce((shrouds, { x, y }) => {
-      getNeighbours(visibleTiles, x, y)
+      getNeighbours(visibleTiles, x, y, gameState.details.areaLength)
         .filter(tile => !tile.visible)
         .forEach(({ x, y }) => {
           shrouds[x] = shrouds[x] || {};

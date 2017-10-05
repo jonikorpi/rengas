@@ -211,24 +211,3 @@
     transform: scale3d(1.034, 1.034, 1.034);
   }
 }
-
-.debug {
-  font-size: 0.5rem;
-  line-height: 0.75rem;
-  white-space: pre;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  background-color: var(--black);
-  padding: 0.5rem;
-}
-
-.debug:hover {
-  opacity: 1;
-  z-index: 100;
-  right: auto;
-  bottom: auto;
-}

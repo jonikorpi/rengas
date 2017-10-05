@@ -13,7 +13,7 @@ export default class Unit extends React.PureComponent {
           "--y": y,
         }}
       >
-        <div className="debug">{JSON.stringify(this.props, false, 2)}</div>
+        U
       </div>
     );
   }
