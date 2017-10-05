@@ -12,10 +12,10 @@
   z-index: 100;
 }
 
-@supports (top: max(1px, constant(safe-area-inset-top))) {
+@supports (top: max(1px, env(safe-area-inset-top))) {
   .logoUI {
-    top: max(0.5rem, constant(safe-area-inset-top));
-    right: max(0.5rem, constant(safe-area-inset-right));
+    top: max(0.5rem, env(safe-area-inset-top));
+    right: max(0.5rem, env(safe-area-inset-right));
   }
 }
 
@@ -29,11 +29,11 @@
   z-index: 100;
 }
 
-@supports (padding-top: max(1px, constant(safe-area-inset-top))) {
+@supports (padding-top: max(1px, env(safe-area-inset-top))) {
   .gameUI {
-    padding: max(0.5rem, constant(safe-area-inset-top))
-      max(0.5rem, constant(safe-area-inset-right)) 0
-      max(0.5rem, constant(safe-area-inset-left));
+    padding: max(0.5rem, env(safe-area-inset-top))
+      max(0.5rem, env(safe-area-inset-right)) 0
+      max(0.5rem, env(safe-area-inset-left));
   }
 }
 
@@ -85,9 +85,9 @@
   z-index: 100;
 }
 
-@supports (top: max(1px, constant(safe-area-inset-top))) {
+@supports (top: max(1px, env(safe-area-inset-top))) {
   .playerUI {
-    top: max(0.5rem, constant(safe-area-inset-top));
+    top: max(0.5rem, env(safe-area-inset-top));
   }
 }
 
