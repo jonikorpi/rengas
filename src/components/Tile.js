@@ -20,12 +20,12 @@ export default class Tile extends React.PureComponent {
   }
 
   render() {
-    const { x, y, worldLength, type, shoreVisible } = this.props;
-    const onEdge = x === 0 ? -1 : x === rules.worldWidth - 1 ? 1 : null;
+    const { x, y, areaLength, type, shoreVisible } = this.props;
+    const onEdge = x === 0 ? -1 : x === rules.areaWidth - 1 ? 1 : null;
 
     return (
       <div
-        className={`tile ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
+        className={`tile ${y > areaLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
           "--x": x,
           "--y": y,

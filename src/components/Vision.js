@@ -5,7 +5,7 @@ import Shroud from "./Shroud";
 
 export default class Vision extends React.Component {
   render() {
-    const { tiles, units, shrouds, worldLength } = this.props;
+    const { tiles, units, shrouds, areaLength } = this.props;
 
     return [
       tiles &&
@@ -14,7 +14,7 @@ export default class Vision extends React.Component {
             key={`${tile.x},${tile.y}`}
             x={tile.x}
             y={tile.y}
-            worldLength={worldLength}
+            areaLength={areaLength}
             {...tile}
           />
         )),
@@ -26,7 +26,7 @@ export default class Vision extends React.Component {
                 key={`${unit.x},${unit.y}`}
                 x={unit.x}
                 y={unit.y}
-                worldLength={worldLength}
+                areaLength={areaLength}
                 {...unit}
               />
             ) : null
@@ -35,7 +35,7 @@ export default class Vision extends React.Component {
         shrouds.map(shroud => (
           <Shroud
             key={`${shroud.x},${shroud.y}`}
-            worldLength={worldLength}
+            areaLength={areaLength}
             {...shroud}
           />
         )),

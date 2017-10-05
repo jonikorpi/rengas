@@ -1,9 +1,8 @@
 import uuid from "uuid/v4";
 
 const rules = {
-  worldWidth: 8,
-  plateLength: 36,
-  minimumPlateLength: 5,
+  areaWidth: 8,
+  worldLength: 12,
   secondsPerTurn: 60,
   maxMana: 10,
 };
@@ -18,11 +17,11 @@ const listTilesInRange = ({ x, y, range = 1 }) => {
       const isInRange =
         Math.sqrt(Math.pow(x - thisX, 2) + Math.pow(y - thisY, 2)) <= range;
 
-      // Doesn't take into account world length
-      const isLikelyInWorld =
-        thisX < rules.worldWidth && thisX >= 0 && thisY >= 0;
+      // Doesn't take into account area length
+      const isLikelyInArea =
+        thisX < rules.areaWidth && thisX >= 0 && thisY >= 0;
 
-      if (isInRange && isLikelyInWorld) {
+      if (isInRange && isLikelyInArea) {
         tiles.push({ x: thisX, y: thisY });
       }
     }
@@ -34,9 +33,9 @@ const listTilesInRange = ({ x, y, range = 1 }) => {
 const getVisibleTilesForPlayer = (gameState, playerID) => {
   let units = [];
 
-  Object.keys(gameState.world).forEach(x => {
-    Object.keys(gameState.world[x]).forEach(y => {
-      const unit = { ...gameState.world[x][y].unit };
+  Object.keys(gameState.locations).forEach(x => {
+    Object.keys(gameState.locations[x]).forEach(y => {
+      const unit = { ...gameState.locations[x][y].unit };
       unit.x = +x;
       unit.y = +y;
 
@@ -56,44 +55,39 @@ const getVisibleTilesForPlayer = (gameState, playerID) => {
   }, {});
 };
 
-const getStartingYByIndex = index =>
-  Math.floor(index * rules.plateLength + rules.plateLength / 2);
-
-const getFreshGameState = startTime => {
+const getFreshArea = startTime => {
   return {
     details: {
-      startedAt: startTime,
-      playerCount: 0,
+      areaLength: 24,
     },
     players: {},
-    world: {},
+    locations: {},
   };
 };
 
-const addPlayerToGameState = ({ playerID, startingX }, currentGameState) => {
-  const gameState = { ...currentGameState };
+const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
+  const gameState = { ...currentArea };
   const startingLocation = {
     x: startingX,
-    y: getStartingYByIndex(gameState.details.playerCount),
+    y: rules.worldLength,
   };
 
-  listTilesInRange({ ...startingLocation, range: 2 }).forEach(({ x, y }) => {
-    gameState.world[x] = gameState.world[x] || {};
-    gameState.world[x][y] = {
+  listTilesInRange({ ...startingLocation, range: 7 }).forEach(({ x, y }) => {
+    gameState.locations[x] = gameState.locations[x] || {};
+    gameState.locations[x][y] = {
       tile: {
         type: "land",
       },
     };
   });
 
-  gameState.world[startingLocation.x][startingLocation.y].unit = {
+  gameState.locations[startingLocation.x][startingLocation.y].unit = {
     unitID: uuid(),
     playerID: playerID,
     type: "cityCenter",
-    range: 3,
+    range: 10,
   };
 
-  gameState.details.playerCount++;
   gameState.players[playerID] = {
     visibleTiles: getVisibleTilesForPlayer(gameState, playerID),
     mana: 0,
@@ -107,8 +101,8 @@ const singlePlayerUserID = "solo";
 
 export {
   rules,
-  getFreshGameState,
-  addPlayerToGameState,
+  getFreshArea,
+  addPlayerToArea,
   singlePlayerUserID,
   listTilesInRange,
   getVisibleTilesForPlayer,

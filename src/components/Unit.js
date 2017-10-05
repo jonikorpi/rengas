@@ -2,12 +2,12 @@ import React from "react";
 
 export default class Unit extends React.PureComponent {
   render() {
-    const { x, y, worldLength, unitID } = this.props;
+    const { x, y, areaLength, unitID } = this.props;
 
     return (
       <div
         id={unitID}
-        className={`unit ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
+        className={`unit ${y > areaLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
           "--x": x,
           "--y": y,

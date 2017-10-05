@@ -7,8 +7,8 @@ import {
   listTilesInRange,
 } from "../shared/helpers.js";
 
-const getTile = (world, x, y) =>
-  (world[x] && world[x][y] && world[x][y].tile) || {
+const getTile = (locations, x, y) =>
+  (locations[x] && locations[x][y] && locations[x][y].tile) || {
     type: "water",
   };
 
@@ -25,12 +25,12 @@ const getNeighbours = (visibleTiles, x, y) => {
           visible: !!isTileVisible(visibleTiles, tile.x, tile.y),
         };
       })
-      // Doesn't take into account world length
-      .filter(tile => tile.x >= 0 && tile.x < rules.worldWidth && tile.y >= 0)
+      // Doesn't take into account area length
+      .filter(tile => tile.x >= 0 && tile.x < rules.areaWidth && tile.y >= 0)
   );
 };
 
-export default class GameState extends React.Component {
+export default class Area extends React.Component {
   render() {
     const { gameState, visibleTiles } = this.props;
 
@@ -39,12 +39,12 @@ export default class GameState extends React.Component {
         return tiles.concat(
           Object.keys(visibleTiles[x]).map(y => {
             return {
-              ...getTile(gameState.world, x, y),
+              ...getTile(gameState.locations, x, y),
               x: +x,
               y: +y,
               shoreVisible:
                 listTilesInRange({ x: +x, y: +y }).reduce((count, tile) => {
-                  return getTile(gameState.world, tile.x, tile.y).type ===
+                  return getTile(gameState.locations, tile.x, tile.y).type ===
                     "water"
                     ? count + 1
                     : count;
@@ -60,9 +60,9 @@ export default class GameState extends React.Component {
         return units.concat(
           Object.keys(visibleTiles[x]).map(y => {
             const unit =
-              gameState.world[x] &&
-              gameState.world[x][y] &&
-              gameState.world[x][y].unit;
+              gameState.locations[x] &&
+              gameState.locations[x][y] &&
+              gameState.locations[x][y].unit;
 
             return {
               ...unit,
@@ -103,7 +103,7 @@ export default class GameState extends React.Component {
         units={units}
         shrouds={shrouds}
         startedAt={gameState.details.startedAt}
-        playerCount={gameState.details.playerCount}
+        areaLength={gameState.details.areaLength}
         player={gameState.players[singlePlayerUserID]}
         userID={singlePlayerUserID}
       />

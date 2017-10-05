@@ -4,7 +4,7 @@ import SVG from "./SVG";
 import Graphic from "./Graphic";
 import { config, baseTile, getSeed } from "../graphics.js";
 
-const Shroud = ({ x, y, worldLength }) => {
+const Shroud = ({ x, y, areaLength }) => {
   let seed = getSeed(x, y);
   const points = baseTile(seed++)
     .join(" ")
@@ -12,7 +12,7 @@ const Shroud = ({ x, y, worldLength }) => {
 
   return (
     <div
-      className={`shroud ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
+      className={`shroud ${y > areaLength / 2 ? "lower-half" : "upper-half"}`}
       style={{
         "--x": x,
         "--y": y,

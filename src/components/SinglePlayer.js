@@ -1,10 +1,10 @@
 import React from "react";
 
-import GameState from "./GameState";
+import Area from "./Area";
 import {
   rules,
-  getFreshGameState,
-  addPlayerToGameState,
+  getFreshArea,
+  addPlayerToArea,
   singlePlayerUserID,
 } from "../shared/helpers.js";
 
@@ -14,12 +14,12 @@ export default class SinglePlayer extends React.Component {
 
     this.state = {
       commands: {},
-      gameState: addPlayerToGameState(
+      gameState: addPlayerToArea(
         {
           playerID: singlePlayerUserID,
-          startingX: Math.floor(Math.random() * rules.worldWidth),
+          startingX: Math.floor(Math.random() * rules.areaWidth),
         },
-        getFreshGameState(Date.now())
+        getFreshArea(Date.now())
       ),
     };
   }
@@ -29,7 +29,7 @@ export default class SinglePlayer extends React.Component {
     const { visibleTiles } = gameState.players[singlePlayerUserID];
 
     return (
-      <GameState
+      <Area
         {...this.props}
         gameState={this.state.gameState}
         visibleTiles={visibleTiles}
