@@ -6,12 +6,17 @@
   position: fixed;
   top: 0.5rem;
   right: 0.5rem;
-  top: max(0.5rem, constant(safe-area-inset-top));
-  right: max(0.5rem, constant(safe-area-inset-right));
   display: flex;
   flex-direction: column;
   font-size: 0.5rem;
   z-index: 100;
+}
+
+@supports (top: max(1px, constant(safe-area-inset-top))) {
+  .logoUI {
+    top: max(0.5rem, constant(safe-area-inset-top));
+    right: max(0.5rem, constant(safe-area-inset-right));
+  }
 }
 
 .gameUI {
@@ -21,10 +26,15 @@
   left: 0;
   right: 0;
   padding: 0.5rem 0.5rem 0;
-  padding: max(0.5rem, constant(safe-area-inset-top))
-    max(0.5rem, constant(safe-area-inset-right)) 0
-    max(0.5rem, constant(safe-area-inset-left));
   z-index: 100;
+}
+
+@supports (padding-top: max(1px, constant(safe-area-inset-top))) {
+  .gameUI {
+    padding: max(0.5rem, constant(safe-area-inset-top))
+      max(0.5rem, constant(safe-area-inset-right)) 0
+      max(0.5rem, constant(safe-area-inset-left));
+  }
 }
 
 .turnBar {
@@ -68,12 +78,17 @@
   pointer-events: none;
   position: fixed;
   top: 0.5rem;
-  top: max(0.5rem, constant(safe-area-inset-top));
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
   z-index: 100;
+}
+
+@supports (top: max(1px, constant(safe-area-inset-top))) {
+  .playerUI {
+    top: max(0.5rem, constant(safe-area-inset-top));
+  }
 }
 
 .manaBar {
