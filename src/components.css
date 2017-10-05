@@ -111,7 +111,10 @@
 .world {
   overflow: hidden;
   pointer-events: none;
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
   outline: 1px solid;
   --tileHeight: 0.618vh;
   height: calc(var(--worldLength) * var(--tileSize) * var(--tileHeight));
@@ -124,7 +127,7 @@
   height: calc(var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--tileSize) * 1vw);
   min-height: calc(var(--tileSize) * 0.25vw);
-  position: relative;
+  position: absolute;
 }
 
 .tile,
