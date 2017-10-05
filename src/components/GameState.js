@@ -32,7 +32,7 @@ const getNeighbours = (visibleTiles, x, y) => {
   );
 };
 
-export default class SinglePlayer extends Component {
+export default class GameState extends Component {
   render() {
     const { gameState, visibleTiles } = this.props;
 
