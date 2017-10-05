@@ -16,6 +16,9 @@
     "name": "rengas",
     "alias": "rengas-wip.now.sh"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "scripts": {
     "analyze": "yarn run build && source-map-explorer build/static/js/main.*",
     "start": "react-scripts start",
