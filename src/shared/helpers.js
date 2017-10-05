@@ -61,6 +61,19 @@ const getVisibleTilesForPlayer = (gameState, playerID) => {
 };
 
 const getFreshArea = startTime => {
+  // listTilesInRange({
+  //   ...startingLocation,
+  //   range: 2,
+  //   areaLength: gameState.details.areaLength,
+  // }).forEach(({ x, y }) => {
+  //   gameState.locations[x] = gameState.locations[x] || {};
+  //   gameState.locations[x][y] = {
+  //     tile: {
+  //       type: "water",
+  //     },
+  //   };
+  // });
+
   return {
     details: {
       areaLength: 24,
@@ -70,32 +83,37 @@ const getFreshArea = startTime => {
   };
 };
 
+const addUnitToLocation = (unit, x, y, gameState) => {
+  gameState.locations[x] = gameState.locations[x] || {};
+  gameState.locations[x][y] = gameState.locations[x][y] || {};
+
+  if (!gameState.locations[x][y].unit) {
+    gameState.locations[x][y].unit = unit;
+  }
+
+  return gameState;
+};
+
 const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
-  const gameState = { ...currentArea };
+  let gameState = { ...currentArea };
   const startingLocation = {
     x: startingX,
     y: gameState.details.areaLength - 1,
   };
 
-  listTilesInRange({
-    ...startingLocation,
-    range: 2,
-    areaLength: gameState.details.areaLength,
-  }).forEach(({ x, y }) => {
-    gameState.locations[x] = gameState.locations[x] || {};
-    gameState.locations[x][y] = {
-      tile: {
-        type: "water",
-      },
-    };
-  });
+  addUnitToLocation(
+    {
+      unitID: uuid(),
+      playerID: playerID,
+      type: "ship",
+      range: 10,
+    },
+    startingLocation.x,
+    startingLocation.y,
+    gameState
+  );
 
-  gameState.locations[startingLocation.x][startingLocation.y].unit = {
-    unitID: uuid(),
-    playerID: playerID,
-    type: "ship",
-    range: 10,
-  };
+  console.log(gameState);
 
   gameState.players[playerID] = {
     visibleTiles: getVisibleTilesForPlayer(gameState, playerID),
