@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import LogoUI from "./LogoUI";
 import StartScreen from "./StartScreen";
 import SinglePlayer from "./SinglePlayer";
 import MultiPlayer from "./MultiPlayer";
 
-export default class Game extends Component {
+export default class Game extends React.Component {
   constructor(props) {
     super(props);
 

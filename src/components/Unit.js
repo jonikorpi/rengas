@@ -1,12 +1,12 @@
-import React, { PureComponent } from "react";
-import { rules } from "../shared/helpers.js";
+import React from "react";
 
-export default class Unit extends PureComponent {
+export default class Unit extends React.PureComponent {
   render() {
     const { x, y, worldLength, unitID } = this.props;
 
     return (
       <div
+        id={unitID}
         className={`unit ${y > worldLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
           "--x": x,

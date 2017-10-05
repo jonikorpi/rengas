@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import World from "./World";
 import GameUI from "./GameUI";
 import PlayerUI from "./PlayerUI";
@@ -12,7 +12,7 @@ const calculateTurn = (startedAt, when = Date.now()) => {
   );
 };
 
-export default class Clock extends Component {
+export default class Clock extends React.Component {
   constructor(props) {
     super(props);
 

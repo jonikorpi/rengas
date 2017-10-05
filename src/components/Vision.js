@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import Tile from "./Tile";
 import Unit from "./Unit";
 import Shroud from "./Shroud";
 
-export default class Vision extends Component {
+export default class Vision extends React.Component {
   render() {
     const { tiles, units, shrouds, worldLength } = this.props;
 

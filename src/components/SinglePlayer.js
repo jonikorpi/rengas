@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import GameState from "./GameState";
 import {
@@ -8,7 +8,7 @@ import {
   singlePlayerUserID,
 } from "../shared/helpers.js";
 
-export default class SinglePlayer extends Component {
+export default class SinglePlayer extends React.Component {
   constructor(props) {
     super(props);
 

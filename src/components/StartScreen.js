@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class StartScreen extends Component {
+export default class StartScreen extends React.Component {
   render() {
     const { changeGameType, online } = this.props;
 
@@ -15,7 +15,7 @@ export default class StartScreen extends Component {
         </button>
 
         <button
-          disabled
+          disabled={!online}
           onClick={() => {
             changeGameType("multiPlayer");
           }}

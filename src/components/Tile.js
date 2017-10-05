@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 
 import SVG from "./SVG";
 import Graphic from "./Graphic";
@@ -6,7 +6,7 @@ import TileType from "./TileType";
 import { rules } from "../shared/helpers.js";
 import { config, baseTile, getSeed, random } from "../graphics.js";
 
-export default class Tile extends PureComponent {
+export default class Tile extends React.PureComponent {
   constructor(props) {
     super(props);
 

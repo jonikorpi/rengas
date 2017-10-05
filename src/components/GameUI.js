@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import { rules } from "../shared/helpers.js"
+import React from "react";
+import { rules } from "../shared/helpers.js";
 
-export default class GameUI extends PureComponent {
+export default class GameUI extends React.PureComponent {
   render() {
     const { turn } = this.props;
 

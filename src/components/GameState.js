@@ -1,10 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Clock from "./Clock";
 import {
   rules,
-  getFreshGameState,
-  addPlayerToGameState,
   singlePlayerUserID,
   listTilesInRange,
 } from "../shared/helpers.js";
@@ -32,7 +30,7 @@ const getNeighbours = (visibleTiles, x, y) => {
   );
 };
 
-export default class GameState extends Component {
+export default class GameState extends React.Component {
   render() {
     const { gameState, visibleTiles } = this.props;
 
