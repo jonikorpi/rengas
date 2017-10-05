@@ -17,7 +17,6 @@ const listTilesInRange = ({ x, y, range = 1, areaLength }) => {
       const isInRange =
         Math.sqrt(Math.pow(x - thisX, 2) + Math.pow(y - thisY, 2)) <= range;
 
-      // Doesn't take into account area length
       const isLikelyInArea =
         thisX < rules.areaWidth &&
         thisX >= 0 &&
