@@ -1,8 +1,7 @@
 import React from "react";
+
 import LogoUI from "./LogoUI";
-import StartScreen from "./StartScreen";
-import SinglePlayer from "./SinglePlayer";
-import MultiPlayer from "./MultiPlayer";
+import Player from "./Player";
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -10,7 +9,6 @@ export default class Game extends React.Component {
 
     this.state = {
       gameType: "singlePlayer",
-      joinedGames: null,
     };
   }
 
@@ -18,28 +16,11 @@ export default class Game extends React.Component {
     this.setState({ gameType: gameType });
   };
 
-  getModeComponent = gameType => {
-    switch (gameType) {
-      case "singlePlayer":
-        return <SinglePlayer key="SinglePlayer" {...this.props} />;
-      case "multiPlayer":
-        return <MultiPlayer key="MultiPlayer" {...this.props} />;
-      default:
-        return (
-          <StartScreen
-            key="StartScreen"
-            changeGameType={this.changeGameType}
-            {...this.props}
-          />
-        );
-    }
-  };
-
   render() {
     const { gameType } = this.state;
 
     return [
-      this.getModeComponent(gameType),
+      <Player key="Player" gameType={gameType} {...this.props} />,
       <LogoUI
         key="LogoUI"
         gameType={gameType}
