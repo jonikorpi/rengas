@@ -129,7 +129,6 @@
   left: 0;
   top: 0;
   right: 0;
-  outline: 1px solid;
   --tileHeight: 0.618vh;
   height: calc(var(--areaLength) * var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--areaLength) * var(--tileSize) * 1vw);

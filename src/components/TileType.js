@@ -25,18 +25,18 @@ const TileType = ({ type, baseTile, seed, shoreVisible }) => {
 
         shoreVisible && (
           <SVG key={key++} z={config.waterLevel} scale={2}>
-            <Graphic type="ground" fill="#333" points={baseTile} />
+            <Graphic type="ground" fill="var(--ground3)" points={baseTile} />
           </SVG>
         ),
 
         shoreVisible && (
           <SVG key={key++} z={config.waterLevel + 1} scale={1}>
-            <Graphic type="ground" fill="#999" points={baseTile} />
+            <Graphic type="ground" fill="var(--ground2)" points={baseTile} />
           </SVG>
         ),
 
         <SVG key={key++} z={config.groundLevel}>
-          <Graphic type="ground" fill="#fff" points={baseTile} />
+          <Graphic type="ground" fill="var(--ground)" points={baseTile} />
         </SVG>,
       ];
 

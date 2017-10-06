@@ -2,7 +2,7 @@ import React from "react";
 
 import Area from "./Area";
 import {
-  rules,
+  // rules,
   getFreshArea,
   addPlayerToArea,
   singlePlayerUserID,
@@ -17,7 +17,7 @@ export default class SinglePlayer extends React.Component {
       gameState: addPlayerToArea(
         {
           playerID: singlePlayerUserID,
-          startingX: Math.floor(Math.random() * rules.areaWidth),
+          startingX: 4,
         },
         getFreshArea(Date.now())
       ),

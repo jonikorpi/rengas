@@ -33,11 +33,14 @@ html {
   --danger: red;
 
   --shroud: black;
-  --wall: hsl(0, 0%, 33.333%);
-  --wallShadow: hsl(0, 0%, 25%);
-  --wallShadowBelow: hsl(0, 0%, 20%);
-  --water: hsl(0, 0%, 23.6%);
+  --wall: hsl(0, 0%, 38.2%);
+  --wallShadow: hsl(0, 0%, 23.6%);
+  --wallShadowBelow: hsl(0, 0%, 14.6%);
+  --water: hsl(0, 0%, 50%);
   --wave: hsl(0, 0%, 85.4%);
+  --ground: hsl(0, 0%, 14.6%);
+  --ground2: hsl(0, 0%, 9%);
+  --ground3: hsl(0, 0%, 5.6%);
 
   font-family: var(--fontFamily);
   background-color: var(--black);
