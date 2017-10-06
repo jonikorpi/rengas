@@ -79,7 +79,80 @@ const getFreshArea = startTime => {
       areaLength: 24,
     },
     players: {},
-    locations: {},
+    locations: {
+      "0": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "1": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "2": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "3": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "4": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+        "22": {
+          tile: {
+            type: "water",
+          },
+        },
+        "21": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "3": {
+        "21": {
+          tile: {
+            type: "water",
+          },
+        },
+        "20": {
+          tile: {
+            type: "water",
+          },
+        },
+        "19": {
+          tile: {
+            type: "water",
+          },
+        },
+        "18": {
+          tile: {
+            type: "water",
+          },
+        },
+        "17": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+    },
   };
 };
 
@@ -106,14 +179,13 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
       unitID: uuid(),
       playerID: playerID,
       type: "ship",
-      range: 10,
+      range: gameState.details.areaLength,
+      // range: 4,
     },
     startingLocation.x,
     startingLocation.y,
     gameState
   );
-
-  console.log(gameState);
 
   gameState.players[playerID] = {
     visibleTiles: getVisibleTilesForPlayer(gameState, playerID),
