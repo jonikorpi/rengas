@@ -5,6 +5,7 @@ import Graphic from "./Graphic";
 import TileType from "./TileType";
 import { rules } from "../shared/helpers.js";
 import { config, baseTile, getSeed, random } from "../graphics.js";
+import { hexToCoordinates } from "../hexes.js";
 
 export default class Tile extends React.PureComponent {
   constructor(props) {
@@ -22,13 +23,14 @@ export default class Tile extends React.PureComponent {
   render() {
     const { x, y, areaLength, type, shoreVisible } = this.props;
     const onEdge = x === 0 ? -1 : x === rules.areaWidth - 1 ? 1 : null;
+    const coordinates = hexToCoordinates({ x, y });
 
     return (
       <div
         className={`tile ${y > areaLength / 2 ? "lower-half" : "upper-half"}`}
         style={{
-          "--x": x,
-          "--y": y,
+          "--x": coordinates.x,
+          "--y": coordinates.y,
           "--random": this.random,
         }}
       >

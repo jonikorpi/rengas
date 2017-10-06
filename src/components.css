@@ -157,7 +157,7 @@
 .tile,
 .shroud {
   left: calc(var(--x) * 100%);
-  top: calc(var(--y) * 100%);
+  top: calc(var(--y) * 100% - 25%);
 }
 
 .unit {
