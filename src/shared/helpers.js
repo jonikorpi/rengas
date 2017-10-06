@@ -195,6 +195,20 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
     gameState
   );
 
+  addUnitToLocation(
+    {
+      unitID: uuid(),
+      playerID: playerID,
+      type: "ship",
+      // range: gameState.details.areaLength / 2,
+      // range: gameState.details.areaLength / 2,
+      range: 2,
+    },
+    startingLocation.x - 2,
+    startingLocation.y - 6,
+    gameState
+  );
+
   gameState.players[playerID] = {
     visibleTiles: getVisibleTilesForPlayer(gameState, playerID),
     mana: 0,
