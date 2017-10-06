@@ -114,25 +114,6 @@ const getFreshArea = startTime => {
             type: "water",
           },
         },
-      },
-      "4": {
-        "23": {
-          tile: {
-            type: "water",
-          },
-        },
-        "22": {
-          tile: {
-            type: "water",
-          },
-        },
-        "21": {
-          tile: {
-            type: "water",
-          },
-        },
-      },
-      "3": {
         "21": {
           tile: {
             type: "water",
@@ -154,6 +135,23 @@ const getFreshArea = startTime => {
           },
         },
         "17": {
+          tile: {
+            type: "water",
+          },
+        },
+      },
+      "4": {
+        "23": {
+          tile: {
+            type: "water",
+          },
+        },
+        "22": {
+          tile: {
+            type: "water",
+          },
+        },
+        "21": {
           tile: {
             type: "water",
           },
