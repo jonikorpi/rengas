@@ -202,7 +202,7 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
       type: "ship",
       // range: gameState.details.areaLength / 2,
       // range: gameState.details.areaLength / 2,
-      range: 2,
+      range: 3,
     },
     startingLocation.x - 2,
     startingLocation.y - 6,

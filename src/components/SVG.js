@@ -10,7 +10,7 @@ const SVG = ({ children, z, zIndex, scale, className }) => {
     <div
       className={`svgContainer ${className ? className : ""}`}
       style={{
-        "--z": z || 0,
+        "--z": z || config.waterLevel,
         "--tileCanvasMultiplier": config.tileCanvasMultiplier,
         "--scale": scale || 0,
         zIndex: zIndex || z || 0,

@@ -1,8 +1,8 @@
 const config = {
   tileSize: 256,
   tileCanvasMultiplier: 2,
-  waterLevel: -2,
-  groundLevel: 0,
+  waterLevel: 0,
+  groundLevel: 2,
   shroudLevel: 20,
   shroudThickness: 1,
 };
@@ -19,7 +19,7 @@ const getSeed = (x, y) => {
 const baseTile = inputSeed => {
   let seed = inputSeed;
   const baseCoordinate = config.tileSize / 2;
-  const radius = config.tileSize / 16;
+  const radius = config.tileSize / 24;
 
   const cornerDirections = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
   const lineDirections = [[1, 0], [0, 1], [-1, 0], [0, -1]];

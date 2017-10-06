@@ -46,7 +46,15 @@ const Graphic = ({
       );
 
     case "shroud":
-      return <polygon points={points} {...defaults} {...rounding} />;
+      return (
+        <polygon
+          points={points}
+          {...defaults}
+          {...rounding}
+          fill="var(--shroud)"
+          strokeWidth="3%"
+        />
+      );
 
     case "wall":
       return <polygon points={points} {...defaults} {...rounding} />;

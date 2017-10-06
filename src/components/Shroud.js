@@ -18,13 +18,8 @@ const Shroud = ({ x, y, areaLength }) => {
         "--y": y,
       }}
     >
-      <SVG z={config.groundLevel} zIndex={config.shroudLevel} scale={0}>
-        <Graphic
-          type="shroud"
-          points={points}
-          fill="var(--shroud)"
-          strokeWidth="3%"
-        />
+      <SVG z={config.waterLevel} zIndex={config.shroudLevel} scale={7}>
+        <Graphic type="shroud" points={points} />
       </SVG>
     </div>
   );

@@ -129,17 +129,17 @@
   left: 0;
   top: 0;
   right: 0;
-  --tileHeight: 0.618vh;
+  --tileHeight: 0.666vh;
   height: calc(var(--areaLength) * var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--areaLength) * var(--tileSize) * 1vw);
-  min-height: calc(var(--areaLength) * var(--tileSize) * 0.25vw);
+  min-height: calc(var(--areaLength) * var(--tileSize) * 0.333vw);
 }
 
 .locationSizer {
   width: calc(var(--tileSize) * 1vw);
   height: calc(var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--tileSize) * 1vw);
-  min-height: calc(var(--tileSize) * 0.25vw);
+  min-height: calc(var(--tileSize) * 0.333vw);
   position: absolute;
 }
 
@@ -182,7 +182,7 @@
   top: calc(var(--tileCanvasMultiplier) * 100% / -4);
   width: calc(var(--tileCanvasMultiplier) * 100%);
   height: calc(var(--tileCanvasMultiplier) * 100%);
-  transform: translateY(calc(var(--z) * (-1vw + 0.75vmin)))
+  transform: translateY(calc(var(--z) * 0.5 * (0.5vmin - 1vw)))
     scale(calc(1 + (var(--scale)) * 0.021));
   pointer-events: none;
   /* Slows scrolling! */ /*will-change: transform;*/
