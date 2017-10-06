@@ -15,7 +15,8 @@ const getNeighbours = (visibleTiles, x, y, areaLength) => {
   return listTilesInRange({
     x: x,
     y: y,
-    range: 1.5,
+    range: 1,
+    diagonal: true,
     areaLength: areaLength,
   }).map(tile => {
     return {

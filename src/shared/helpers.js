@@ -7,15 +7,22 @@ const rules = {
   maxMana: 10,
 };
 
-const listTilesInRange = ({ x, y, range = 1, areaLength }) => {
+const listTilesInRange = ({
+  x,
+  y,
+  range = 1,
+  areaLength,
+  diagonal = false,
+}) => {
   const tiles = [];
 
   for (let xOffset = -range; xOffset <= range; xOffset++) {
     for (let yOffset = -range; yOffset <= range; yOffset++) {
       const thisX = Math.floor(x + xOffset);
       const thisY = Math.floor(y + yOffset);
-      const isInRange =
-        Math.sqrt(Math.pow(x - thisX, 2) + Math.pow(y - thisY, 2)) <= range;
+      const isInRange = diagonal
+        ? Math.sqrt(Math.pow(x - thisX, 2)) + Math.sqrt(Math.pow(y - thisY, 2))
+        : Math.abs(x - thisX) + Math.abs(y - thisY) <= range;
 
       const isLikelyInArea =
         thisX < rules.areaWidth &&
@@ -179,8 +186,9 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
       unitID: uuid(),
       playerID: playerID,
       type: "ship",
-      range: gameState.details.areaLength,
-      // range: 4,
+      // range: gameState.details.areaLength / 2,
+      // range: gameState.details.areaLength / 2,
+      range: 3,
     },
     startingLocation.x,
     startingLocation.y,
