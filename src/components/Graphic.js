@@ -52,7 +52,8 @@ const Graphic = ({
           {...defaults}
           {...rounding}
           fill="var(--shroud)"
-          strokeWidth="3%"
+          stroke="var(--shroud)"
+          strokeWidth="4%"
         />
       );
 
