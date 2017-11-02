@@ -182,8 +182,7 @@
   top: calc(var(--tileCanvasMultiplier) * 100% / -4);
   width: calc(var(--tileCanvasMultiplier) * 100%);
   height: calc(var(--tileCanvasMultiplier) * 100%);
-  transform: translateY(calc(var(--z) * 0.5 * (0.5vmin - 1vw)))
-    scale(calc(1 + (var(--scale)) * 0.021));
+  transform: translateY(calc(var(--z) * 1 * (0.5vmin - 1vw)));
   pointer-events: none;
   /* Slows scrolling! */ /*will-change: transform;*/
 }

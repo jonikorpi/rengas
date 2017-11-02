@@ -36,7 +36,7 @@ const Graphic = ({
           {...defaults}
           fill={fill || "none"}
           stroke={stroke || "var(--wave)"}
-          strokeWidth={strokeWidth || "1%"}
+          strokeWidth={strokeWidth || "5%"}
         />
       );
 
