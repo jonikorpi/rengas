@@ -27,7 +27,7 @@ const getNeighbours = (visibleTiles, x, y, areaLength) => {
   });
 };
 
-export default class Area extends React.Component {
+export default class Island extends React.Component {
   render() {
     const { gameState, visibleTiles } = this.props;
 
@@ -96,6 +96,58 @@ export default class Area extends React.Component {
         })
       );
     }, []);
+
+    // const { tiles, units, shrouds, areaLength } = this.props;
+
+    // return [
+    //   tiles &&
+    //     tiles.map(tile => (
+    //       <Tile
+    //         key={`${tile.x},${tile.y}`}
+    //         x={tile.x}
+    //         y={tile.y}
+    //         areaLength={areaLength}
+    //         {...tile}
+    //       />
+    //     )),
+    //   units &&
+    //     units.map(
+    //       unit =>
+    //         unit ? (
+    //           <Unit
+    //             key={`${unit.x},${unit.y}`}
+    //             x={unit.x}
+    //             y={unit.y}
+    //             areaLength={areaLength}
+    //             {...unit}
+    //           />
+    //         ) : null
+    //     ),
+    //   shrouds &&
+    //     shrouds.map(shroud => (
+    //       <Shroud
+    //         key={`${shroud.x},${shroud.y}`}
+    //         areaLength={areaLength}
+    //         {...shroud}
+    //       />
+    //     )),
+    // ];
+
+    // return (
+    //   <div
+    //     className="locations"
+    //     style={{
+    //       "--tileSize": 100 / rules.areaWidth,
+    //       "--areaLength": areaLength,
+    //       "--areaWidth": rules.areaWidth,
+    //       "--waterLevel": config.waterLevel,
+    //       "--groundLevel": config.groundLevel,
+    //       "--shroudLevel": config.shroudLevel,
+    //     }}
+    //   >
+    //     <div className="locationSizer">{children}</div>
+    //   </div>
+    // );
 
     return (
       <Clock

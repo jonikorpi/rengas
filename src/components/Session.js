@@ -1,16 +1,14 @@
 import React from "react";
-import Locations from "./Locations";
 import GameUI from "./GameUI";
 import PlayerUI from "./PlayerUI";
-import Vision from "./Vision";
-import Memory from "./Memory";
+import LogoUI from "./LogoUI";
 import { rules } from "../shared/helpers.js";
 
 const calculateTurn = (when = Date.now()) => {
   return Math.floor(Math.max(0, when / rules.secondsPerTurn / 1000));
 };
 
-export default class Clock extends React.Component {
+export default class Session extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,14 +37,12 @@ export default class Clock extends React.Component {
 
   render() {
     const { turn } = this.state;
-    const { player, startedAt, areaLength } = this.props;
-    const { mana, lastUsedManaAt } = player;
+    const { startedAt, areaLength, mana, lastUsedManaAt } = this.props;
 
     return [
-      <Locations key="Locations" areaLength={areaLength}>
-        <Vision turn={turn} areaLength={areaLength} {...this.props} />
-        <Memory turn={turn} areaLength={areaLength} {...this.props} />
-      </Locations>,
+      // <Locations key="Locations" areaLength={areaLength}>
+      //   <Vision turn={turn} areaLength={areaLength} {...this.props} />
+      // </Locations>,
       <GameUI key="GameUI" turn={turn} startedAt={startedAt} />,
       <PlayerUI
         key="PlayerUI"
@@ -56,6 +52,7 @@ export default class Clock extends React.Component {
             : rules.maxMana
         }
       />,
+      <LogoUI key="LogoUI" {...this.props} />,
     ];
   }
 }

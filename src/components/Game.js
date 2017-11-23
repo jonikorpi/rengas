@@ -1,32 +1,43 @@
 import React from "react";
+import { connect } from "react-firebase";
+import firebase from "firebase/app";
+import "firebase/database";
 
-import LogoUI from "./LogoUI";
-import Player from "./Player";
+import Session from "./Session";
 
-export default class Game extends React.Component {
-  constructor(props) {
-    super(props);
+class Game extends React.Component {
+  spawn = () =>
+    firebase
+      .database()
+      .ref(`world/${this.props.userID}`)
+      .set(firebase.database.ServerValue.TIMESTAMP);
 
-    this.state = {
-      gameType: "singlePlayer",
-    };
-  }
-
-  changeGameType = gameType => {
-    this.setState({ gameType: gameType });
-  };
+  concede = () =>
+    firebase
+      .database()
+      .ref(`world/${this.props.userID}`)
+      .remove();
 
   render() {
-    const { gameType } = this.state;
-
-    return [
-      <Player key="Player" gameType={gameType} {...this.props} />,
-      <LogoUI
-        key="LogoUI"
-        gameType={gameType}
-        changeGameType={this.changeGameType}
-        {...this.props}
-      />,
-    ];
+    return this.props.startedAt ? (
+      [
+        <Session
+          key="Session"
+          {...this.props}
+          {...this.state}
+          spawn={this.spawn}
+          concede={this.concede}
+        />,
+        <button key="Concede" onClick={this.concede}>
+          Concede
+        </button>,
+      ]
+    ) : (
+      <button onClick={this.spawn}>Spawn</button>
+    );
   }
 }
+
+export default connect((props, ref) => ({
+  startedAt: `world/${props.userID}`,
+}))(Game);
