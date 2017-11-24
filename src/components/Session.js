@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-firebase";
+
+import Island from "./Island";
 import GameUI from "./GameUI";
 import PlayerUI from "./PlayerUI";
 import LogoUI from "./LogoUI";
@@ -8,7 +11,7 @@ const calculateTurn = (when = Date.now()) => {
   return Math.floor(Math.max(0, when / rules.secondsPerTurn / 1000));
 };
 
-export default class Session extends React.Component {
+class Session extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,23 +39,29 @@ export default class Session extends React.Component {
   };
 
   render() {
-    const { turn } = this.state;
-    const { startedAt, areaLength, mana, lastUsedManaAt } = this.props;
+    const sessionData = this.props.session;
+    const startedAt = sessionData.startedAt;
+    const canSee = sessionData.canSee;
+
+    const islands = Object.keys(canSee);
 
     return [
-      // <Locations key="Locations" areaLength={areaLength}>
-      //   <Vision turn={turn} areaLength={areaLength} {...this.props} />
-      // </Locations>,
-      <GameUI key="GameUI" turn={turn} startedAt={startedAt} />,
+      <GameUI key="GameUI" turn={0} startedAt={startedAt} />,
       <PlayerUI
         key="PlayerUI"
         mana={
-          calculateTurn(startedAt, lastUsedManaAt) === turn
-            ? mana
-            : rules.maxMana
+          0
+          // calculateTurn(startedAt, lastUsedManaAt) === turn
+          //   ? mana
+          //   : rules.maxMana
         }
       />,
       <LogoUI key="LogoUI" {...this.props} />,
+      islands && islands.map(island => <Island {...this.props} {...island} />),
     ];
   }
 }
+
+export default connect((props, ref) => ({
+  session: `players/${props.userID}/session`,
+}))(Session);

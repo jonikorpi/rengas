@@ -20,7 +20,7 @@
 }
 
 .gameUI {
-  /*pointer-events: none;*/
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -75,7 +75,7 @@
 }
 
 .playerUI {
-  /*pointer-events: none;*/
+  pointer-events: none;
   position: fixed;
   top: 0.5rem;
   left: 0;

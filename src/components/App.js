@@ -34,7 +34,7 @@ export default class App extends React.Component {
     firebase.auth().onAuthStateChanged(user =>
       this.setState({
         userID: user && user.uid,
-        anonymous: user && user.isAnonymous,
+        isAnonymous: user && user.isAnonymous,
       })
     );
 
@@ -47,9 +47,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Network
-        render={({ online }) => (
-          <Game {...this.state} online={online} isDevelopment={isDevelopment} />
-        )}
+        render={({ online }) => <Game {...this.state} isOnline={online} />}
       />
     );
   }

@@ -1,7 +1,6 @@
 import React from "react";
 
-import Clock from "./Clock";
-import { singlePlayerUserID, listTilesInRange } from "../shared/helpers.js";
+import { listTilesInRange } from "../shared/helpers.js";
 
 const getTile = (locations, x, y) =>
   (locations[x] && locations[x][y] && locations[x][y].tile) || {
@@ -149,17 +148,19 @@ export default class Island extends React.Component {
     //   </div>
     // );
 
-    return (
-      <Clock
-        {...this.props}
-        tiles={tiles}
-        units={units}
-        shrouds={shrouds}
-        startedAt={gameState.details.startedAt}
-        areaLength={gameState.details.areaLength}
-        player={gameState.players[singlePlayerUserID]}
-        userID={singlePlayerUserID}
-      />
-    );
+    // return (
+    //   <Clock
+    //     {...this.props}
+    //     tiles={tiles}
+    //     units={units}
+    //     shrouds={shrouds}
+    //     startedAt={gameState.details.startedAt}
+    //     areaLength={gameState.details.areaLength}
+    //     player={gameState.players[singlePlayerUserID]}
+    //     userID={singlePlayerUserID}
+    //   />
+    // );
+
+    return null;
   }
 }

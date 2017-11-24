@@ -216,13 +216,10 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
   return gameState;
 };
 
-const singlePlayerUserID = "solo";
-
 export {
   rules,
   getFreshArea,
   addPlayerToArea,
-  singlePlayerUserID,
   listTilesInRange,
   getVisibleTilesForPlayer,
 };
