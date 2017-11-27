@@ -1,12 +1,18 @@
 import React from "react";
 import { connect } from "react-firebase";
+import Loadable from "react-loadable";
 
 import UnitUI from "./UnitUI";
-import UnitProxy from "./UnitProxy";
+import Loader from "./Loader";
+
+const UnitProxy = Loadable({
+  loader: () => import("./UnitProxy"),
+  loading: Loader,
+});
 
 class Unit extends React.Component {
   render() {
-    const { unitID, unit, userID } = this.props;
+    const { unitID, unit, userID, isDevelopment } = this.props;
 
     if (!unit) {
       return null;
@@ -28,7 +34,13 @@ class Unit extends React.Component {
         {unit && unit.type}
       </div>,
       isOwnUnit && <UnitUI key="UnitUI" {...this.props} />,
-      isOwnUnit && <UnitProxy key="UnitProxy" unitID={unitID} />,
+      isOwnUnit && (
+        /*isDevelopment &&*/ <UnitProxy
+          key="UnitProxy"
+          unitID={unitID}
+          isDevelopment={isDevelopment}
+        />
+      ),
     ];
   }
 }

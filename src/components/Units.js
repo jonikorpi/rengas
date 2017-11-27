@@ -5,7 +5,7 @@ import UnitWrapper from "./UnitWrapper";
 
 class Units extends React.PureComponent {
   render() {
-    const { unitIDs, userID } = this.props;
+    const { unitIDs, userID, isDevelopment } = this.props;
     const locationList = unitIDs && Object.keys(unitIDs);
 
     return (
@@ -16,6 +16,7 @@ class Units extends React.PureComponent {
                 key={unitIDs[locationID]}
                 userID={userID}
                 unitID={unitIDs[locationID]}
+                isDevelopment={isDevelopment}
               />
             ))
           : null}

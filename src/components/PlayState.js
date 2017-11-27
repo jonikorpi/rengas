@@ -3,6 +3,7 @@ import { connect } from "react-firebase";
 import Loadable from "react-loadable";
 
 import Loader from "./Loader";
+
 const Spawning = Loadable({
   loader: () => import("./Spawning"),
   loading: Loader,
