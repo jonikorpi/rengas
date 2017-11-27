@@ -1,9 +1,11 @@
 import React from "react";
 import { connect } from "react-firebase";
 
+import UnitUI from "./UnitUI";
+
 class Unit extends React.Component {
   render() {
-    const { unitID, unit } = this.props;
+    const { unitID, unit, userID } = this.props;
 
     if (!unit) {
       return null;
@@ -11,18 +13,20 @@ class Unit extends React.Component {
 
     const [x, y] = unit.location.split(",");
 
-    return (
+    return [
       <div
-        id={unitID}
+        key="unit"
         className="unit"
+        id={unitID}
         style={{
           "--x": x,
           "--y": y,
         }}
       >
         {unit && unit.type}
-      </div>
-    );
+      </div>,
+      unit.owner === userID && <UnitUI key="UnitUI" {...this.props} />,
+    ];
   }
 }
 
