@@ -7,13 +7,7 @@ const rules = {
   maxMana: 10,
 };
 
-const listTilesInRange = ({
-  x,
-  y,
-  range = 1,
-  areaLength,
-  diagonal = false,
-}) => {
+const listTilesInRange = ({ x, y, range = 1, diagonal = false }) => {
   const tiles = [];
 
   for (let xOffset = -range; xOffset <= range; xOffset++) {
@@ -24,13 +18,7 @@ const listTilesInRange = ({
         ? Math.sqrt(Math.pow(x - thisX, 2)) + Math.sqrt(Math.pow(y - thisY, 2))
         : Math.abs(x - thisX) + Math.abs(y - thisY) <= range;
 
-      const isLikelyInArea =
-        thisX < rules.areaWidth &&
-        thisX >= 0 &&
-        thisY >= 0 &&
-        thisY < areaLength;
-
-      if (isInRange && isLikelyInArea) {
+      if (isInRange) {
         tiles.push({ x: thisX, y: thisY });
       }
     }
@@ -216,10 +204,26 @@ const addPlayerToArea = ({ playerID, startingX }, currentArea) => {
   return gameState;
 };
 
+const getNeighbours = (vision, x, y) => {
+  return listTilesInRange({
+    x: x,
+    y: y,
+    range: 1,
+    diagonal: true,
+  }).map(location => {
+    return {
+      x: location.x,
+      y: location.y,
+      visible: !!vision[`${x},${y}`],
+    };
+  });
+};
+
 export {
   rules,
   getFreshArea,
   addPlayerToArea,
   listTilesInRange,
   getVisibleTilesForPlayer,
+  getNeighbours,
 };

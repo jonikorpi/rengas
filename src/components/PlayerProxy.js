@@ -79,7 +79,7 @@ const spawnPlayer = async (command, userID) => {
     // Add city to location
     const citySpawnAttempt = await firebase
       .database()
-      .ref(`locations/${spawnLocationID}/session`)
+      .ref(`locations/${spawnLocationID}`)
       .transaction(realLocation => {
         const location = realLocation || {};
 

@@ -3397,7 +3397,7 @@ interpret@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.4.tgz#820cdd588b868ffb191a809506d6c9c8f212b1b0"
 
-invariant@^2.0.0, invariant@^2.2.2:
+invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -5479,11 +5479,11 @@ react-error-overlay@^2.0.1:
     source-map "0.5.6"
 
 react-firebase@^2.2.7-4:
-  version "2.2.7-4"
-  resolved "https://registry.yarnpkg.com/react-firebase/-/react-firebase-2.2.7-4.tgz#3246b97c5353f78cc84dc1da6a007e76f8c8e079"
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/react-firebase/-/react-firebase-2.2.7.tgz#bfc5004d7bf339b0a492747d588c5959069fcd05"
   dependencies:
-    invariant "^2.0.0"
     prop-types "^15.5.8"
+    shallowequal "^1.0.2"
 
 react-loadable@^5.3.1:
   version "5.3.1"
@@ -6028,6 +6028,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.8.tgz#37068c2c476b6baf402d14a49c67f597921f634f"
   dependencies:
     inherits "^2.0.1"
+
+shallowequal@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.0.2.tgz#1561dbdefb8c01408100319085764da3fcf83f8f"
 
 shebang-command@^1.2.0:
   version "1.2.0"
