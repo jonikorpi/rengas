@@ -91,16 +91,15 @@
   }
 }
 
-.locations {
-  overflow: hidden;
+.vision {
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
   --tileHeight: 0.666vh;
-  height: calc(var(--areaLength) * var(--tileSize) * var(--tileHeight));
-  max-height: calc(var(--areaLength) * var(--tileSize) * 1vw);
-  min-height: calc(var(--areaLength) * var(--tileSize) * 0.333vw);
+  height: calc(var(--visionLength) * var(--tileSize) * var(--tileHeight));
+  max-height: calc(var(--visionLength) * var(--tileSize) * 1vw);
+  min-height: calc(var(--visionLength) * var(--tileSize) * 0.333vw);
 }
 
 .locationSizer {
@@ -124,12 +123,17 @@
 .tile,
 .shroud {
   left: calc(var(--x) * 100%);
-  top: calc(var(--y) * 100%);
+  top: calc((var(--y) - var(--visionMin) * 100%));
 }
 
 .unit {
+  z-index: 10; /* TEMPORARY */
   will-change: transform;
-  transform: translate3d(calc(var(--x) * 100%), calc(var(--y) * 100%), 0);
+  transform: translate3d(
+    calc(var(--x) * 100%),
+    calc((var(--y) - var(--visionMin)) * 100%),
+    0
+  );
 }
 
 .shroud {

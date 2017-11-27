@@ -3,7 +3,13 @@ import { connect } from "react-firebase";
 
 class Unit extends React.Component {
   render() {
-    const { x, y, unitID, unit } = this.props;
+    const { unitID, unit } = this.props;
+
+    if (!unit) {
+      return null;
+    }
+
+    const [x, y] = unit.location.split(",");
 
     return (
       <div
