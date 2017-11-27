@@ -26,8 +26,9 @@ const getNeighbours = (visibleTiles, x, y, areaLength) => {
   });
 };
 
-export default class Island extends React.Component {
+export default class Vision extends React.Component {
   render() {
+    return null;
     const { gameState, visibleTiles } = this.props;
 
     const tiles = Object.keys(visibleTiles)

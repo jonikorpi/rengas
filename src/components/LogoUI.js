@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class LogoUI extends React.Component {
+export default class LogoUI extends React.PureComponent {
   render() {
     const { gameType, changeGameType } = this.props;
 

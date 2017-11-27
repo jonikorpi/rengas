@@ -1,62 +1,49 @@
 import React from "react";
-import { connect } from "react-firebase";
+
 import firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/database";
-import Loadable from "react-loadable";
 
-import Session from "./Session";
-import Loader from "./Loader";
+import PlayState from "./PlayState";
 
-const WorldProxy = Loadable({
-  loader: () => import("./WorldProxy"),
-  loading: Loader,
-});
+const isDevelopment = process.env.NODE_ENV === "development";
 
-class Game extends React.Component {
-  spawn = () =>
+firebase.initializeApp(
+  isDevelopment
+    ? {
+        apiKey: "AIzaSyDqIGRAAyuqUkwcoNrow1sfCc9IoUvfQUc",
+        authDomain: "scrollworld-dev.firebaseapp.com",
+        databaseURL: "https://scrollworld-dev.firebaseio.com",
+        projectId: "scrollworld-dev",
+        // storageBucket: "scrollworld-dev.appspot.com",
+        // messagingSenderId: "156430732048",
+      }
+    : {
+        apiKey: "AIzaSyBROe3cnHmQ4K7B8iuuTNqCj_Tdrw76djQ",
+        authDomain: "scrollworld-30a25.firebaseapp.com",
+        databaseURL: "https://scrollworld-30a25.firebaseio.com",
+        projectId: "scrollworld-30a25",
+        // storageBucket: "",
+        // messagingSenderId: "324510204761",
+      }
+);
+
+export default class Game extends React.Component {
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged(user =>
+      this.setState({
+        userID: user && user.uid,
+        isAnonymous: user && user.isAnonymous,
+      })
+    );
+
     firebase
-      .database()
-      .ref(`world/${this.props.userID}`)
-      .set(firebase.database.ServerValue.TIMESTAMP);
-
-  concede = () =>
-    firebase
-      .database()
-      .ref(`world/${this.props.userID}`)
-      .remove();
+      .auth()
+      .signInAnonymously()
+      .catch(error => console.log(error));
+  }
 
   render() {
-    const { startedAt, userID } = this.props;
-
-    return [
-      <WorldProxy
-        key="WorldProxy"
-        startedAt={startedAt || null}
-        userID={userID}
-      />,
-      startedAt && (
-        <Session
-          key="Session"
-          {...this.props}
-          {...this.state}
-          spawn={this.spawn}
-          concede={this.concede}
-        />
-      ),
-      startedAt && (
-        <button key="Concede" onClick={this.concede}>
-          Concede
-        </button>
-      ),
-      !startedAt && (
-        <button key="Spawn" onClick={this.spawn}>
-          Spawn
-        </button>
-      ),
-    ];
+    return <PlayState {...this.state} isDevelopment={isDevelopment} />;
   }
 }
-
-export default connect((props, ref) => ({
-  startedAt: `world/${props.userID}`,
-}))(Game);
