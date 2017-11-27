@@ -92,14 +92,19 @@
 }
 
 .vision {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
   --tileHeight: 0.666vh;
   height: calc(var(--visionLength) * var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--visionLength) * var(--tileSize) * 1vw);
   min-height: calc(var(--visionLength) * var(--tileSize) * 0.333vw);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@supports (top: max(1px, env(safe-area-inset-top))) {
+  .vision {
+    margin-top: max(2rem, env(safe-area-inset-top));
+    margin-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
 }
 
 .locationSizer {
