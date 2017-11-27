@@ -132,7 +132,7 @@ class PlayerProxy extends React.Component {
     const command = this.props.command || {};
 
     if (previousCommand.ID !== command.ID && command.ID) {
-      console.log(`Executing command ${command.ID}`);
+      console.log(`Executing command #${command.ID}: ${command.action}`);
       executeAction(command.action, command, this.props.userID);
     }
   }
