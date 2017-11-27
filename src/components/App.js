@@ -1,5 +1,4 @@
 import React from "react";
-import Network from "react-network";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -45,10 +44,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <Network
-        render={({ online }) => <Game {...this.state} isOnline={online} />}
-      />
-    );
+    return <Game {...this.state} />;
   }
 }
