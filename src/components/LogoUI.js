@@ -1,21 +1,19 @@
 import React from "react";
+import firebase from "firebase/app";
+import "firebase/database";
 
 export default class LogoUI extends React.PureComponent {
-  render() {
-    const { gameType, changeGameType } = this.props;
+  concede = () => {
+    firebase
+      .database()
+      .ref(`players/${this.props.userID}/command`)
+      .set({ action: "concede", ID: Math.random() });
+  };
 
+  render() {
     return (
-      <div className="logoUI safeAreaMargins">
-        {gameType && (
-          <button
-            className="text-shadow"
-            onClick={() => {
-              changeGameType(null);
-            }}
-          >
-            Quit
-          </button>
-        )}
+      <div className="logoUI">
+        <button onClick={this.concede}>Abandon game</button>
       </div>
     );
   }
