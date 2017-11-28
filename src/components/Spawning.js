@@ -16,14 +16,17 @@ class Spawning extends React.Component {
 
     const action = (command && command.action) || undefined;
 
+    console.log(command, action);
+
     return [
       action === "spawn" && "Spawning…",
-      action !== "spawn" && (
-        <button key="RandomSpawn" type="button" onClick={this.randomSpawn}>
-          Random spawn
-        </button>
-      ),
-      action === undefined && "Checking spawn status…",
+      command !== undefined &&
+        action !== "spawn" && (
+          <button key="RandomSpawn" type="button" onClick={this.randomSpawn}>
+            Random spawn
+          </button>
+        ),
+      command === undefined && "Checking spawn status…",
     ];
   }
 }
