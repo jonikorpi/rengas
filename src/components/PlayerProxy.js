@@ -4,6 +4,8 @@ import "firebase/auth";
 import "firebase/database";
 import { connect } from "react-firebase";
 
+import { listTilesInRange, rules } from "../shared/helpers.js";
+
 const executeAction = (action, ...otherArguments) => {
   switch (action) {
     case "spawn":
@@ -33,16 +35,23 @@ const despawnPlayer = async (command, userID) => {
     .once("value");
 
   units.forEach(unit => {
-    despawnUnit(unit.key);
+    despawnUnit(unit.key, unit.val().location);
   });
 
   return;
 };
 
-const despawnUnit = unitID => {
+const despawnUnit = (unitID, location) => {
+  // Delete unit
   firebase
     .database()
     .ref(`units/${unitID}`)
+    .remove();
+
+  // Remove unit from location
+  firebase
+    .database()
+    .ref(`locations/${location}/unit`)
     .remove();
 };
 
@@ -71,8 +80,8 @@ const spawnPlayer = async (command, userID) => {
 
   while (!spawnFound) {
     spawnLocation = {
-      x: Math.floor(Math.random() * 5),
-      y: Math.floor(Math.random() * 10),
+      x: Math.floor(Math.random() * (rules.worldWidth - 1)),
+      y: Math.floor(Math.random() * 20),
     };
     spawnLocationID = `${spawnLocation.x},${spawnLocation.y}`;
 
@@ -122,6 +131,22 @@ const spawnPlayer = async (command, userID) => {
           sight: 1,
           trueSight: 1,
         },
+        ...listTilesInRange(spawnLocation.x, spawnLocation.y, 9).reduce(
+          (tiles, tile) => {
+            tiles[`${tile.x},${tile.y}`] = tiles[`${tile.x},${tile.y}`] || {};
+            tiles[`${tile.x},${tile.y}`]["sight"] = 1;
+            return tiles;
+          },
+          {}
+        ),
+        ...listTilesInRange(spawnLocation.x, spawnLocation.y, 3).reduce(
+          (tiles, tile) => {
+            tiles[`${tile.x},${tile.y}`] = tiles[`${tile.x},${tile.y}`] || {};
+            tiles[`${tile.x},${tile.y}`]["trueSight"] = 1;
+            return tiles;
+          },
+          {}
+        ),
       },
     });
 };

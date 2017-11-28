@@ -29,6 +29,7 @@ class Unit extends React.Component {
         style={{
           "--x": x,
           "--y": y,
+          color: isOwnUnit ? "red" : undefined,
         }}
       >
         {unit && unit.type}

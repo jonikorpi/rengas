@@ -16,8 +16,6 @@ class Spawning extends React.Component {
 
     const action = (command && command.action) || undefined;
 
-    console.log(command, action);
-
     return [
       action === "spawn" && "Spawning…",
       command !== undefined &&

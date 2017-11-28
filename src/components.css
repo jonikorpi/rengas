@@ -93,6 +93,10 @@
 
 .vision {
   --tileHeight: 0.666vh;
+  user-select: none;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
   height: calc(var(--visionLength) * var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--visionLength) * var(--tileSize) * 1vw);
   min-height: calc(var(--visionLength) * var(--tileSize) * 0.333vw);
@@ -107,7 +111,8 @@
   }
 }
 
-.locationSizer {
+.locations,
+.units {
   width: calc(var(--tileSize) * 1vw);
   height: calc(var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--tileSize) * 1vw);
@@ -117,7 +122,8 @@
 
 .tile,
 .unit,
-.shroud {
+.shroud,
+.unitIndicator {
   position: absolute;
   left: 0;
   top: 0;
@@ -126,9 +132,10 @@
 }
 
 .tile,
-.shroud {
+.shroud,
+.unitIndicator {
   left: calc(var(--x) * 100%);
-  top: calc((var(--y) - var(--visionMin) * 100%));
+  top: calc((var(--y) - var(--visionMin)) * 100%);
 }
 
 .unit {
@@ -139,6 +146,10 @@
     calc((var(--y) - var(--visionMin)) * 100%),
     0
   );
+}
+
+.unitIndicator {
+  z-index: 10; /* TEMPORARY */
 }
 
 .shroud {

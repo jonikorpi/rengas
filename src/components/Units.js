@@ -11,14 +11,16 @@ class Units extends React.PureComponent {
     return (
       <div className="units">
         {locationList.length > 0
-          ? locationList.map(locationID => (
-              <UnitWrapper
-                key={unitIDs[locationID]}
-                userID={userID}
-                unitID={unitIDs[locationID]}
-                isDevelopment={isDevelopment}
-              />
-            ))
+          ? locationList
+              .filter(locationID => unitIDs[locationID])
+              .map(locationID => (
+                <UnitWrapper
+                  key={unitIDs[locationID]}
+                  userID={userID}
+                  unitID={unitIDs[locationID]}
+                  isDevelopment={isDevelopment}
+                />
+              ))
           : null}
       </div>
     );
@@ -31,7 +33,10 @@ export default connect(
 
     return vision
       ? Object.keys(vision).reduce((mapping, locationID) => {
-          mapping[locationID] = `locations/${locationID}/unit/ID`;
+          if (vision[locationID].trueSight > 0) {
+            mapping[locationID] = `locations/${locationID}/unit/ID`;
+          }
+
           return mapping;
         }, {})
       : {};
