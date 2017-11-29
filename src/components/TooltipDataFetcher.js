@@ -5,7 +5,7 @@ import Tooltip from "./Tooltip";
 import { compose } from "../shared/helpers.js";
 import { nullTile } from "../shared/tiles.js";
 
-class LocationDataFetcher extends React.PureComponent {
+class TooltipDataFetcher extends React.PureComponent {
   render() {
     return <Tooltip {...this.props} tile={this.props.tile || nullTile} />;
   }
@@ -31,4 +31,4 @@ export default compose(
       unit: unitID ? `units/${unitID}` : undefined,
     };
   })
-)(LocationDataFetcher);
+)(TooltipDataFetcher);

@@ -1,6 +1,6 @@
 import React from "react";
 
-import LocationDataFetcher from "./LocationDataFetcher";
+import TooltipDataFetcher from "./TooltipDataFetcher";
 
 export default class LocationUI extends React.PureComponent {
   constructor(props) {
@@ -45,7 +45,7 @@ export default class LocationUI extends React.PureComponent {
           tabIndex={y * 100 + x}
         />
 
-        {focused && <LocationDataFetcher {...this.props} />}
+        {focused && <TooltipDataFetcher {...this.props} />}
       </div>
     );
   }
