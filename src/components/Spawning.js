@@ -3,6 +3,8 @@ import { connect } from "react-firebase";
 import firebase from "firebase/app";
 import "firebase/database";
 
+import LogMessage from "./LogMessage";
+
 class Spawning extends React.Component {
   randomSpawn = () => {
     firebase
@@ -16,15 +18,19 @@ class Spawning extends React.Component {
 
     const action = (command && command.action) || undefined;
 
+    let keys = 0;
+
     return [
-      action === "spawn" && "Spawning…",
+      action === "spawn" && <LogMessage key={keys++}>Spawning…</LogMessage>,
       command !== undefined &&
         action !== "spawn" && (
-          <button key="RandomSpawn" type="button" onClick={this.randomSpawn}>
+          <button key={keys++} type="button" onClick={this.randomSpawn}>
             Random spawn
           </button>
         ),
-      command === undefined && "Checking spawn status…",
+      command === undefined && (
+        <LogMessage key={keys++}>Checking spawn status…</LogMessage>
+      ),
     ];
   }
 }

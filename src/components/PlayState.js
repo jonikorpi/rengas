@@ -3,6 +3,7 @@ import { connect } from "react-firebase";
 import Loadable from "react-loadable";
 
 import Loader from "./Loader";
+import LogMessage from "./LogMessage";
 
 const Spawning = Loadable({
   loader: () => import("./Spawning"),
@@ -19,13 +20,19 @@ const PlayerProxy = Loadable({
 
 class PlayState extends React.Component {
   render() {
-    const { playState, isDevelopment } = this.props;
+    const { playState, online /*isDevelopment*/ } = this.props;
+
+    let keys = 0;
 
     return [
-      playState === null && <Spawning key="Spawning" {...this.props} />,
-      playState === "playing" && <Playing key="Playing" {...this.props} />,
-      /*&& isDevelopment &&*/ <PlayerProxy key="PlayerProxy" {...this.props} />,
-      playState === undefined && "Connecting to database…",
+      playState === null && <Spawning key={keys++} {...this.props} />,
+      playState === "playing" && <Playing key={keys++} {...this.props} />,
+      /*&& isDevelopment &&*/ <PlayerProxy key={keys++} {...this.props} />,
+      online &&
+        playState === undefined && (
+          <LogMessage key={keys++}>Downloading player data…</LogMessage>
+        ),
+      !online && <LogMessage key={keys++}>Connecting to database…</LogMessage>,
     ];
   }
 }

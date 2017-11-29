@@ -37,43 +37,6 @@
   }
 }
 
-.turnBar {
-  height: 0.25rem;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  overflow: hidden;
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-.turnBarFill {
-  position: absolute;
-  left: -1px;
-  top: 0;
-  right: -1px;
-  bottom: 0;
-  border: 1px solid var(--black);
-  background-color: var(--white);
-  will-change: transform;
-  animation: tempTurnBarFill 60s linear infinite both;
-  transform-origin: right;
-}
-
-.turnBarFill.danger {
-  background-color: var(--danger);
-}
-
-@keyframes tempTurnBarFill {
-  to {
-    transform: scale3d(0, 1, 1);
-  }
-}
-
-.turnUI {
-}
-
 .playerUI {
   pointer-events: none;
   position: fixed;
@@ -88,6 +51,23 @@
 @supports (top: max(1px, env(safe-area-inset-top))) {
   .playerUI {
     top: max(0.5rem, env(safe-area-inset-top));
+  }
+}
+
+#log {
+  pointer-events: none;
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  z-index: 100;
+}
+
+@supports (top: max(1px, env(safe-area-inset-top))) {
+  #log {
+    top: max(0.5rem, env(safe-area-inset-top));
+    right: max(0.5rem, env(safe-area-inset-right));
+    left: max(0.5rem, env(safe-area-inset-left));
   }
 }
 
