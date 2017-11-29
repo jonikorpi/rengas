@@ -79,7 +79,12 @@ export default class Vision extends React.Component {
       >
         <div className="locations">
           {locations.map(location => (
-            <Location key={location.locationID} {...location} userID={userID} />
+            <Location
+              key={location.locationID}
+              {...location}
+              userID={userID}
+              topMostVisibleY={visionEdges.min}
+            />
           ))}
 
           {shrouds.map(shroud => (

@@ -6,7 +6,7 @@ import LocationUI from "./LocationUI";
 
 export default class Location extends React.PureComponent {
   render() {
-    const { x, y, userID, trueSight } = this.props;
+    const { x, y, userID, trueSight, topMostVisibleY } = this.props;
 
     let keys = 0;
 
@@ -19,6 +19,7 @@ export default class Location extends React.PureComponent {
         y={y}
         trueSight={trueSight}
         userID={userID}
+        topMostVisibleY={topMostVisibleY}
       />,
     ];
   }

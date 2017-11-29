@@ -1,6 +1,7 @@
 import React from "react";
 
 import TooltipDataFetcher from "./TooltipDataFetcher";
+import { rules } from "../shared/helpers.js";
 
 export default class LocationUI extends React.PureComponent {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class LocationUI extends React.PureComponent {
   };
 
   render() {
-    const { x, y } = this.props;
+    const { x, y, topMostVisibleY } = this.props;
     const { focused } = this.state;
 
     return (
@@ -42,7 +43,7 @@ export default class LocationUI extends React.PureComponent {
           onMouseLeave={this.unfocus}
           onTouchEnd={this.unfocus}
           onBlur={this.unfocus}
-          tabIndex={y * 100 + x}
+          tabIndex={(y - topMostVisibleY) * rules.worldWidth + x + 1}
         />
 
         {focused && <TooltipDataFetcher {...this.props} />}
