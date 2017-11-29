@@ -3,6 +3,7 @@ import { connect } from "react-firebase";
 
 import TileType from "./TileType";
 import { getSeed, baseTile, random } from "../graphics.js";
+import { nullTile } from "../shared/tiles.js";
 
 class Tile extends React.Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Tile extends React.Component {
 
   render() {
     const { x, y, shoreVisible, trueSight } = this.props;
-    const tile = this.props.tile || { type: "water" };
+    const tile = this.props.tile || nullTile;
 
     return (
       <div

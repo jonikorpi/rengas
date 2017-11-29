@@ -33,4 +33,7 @@ const getNeighbours = (vision, x, y) =>
     visible: !!vision[`${location.x},${location.y}`],
   }));
 
-export { rules, listTilesInRange, getNeighbours };
+// https://medium.com/@dtipson/creating-an-es6ish-compose-in-javascript-ac580b95104a
+const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+
+export { rules, listTilesInRange, getNeighbours, compose };

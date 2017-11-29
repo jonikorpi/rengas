@@ -48,7 +48,7 @@ html {
 
 body {
   line-height: 1rem;
-  font-size: 0.8rem; /* = line-height of 1.25 */
+  font-size: 0.764rem; /* = line-height of 1.25 */
 }
 
 .text-shadow {

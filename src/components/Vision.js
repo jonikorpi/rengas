@@ -34,7 +34,7 @@ export default class Vision extends React.Component {
             locationID: locationID,
             x: +x,
             y: +y,
-            trueSight: vision[locationID].trueSight,
+            trueSight: !!vision[locationID].trueSight,
             shoreVisible: visibleNeighbours.length > 0,
           };
         })
@@ -77,7 +77,7 @@ export default class Vision extends React.Component {
           "--shroudLevel": config.shroudLevel,
         }}
       >
-        <div className="locations" key="locations">
+        <div className="locations">
           {locations.map(location => (
             <Location key={location.locationID} {...location} userID={userID} />
           ))}
@@ -87,7 +87,7 @@ export default class Vision extends React.Component {
           ))}
         </div>
 
-        <div className="halfShrouds" key="halfShrouds">
+        <div className="halfShrouds">
           {halfShrouds.map(shroud => (
             <Shroud key={shroud.locationID} {...shroud} />
           ))}
