@@ -26,14 +26,11 @@ const listTilesInRange = (x, y, range = 1, diagonal = false) => {
   return tiles;
 };
 
-const getNeighbours = (vision, x, y) => {
-  return listTilesInRange(x, y, 1, true).map(location => {
-    return {
-      x: location.x,
-      y: location.y,
-      visible: !!vision[`${x},${y}`],
-    };
-  });
-};
+const getNeighbours = (vision, x, y) =>
+  listTilesInRange(x, y, 1, true).map(location => ({
+    x: location.x,
+    y: location.y,
+    visible: !!vision[`${location.x},${location.y}`],
+  }));
 
 export { rules, listTilesInRange, getNeighbours };

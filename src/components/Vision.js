@@ -1,6 +1,7 @@
 import React from "react";
 
 import Location from "./Location";
+import Shroud from "./Shroud";
 import Units from "./Units";
 import { getNeighbours, rules } from "../shared/helpers.js";
 import { config } from "../graphics.js";
@@ -9,34 +10,39 @@ export default class Vision extends React.Component {
   render() {
     const { vision, userID } = this.props;
 
+    let shroudMap = [];
+
     const locations = vision
       ? Object.keys(vision).map(locationID => {
           const [x, y] = locationID.split(",");
-          // const visibleNeighbours = getNeighbours(vision, x, y).reduce(
-          //   (locations, { x, y, visible }) => {
-          //     locations[`${x},${y}`] =
-          //       x === rules.areaWidth - 1 || x === 0 ? false : visible;
-          //     return locations;
-          //   },
-          //   {}
-          // );
+
+          const visibleNeighbours = getNeighbours(vision, +x, +y).filter(
+            ({ x, y, visible }) => {
+              if (!visible) {
+                shroudMap[`${x},${y}`] = {
+                  locationID: `${x},${y}`,
+                  x: x,
+                  y: y,
+                };
+              }
+
+              return visible;
+            }
+          );
 
           return {
             locationID: locationID,
             x: +x,
             y: +y,
             trueSight: vision[locationID].trueSight,
-            // neighbourVisibleN: visibleNeighbours[`${+x + 0},${+y - 1}`],
-            // neighbourVisibleE: visibleNeighbours[`${+x + 1},${+y + 0}`],
-            // neighbourVisibleS: visibleNeighbours[`${+x + 0},${+y + 1}`],
-            // neighbourVisibleW: visibleNeighbours[`${+x - 1},${+y + 0}`],
-            // neighbourVisibleNW: visibleNeighbours[`${+x - 1},${+y - 1}`],
-            // neighbourVisibleNE: visibleNeighbours[`${+x + 1},${+y - 1}`],
-            // neighbourVisibleSE: visibleNeighbours[`${+x + 1},${+y + 1}`],
-            // neighbourVisibleSW: visibleNeighbours[`${+x - 1},${+y + 1}`],
+            shoreVisible: visibleNeighbours.length > 0,
           };
         })
       : [];
+
+    const shrouds = Object.keys(shroudMap).map(locationID => {
+      return shroudMap[locationID];
+    });
 
     const visionEdges = locations.reduce(
       (edges, location) => {
@@ -73,7 +79,12 @@ export default class Vision extends React.Component {
           {locations.map(location => (
             <Location key={location.locationID} {...location} userID={userID} />
           ))}
+
+          {shrouds.map(shroud => (
+            <Shroud key={shroud.locationID} {...shroud} />
+          ))}
         </div>
+
         <Units key="Units" {...this.props} />
       </div>
     );
