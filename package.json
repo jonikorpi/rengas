@@ -15,8 +15,8 @@
     "uuid": "^3.1.0"
   },
   "now": {
-    "name": "rengas",
-    "alias": "rengas-wip.now.sh"
+    "name": "scrollworld",
+    "alias": "scrollworld-dev.now.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
