@@ -44,6 +44,8 @@ export default class Vision extends React.Component {
       return shroudMap[locationID];
     });
 
+    const halfShrouds = locations.filter(location => !location.trueSight);
+
     const visionEdges = locations.reduce(
       (edges, location) => {
         edges.min =
@@ -81,6 +83,12 @@ export default class Vision extends React.Component {
           ))}
 
           {shrouds.map(shroud => (
+            <Shroud key={shroud.locationID} {...shroud} />
+          ))}
+        </div>
+
+        <div className="halfShrouds" key="halfShrouds">
+          {halfShrouds.map(shroud => (
             <Shroud key={shroud.locationID} {...shroud} />
           ))}
         </div>

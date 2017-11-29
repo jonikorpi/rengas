@@ -18,7 +18,7 @@ class Tile extends React.Component {
   }
 
   render() {
-    const { x, y, shoreVisible } = this.props;
+    const { x, y, shoreVisible, trueSight } = this.props;
     const tile = this.props.tile || { type: "water" };
 
     return (

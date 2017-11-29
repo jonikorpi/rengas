@@ -2,27 +2,36 @@ import React from "react";
 
 import SVG from "./SVG";
 import Graphic from "./Graphic";
-import { config, baseTile, getSeed } from "../graphics.js";
+import { config, baseTile, getSeed, random } from "../graphics.js";
 
-const Shroud = ({ x, y }) => {
-  let seed = getSeed(x, y);
-  const points = baseTile(seed++)
-    .join(" ")
-    .toString();
+export default class Shroud extends React.PureComponent {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div
-      className="shroud"
-      style={{
-        "--x": x,
-        "--y": y,
-      }}
-    >
-      <SVG z={config.waterLevel} zIndex={config.shroudLevel} scale={7}>
-        <Graphic type="shroud" points={points} />
-      </SVG>
-    </div>
-  );
-};
+    const { x, y } = props;
 
-export default Shroud;
+    this.seed = getSeed(x, y);
+    this.baseTile = baseTile(this.seed++)
+      .join(" ")
+      .toString();
+    // this.random = random(1, this.seed++);
+  }
+
+  render() {
+    const { x, y } = this.props;
+
+    return (
+      <div
+        className="shroud"
+        style={{
+          "--x": x,
+          "--y": y,
+        }}
+      >
+        <SVG z={config.waterLevel} zIndex={config.shroudLevel} scale={7}>
+          <Graphic type="shroud" points={this.baseTile} />
+        </SVG>
+      </div>
+    );
+  }
+}

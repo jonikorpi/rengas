@@ -112,12 +112,17 @@
 }
 
 .locations,
-.units {
+.units,
+.halfShrouds {
   width: calc(var(--tileSize) * 1vw);
   height: calc(var(--tileSize) * var(--tileHeight));
   max-height: calc(var(--tileSize) * 1vw);
   min-height: calc(var(--tileSize) * 0.333vw);
   position: absolute;
+}
+
+.halfShrouds {
+  opacity: 0.414;
 }
 
 .tile,
