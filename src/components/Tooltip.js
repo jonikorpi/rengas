@@ -2,7 +2,7 @@ import React from "react";
 
 import { rules } from "../shared/helpers.js";
 
-const Tooltip = ({ x, trueSight, unitExists, unitID, unit, tile }) => {
+const Tooltip = ({ x, y, trueSight, unitExists, unitID, unit, tile }) => {
   const leftAligned = x < rules.worldWidth / 2;
 
   return (
@@ -15,6 +15,9 @@ const Tooltip = ({ x, trueSight, unitExists, unitID, unit, tile }) => {
       }}
     >
       <h1>{tile.type}</h1>
+      <p>
+        {x},{y}
+      </p>
       {unit && <h1>{unit.type}</h1>}
       {unit && <p>Owned by {unit.owner}</p>}
       {!trueSight && unitExists && <p>There’s something here.</p>}
