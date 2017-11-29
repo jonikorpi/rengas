@@ -56,9 +56,6 @@ const Graphic = ({
           strokeWidth="4%"
         />
       );
-
-    case "wall":
-      return <polygon points={points} {...defaults} {...rounding} />;
   }
 };
 
