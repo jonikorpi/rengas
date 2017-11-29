@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   font-size: 0.5rem;
-  z-index: 100;
+  z-index: var(--HUDLevel);
 }
 
 @supports (top: max(1px, env(safe-area-inset-top))) {
@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   padding: 0.5rem 0.5rem 0;
-  z-index: 100;
+  z-index: var(--HUDLevel);
 }
 
 @supports (padding-top: max(1px, env(safe-area-inset-top))) {
@@ -45,7 +45,7 @@
   right: 0;
   display: flex;
   justify-content: center;
-  z-index: 100;
+  z-index: var(--HUDLevel);
 }
 
 @supports (top: max(1px, env(safe-area-inset-top))) {
@@ -60,7 +60,7 @@
   top: 0.5rem;
   left: 0.5rem;
   right: 0.5rem;
-  z-index: 100;
+  z-index: var(--HUDLevel);
 }
 
 @supports (top: max(1px, env(safe-area-inset-top))) {
@@ -145,7 +145,7 @@
 }
 
 .locationUI {
-  z-index: 100;
+  z-index: var(--worldUILevel);
 }
 
 .locationButton {
