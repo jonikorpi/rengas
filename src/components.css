@@ -72,12 +72,12 @@
 }
 
 .buttonWithDelayedReveal {
-  opacity: 0;
-  animation: delayedReveal 62ms ease-out 5s;
+  animation: delayedReveal 500ms ease-out 5s;
   animation-fill-mode: both;
+  pointer-events: all;
 }
 
-@keyframes {
+@keyframes delayedReveal {
   from {
     opacity: 0;
   }
