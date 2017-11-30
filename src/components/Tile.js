@@ -1,11 +1,9 @@
 import React from "react";
-import { connect } from "react-firebase";
 
 import TileType from "./TileType";
 import { getSeed, baseTile, random } from "../graphics.js";
-import { nullTile } from "../shared/tiles.js";
 
-class Tile extends React.Component {
+export default class Tile extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,8 +17,7 @@ class Tile extends React.Component {
   }
 
   render() {
-    const { x, y, shoreVisible, trueSight } = this.props;
-    const tile = this.props.tile || nullTile;
+    const { x, y, shoreVisible, tile } = this.props;
 
     return (
       <div
@@ -41,7 +38,3 @@ class Tile extends React.Component {
     );
   }
 }
-
-export default connect((props, ref) => ({
-  tile: `locations/${props.x},${props.y}/tile`,
-}))(Tile);

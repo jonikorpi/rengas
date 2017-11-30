@@ -3,7 +3,7 @@ import { connect } from "react-firebase";
 
 import UnitWrapper from "./UnitWrapper";
 
-class Units extends React.PureComponent {
+class UnitListFetcher extends React.PureComponent {
   render() {
     const { unitIDs, userID, isDevelopment } = this.props;
     const locationList = unitIDs && Object.keys(unitIDs);
@@ -45,4 +45,4 @@ export default connect(
     ...ownProps,
     unitIDs: firebaseProps,
   })
-)(Units);
+)(UnitListFetcher);

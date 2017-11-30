@@ -10,7 +10,7 @@ const UnitProxy = Loadable({
   loading: Loader,
 });
 
-class Unit extends React.Component {
+class UnitDataFetcher extends React.Component {
   render() {
     const { unitID, unit, userID, isDevelopment } = this.props;
 
@@ -48,4 +48,4 @@ class Unit extends React.Component {
 
 export default connect((props, ref) => ({
   unit: `units/${props.unitID}`,
-}))(Unit);
+}))(UnitDataFetcher);

@@ -1,8 +1,8 @@
 import React from "react";
 
-import Location from "./Location";
+import LocationWrapper from "./LocationWrapper";
 import Shroud from "./Shroud";
-import Units from "./Units";
+import UnitListFetcher from "./UnitListFetcher";
 import { getNeighbours, rules } from "../shared/helpers.js";
 import { config } from "../graphics.js";
 
@@ -79,7 +79,7 @@ export default class Vision extends React.Component {
       >
         <div className="locations">
           {locations.map(location => (
-            <Location
+            <LocationWrapper
               key={location.locationID}
               {...location}
               userID={userID}
@@ -98,7 +98,7 @@ export default class Vision extends React.Component {
           ))}
         </div>
 
-        <Units key="Units" {...this.props} />
+        <UnitListFetcher key="Units" {...this.props} />
       </div>
     );
   }

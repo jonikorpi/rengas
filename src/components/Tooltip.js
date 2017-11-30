@@ -20,7 +20,7 @@ const Tooltip = ({ x, y, trueSight, unitExists, unitID, unit, tile }) => {
       </p>
       {unit && <h1>{unit.type}</h1>}
       {unit && <p>Owned by {unit.owner}</p>}
-      {!trueSight && unitExists && <p>There’s something here.</p>}
+      {unitExists && <p>There’s something here.</p>}
     </div>
   );
 };

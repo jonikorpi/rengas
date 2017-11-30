@@ -1,9 +1,9 @@
 import React from "react";
 
-import Unit from "./Unit";
+import UnitDataFetcher from "./UnitDataFetcher";
 
 export default class UnitWrapper extends React.PureComponent {
   render() {
-    return <Unit {...this.props} />;
+    return <UnitDataFetcher {...this.props} />;
   }
 }
