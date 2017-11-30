@@ -18,6 +18,10 @@ const PlayerProxy = Loadable({
   loading: Loader,
 });
 
+const refreshPage = () => {
+  window.location.reload();
+};
+
 class PlayState extends React.Component {
   render() {
     const { playState, online /*isDevelopment*/ } = this.props;
@@ -32,7 +36,18 @@ class PlayState extends React.Component {
         playState === undefined && (
           <LogMessage key={keys++}>Downloading player data…</LogMessage>
         ),
-      !online && <LogMessage key={keys++}>Connecting to database…</LogMessage>,
+      !online && (
+        <LogMessage key={keys++}>
+          Offline. Connecting to database…{" "}
+          <button
+            type="button"
+            className="buttonWithDelayedReveal"
+            onClick={refreshPage}
+          >
+            Turn it off and on again
+          </button>
+        </LogMessage>
+      ),
     ];
   }
 }

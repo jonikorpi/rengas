@@ -71,6 +71,21 @@
   }
 }
 
+.buttonWithDelayedReveal {
+  opacity: 0;
+  animation: delayedReveal 62ms ease-out 5s;
+  animation-fill-mode: both;
+}
+
+@keyframes {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .vision {
   --tileHeight: 0.666vh;
   user-select: none;
