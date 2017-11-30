@@ -3,50 +3,173 @@ import React from "react";
 import Tooltip from "./Tooltip";
 import { rules } from "../shared/helpers.js";
 
-export default class LocationUI extends React.PureComponent {
+export default class LocationUI extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { focused: false, selected: false };
+    this.state = {
+      focused: false,
+      selected: false,
+      startedX: null,
+      startedY: null,
+      movedX: null,
+      movedY: null,
+    };
   }
 
-  focus = event => {
-    // event.preventDefault();
-    this.setState({ focused: true });
+  componentWillUnmount() {
+    clearTimeout(this.selectionTimer);
+  }
+
+  focus = () => this.setState({ focused: true });
+  unfocus = () => this.setState({ focused: false });
+
+  select = () => {
+    const { unit, userID } = this.props;
+
+    // this.setState({
+    //   startedX: startedX === null ? x : startedX,
+    //   startedY: startedY === null ? y : startedY,
+    // });
+
+    if (unit && unit.owner === userID) {
+      this.setState({ selected: true });
+
+      window.addEventListener("mouseup", this.onMouseUp, false);
+      window.addEventListener("mousemove", this.onMouseMove, false);
+      // document.addEventListener("mouseleave", this.onMouseOut, false);
+    }
   };
 
-  unfocus = event => {
+  unselect = () => {
+    const { unit, unitID, userID } = this.props;
+    const locationX = this.props.x;
+    const locationY = this.props.y;
+
+    if (unit && unit.owner === userID) {
+      const { startedX, startedY, movedX, movedY } = this.state;
+
+      if (
+        movedX !== null &&
+        movedY !== null &&
+        startedX !== null &&
+        startedY !== null
+      ) {
+        const { width, height, x, y } = this.button.getBoundingClientRect();
+        const buttonX = x + window.scrollX;
+        const buttonY = y + window.scrollY;
+
+        const targetX =
+          locationX +
+          Math.round(-1 + (movedX - (startedX - buttonX + width / 2)) / -width);
+        const targetY =
+          locationY +
+          Math.round(
+            -1 + (movedY - (startedY - buttonY + height / 2)) / -height
+          );
+
+        console.log(
+          unitID,
+          "wants to act from",
+          locationX,
+          locationY,
+          "to",
+          targetX,
+          targetY
+        );
+      }
+
+      this.setState({
+        selected: false,
+        startedX: null,
+        startedY: null,
+        movedX: null,
+        movedY: null,
+        timeSelected: null,
+      });
+
+      window.removeEventListener("mouseup", this.onMouseUp);
+      window.removeEventListener("mousemove", this.onMouseMove);
+      // document.removeEventListener("mouseleave", this.onMouseOut);
+    }
+  };
+
+  focusAndSelect = () => {
+    this.focus();
+    this.select();
+  };
+
+  unfocusAndUnselect = () => {
+    this.unfocus();
+    this.unselect();
+  };
+
+  placePointer = (x, y) => {
+    this.setState({
+      startedX: x,
+      startedY: y,
+    });
+  };
+
+  movePointer = (x, y) => {
+    const { startedX, startedY } = this.state;
+
+    this.setState({
+      movedX: startedX - x,
+      movedY: startedY - y,
+    });
+  };
+
+  onFocus = event => this.focus();
+  onBlur = event => this.unfocus();
+  onMouseEnter = event => this.focus();
+  onMouseLeave = event => this.unfocus();
+
+  onMouseDown = event => {
+    this.placePointer(event.pageX, event.pageY);
+    this.select();
+  };
+  // onClick = event => {
+  //   if (this.state.selected) {
+  //     this.unselect();
+  //   } else {
+  //     this.select();
+  //   }
+  // };
+  onTouchStart = event => {
+    this.selectionTimer = setTimeout(this.selectionTimerFired, 250);
+  };
+  selectionTimerFired = () => {
+    if (this.state.movedX < 10 && this.state.movedY < 10) {
+      this.focusAndSelect();
+    }
+  };
+  onTouchEnd = event => {
     event.preventDefault();
-    this.setState({ focused: false });
+    clearTimeout(this.selectionTimer);
+    this.unfocusAndUnselect();
   };
 
-  select = event => {
-    this.setState({ selected: true });
-    window.addEventListener("mouseup", this.unselect, false);
-    window.addEventListener("mousemove", this.movePointer, false);
-    window.addEventListener("touchmove", this.movePointer, false);
-  };
+  onTouchCancel = event => this.unfocusAndUnselect();
+  // onMouseOut = event => this.unfocusAndUnselect();
 
-  unselect = event => {
-    this.setState({ selected: false });
-    window.removeEventListener("mouseup", this.unselect);
-    window.removeEventListener("mousemove", this.movePointer);
-    // window.removeEventListener("touchmove", this.movePointer);
-    // window.removeEventListener("touchforcechange", this.movePointer);
+  onMouseUp = event => {
+    this.unselect();
+    return false;
   };
-
-  focusAndSelect = event => {
-    this.focus(event);
-    this.select(event);
-  };
-
-  unfocusAndUnselect = event => {
-    this.unfocus(event);
-    this.unselect(event);
-  };
-
-  movePointer = event => {
-    event.preventDefault();
+  onMouseMove = event => this.movePointer(event.pageX, event.pageY);
+  onTouchMove = event => {
+    if (this.state.selected) {
+      event.preventDefault();
+      this.placePointer(
+        event.changedTouches[0].pageX,
+        event.changedTouches[0].pageY
+      );
+      this.movePointer(
+        event.changedTouches[0].pageX,
+        event.changedTouches[0].pageY
+      );
+    }
   };
 
   render() {
@@ -60,6 +183,9 @@ export default class LocationUI extends React.PureComponent {
           "--x": x,
           "--y": y,
         }}
+        ref={ref => {
+          this.button = ref;
+        }}
       >
         <button
           type="button"
@@ -68,14 +194,18 @@ export default class LocationUI extends React.PureComponent {
           }`}
           aria-pressed={selected}
           aria-label={`Select tile {x},{y}`}
-          onFocus={this.focus}
-          onMouseEnter={this.focus}
-          onBlur={this.unfocus}
-          onMouseLeave={this.unfocus}
-          onMouseDown={this.select}
-          onTouchStart={this.focusAndSelect}
-          onTouchEnd={this.unfocusAndUnselect}
           tabIndex={(y - topMostVisibleY) * rules.worldWidth + x + 1}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onMouseDown={this.onMouseDown}
+          // onMouseUp={this.onMouseUp}
+          // onClick={this.onClick}
+          onTouchStart={this.onTouchStart}
+          onTouchMove={this.onTouchMove}
+          onTouchEnd={this.onTouchEnd}
+          onTouchCancel={this.onTouchCancel}
         />
 
         {focused && <Tooltip {...this.props} />}
