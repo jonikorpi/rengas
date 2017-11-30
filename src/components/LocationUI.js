@@ -10,11 +10,12 @@ export default class LocationUI extends React.Component {
     this.state = {
       focused: false,
       selected: false,
-      startedX: null,
-      startedY: null,
-      movedX: null,
-      movedY: null,
     };
+
+    this.startedX = null;
+    this.startedY = null;
+    this.movedX = null;
+    this.movedY = null;
   }
 
   componentWillUnmount() {
@@ -26,11 +27,6 @@ export default class LocationUI extends React.Component {
 
   select = () => {
     const { unit, userID } = this.props;
-
-    // this.setState({
-    //   startedX: startedX === null ? x : startedX,
-    //   startedY: startedY === null ? y : startedY,
-    // });
 
     if (unit && unit.owner === userID) {
       this.setState({ selected: true });
@@ -47,7 +43,7 @@ export default class LocationUI extends React.Component {
     const locationY = this.props.y;
 
     if (unit && unit.owner === userID) {
-      const { startedX, startedY, movedX, movedY } = this.state;
+      const { startedX, startedY, movedX, movedY } = this;
 
       if (
         movedX !== null &&
@@ -70,7 +66,7 @@ export default class LocationUI extends React.Component {
 
         console.log(
           unitID,
-          "wants to act from",
+          "wants to target from",
           locationX,
           locationY,
           "to",
@@ -81,12 +77,12 @@ export default class LocationUI extends React.Component {
 
       this.setState({
         selected: false,
-        startedX: null,
-        startedY: null,
-        movedX: null,
-        movedY: null,
-        timeSelected: null,
       });
+
+      this.startedX = null;
+      this.startedY = null;
+      this.movedX = null;
+      this.movedY = null;
 
       window.removeEventListener("mouseup", this.onMouseUp);
       window.removeEventListener("mousemove", this.onMouseMove);
@@ -105,19 +101,14 @@ export default class LocationUI extends React.Component {
   };
 
   placePointer = (x, y) => {
-    this.setState({
-      startedX: x,
-      startedY: y,
-    });
+    this.startedX = x;
+    this.startedY = y;
   };
 
   movePointer = (x, y) => {
-    const { startedX, startedY } = this.state;
-
-    this.setState({
-      movedX: startedX - x,
-      movedY: startedY - y,
-    });
+    const { startedX, startedY } = this;
+    this.movedX = startedX - x;
+    this.movedY = startedY - y;
   };
 
   onFocus = event => this.focus();
@@ -137,10 +128,10 @@ export default class LocationUI extends React.Component {
   //   }
   // };
   onTouchStart = event => {
-    this.selectionTimer = setTimeout(this.selectionTimerFired, 250);
+    this.selectionTimer = setTimeout(this.selectionTimerFired, 200);
   };
   selectionTimerFired = () => {
-    if (this.state.movedX < 10 && this.state.movedY < 10) {
+    if (this.movedX < 10 && this.movedY < 10) {
       this.focusAndSelect();
     }
   };
@@ -193,7 +184,7 @@ export default class LocationUI extends React.Component {
             selected ? "selected" : "notSelected"
           }`}
           aria-pressed={selected}
-          aria-label={`Select tile {x},{y}`}
+          aria-label={`Select tile ${x},${y}`}
           tabIndex={(y - topMostVisibleY) * rules.worldWidth + x + 1}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
