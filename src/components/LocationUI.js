@@ -11,7 +11,7 @@ export default class LocationUI extends React.PureComponent {
   }
 
   focus = event => {
-    event.preventDefault();
+    // event.preventDefault();
     this.setState({ focused: true });
   };
 
