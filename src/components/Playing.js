@@ -9,7 +9,7 @@ class Playing extends React.Component {
   randomSpawn = () => {};
 
   render() {
-    const { vision, stats, userID, online, isDevelopment } = this.props;
+    const { vision, stats, userID, isDevelopment } = this.props;
 
     return [
       <PlayerUI

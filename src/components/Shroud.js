@@ -2,7 +2,7 @@ import React from "react";
 
 import SVG from "./SVG";
 import Graphic from "./Graphic";
-import { config, baseTile, getSeed, random } from "../graphics.js";
+import { config, baseTile, getSeed } from "../graphics.js";
 
 export default class Shroud extends React.PureComponent {
   constructor(props) {
