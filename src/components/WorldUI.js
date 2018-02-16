@@ -5,7 +5,7 @@ import Vision from "./Vision";
 import PlayerUI from "./PlayerUI";
 import LogoUI from "./LogoUI";
 
-class Playing extends React.Component {
+class WorldUI extends React.Component {
   randomSpawn = () => {};
 
   render() {
@@ -32,4 +32,4 @@ class Playing extends React.Component {
 export default connect((props, ref) => ({
   vision: `players/${props.userID}/session/vision`,
   stats: `players/${props.userID}/session/stats`,
-}))(Playing);
+}))(WorldUI);

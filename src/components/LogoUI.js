@@ -6,8 +6,8 @@ export default class LogoUI extends React.PureComponent {
   concede = () => {
     firebase
       .database()
-      .ref(`players/${this.props.userID}/command`)
-      .set({ action: "concede", ID: Math.random() });
+      .ref(`players/${this.props.userID}/commands`)
+      .push({ action: "concede", time: Date.now(), processed: false });
   };
 
   render() {

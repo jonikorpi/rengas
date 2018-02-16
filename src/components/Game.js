@@ -1,49 +1,83 @@
 import React from "react";
+import Loadable from "react-loadable";
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/database";
+import Loader from "./Loader";
+import LogMessage from "./LogMessage";
 
-import PlayState from "./PlayState";
+import FirebaseUser from "./FirebaseUser";
+import Firebase from "./Firebase";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const WaypointUI = Loadable({
+  loader: () => import("./WaypointUI"),
+  loading: Loader,
+});
+const WorldUI = Loadable({
+  loader: () => import("./WorldUI"),
+  loading: Loader,
+});
+const PlayerProxy = Loadable({
+  loader: () => import("./PlayerProxy"),
+  loading: Loader,
+});
 
-firebase.initializeApp(
-  isDevelopment
-    ? {
-        apiKey: "AIzaSyDqIGRAAyuqUkwcoNrow1sfCc9IoUvfQUc",
-        authDomain: "scrollworld-dev.firebaseapp.com",
-        databaseURL: "https://scrollworld-dev.firebaseio.com",
-        projectId: "scrollworld-dev",
-        // storageBucket: "scrollworld-dev.appspot.com",
-        // messagingSenderId: "156430732048",
-      }
-    : {
-        apiKey: "AIzaSyBROe3cnHmQ4K7B8iuuTNqCj_Tdrw76djQ",
-        authDomain: "scrollworld-30a25.firebaseapp.com",
-        databaseURL: "https://scrollworld-30a25.firebaseio.com",
-        projectId: "scrollworld-30a25",
-        // storageBucket: "",
-        // messagingSenderId: "324510204761",
-      }
-);
+const checkForHeroUnit = (found, unit) => (unit.type === "hero" ? true : found);
 
 export default class Game extends React.Component {
-  componentWillMount() {
-    firebase.auth().onAuthStateChanged(user =>
-      this.setState({
-        userID: user && user.uid,
-        isAnonymous: user && user.isAnonymous,
-      })
-    );
-
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch(error => console.log(error));
-  }
-
   render() {
-    return <PlayState {...this.state} isDevelopment={isDevelopment} />;
+    const { isDevelopment } = this.props;
+
+    return (
+      <FirebaseUser>
+        {({ userID }) => (
+          <Firebase
+            query={{
+              units: {
+                path: "units",
+                orderByChild: "playerID",
+                equalTo: userID,
+              },
+              online: ".info/connected",
+            }}
+          >
+            {({ units, online }) => {
+              const loading = units === undefined;
+              const unitList =
+                units && Object.keys(units).map(unitID => units[unitID]);
+              const heroUnitExists =
+                unitList && unitList.reduce(checkForHeroUnit, false);
+
+              return (
+                <React.Fragment>
+                  {!loading && (
+                    <React.Fragment>
+                      {heroUnitExists && (
+                        <WorldUI userID={userID} ownUnits={unitList} />
+                      )}
+                      {!heroUnitExists && <WaypointUI userID={userID} />}
+                      {/*&& isDevelopment &&*/ <PlayerProxy userID={userID} />}
+                    </React.Fragment>
+                  )}
+
+                  {!online && (
+                    <LogMessage>
+                      Offline, connecting to database…{" "}
+                      <button
+                        type="button"
+                        className="buttonWithDelayedReveal"
+                        onClick={window.location.reload}
+                      >
+                        Turn it off and on again
+                      </button>
+                    </LogMessage>
+                  )}
+
+                  {loading && <LogMessage>Checking player data…</LogMessage>}
+                </React.Fragment>
+              );
+            }}
+          </Firebase>
+        )}
+      </FirebaseUser>
+    );
   }
 }

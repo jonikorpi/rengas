@@ -20,146 +20,70 @@ const executeAction = (action, ...otherArguments) => {
 const despawnPlayer = async (command, userID) => {
   console.log(`Despawning player ${userID}`);
 
-  // Remove session
-  firebase
-    .database()
-    .ref(`players/${userID}/session`)
-    .remove();
-
   // Despawn all units
   const units = await firebase
     .database()
     .ref("units")
-    .orderByChild("owner")
+    .orderByChild("playerID")
     .equalTo(userID)
     .once("value");
 
   units.forEach(unit => {
-    despawnUnit(unit.key, unit.val().location);
+    despawnUnit(unit.key);
   });
 
   return;
 };
 
-const despawnUnit = (unitID, location) => {
+const despawnUnit = unitID => {
   // Delete unit
   firebase
     .database()
     .ref(`units/${unitID}`)
     .remove();
-
-  // Remove unit from location
-  firebase
-    .database()
-    .ref(`locations/${location}/unit`)
-    .remove();
 };
 
 const spawnPlayer = async (command, userID) => {
-  const existingPlayer = await firebase
-    .database()
-    .ref(`players/${userID}/session`)
-    .once("value");
-
-  if (existingPlayer.val()) {
-    console.log(`Not spawning ${userID} because session already exists`);
-    return;
-  }
+  await despawnPlayer(command, userID);
 
   console.log(`Spawning player ${userID}`);
 
-  // Create city unit placeholder
-  const cityID = firebase
+  // Create hero unit
+  firebase
     .database()
     .ref("units")
-    .push().key;
-
-  // Find a free location
-  let spawnFound = false;
-  let spawnLocation, spawnLocationID;
-
-  while (!spawnFound) {
-    spawnLocation = {
-      x: Math.floor(Math.random() * (rules.worldWidth - 1)),
-      y: Math.floor(Math.random() * 20),
-    };
-    spawnLocationID = `${spawnLocation.x},${spawnLocation.y}`;
-
-    // Add city to location
-    const citySpawnAttempt = await firebase
-      .database()
-      .ref(`locations/${spawnLocationID}`)
-      .transaction(realLocation => {
-        const location = realLocation || {};
-
-        if (location.unit) {
-          return;
-        }
-
-        const tile = location.tile || { type: "plains" };
-
-        return {
-          tile: tile,
-          unit: {
-            ID: cityID,
-            exists: true,
-          },
-        };
-      });
-
-    spawnFound = citySpawnAttempt.committed ? true : false;
-  }
-
-  // Add city stats
-  firebase
-    .database()
-    .ref(`units/${cityID}`)
-    .set({
-      location: spawnLocationID,
-      type: "city",
-      owner: userID,
-    });
-
-  // Set session
-  firebase
-    .database()
-    .ref(`players/${userID}/session`)
-    .set({
-      playState: "playing",
-      vision: {
-        [spawnLocationID]: {
-          sight: 1,
-          trueSight: 1,
-        },
-        ...listTilesInRange(spawnLocation.x, spawnLocation.y, 9).reduce(
-          (tiles, tile) => {
-            tiles[`${tile.x},${tile.y}`] = tiles[`${tile.x},${tile.y}`] || {};
-            tiles[`${tile.x},${tile.y}`]["sight"] = 1;
-            return tiles;
-          },
-          {}
-        ),
-        ...listTilesInRange(spawnLocation.x, spawnLocation.y, 3).reduce(
-          (tiles, tile) => {
-            tiles[`${tile.x},${tile.y}`] = tiles[`${tile.x},${tile.y}`] || {};
-            tiles[`${tile.x},${tile.y}`]["trueSight"] = 1;
-            return tiles;
-          },
-          {}
-        ),
-      },
+    .push({
+      type: "hero",
+      playerID: userID,
+      location: `${Math.floor(Math.random() * 1000 - 500)},${Math.floor(
+        Math.random() * 1000 - 500
+      )}`,
     });
 };
 
 class PlayerProxy extends React.Component {
-  componentDidUpdate(previousProps) {
-    const previousCommand = previousProps.command || {};
-    const command = this.props.command || {};
+  componentDidUpdate() {
+    const { commands } = this.props;
 
-    if (previousCommand.ID !== command.ID && command.ID) {
-      console.log(`Executing command #${command.ID}: ${command.action}`);
-      executeAction(command.action, command, this.props.userID);
-    }
+    commands &&
+      Object.keys(commands).forEach(commandID => {
+        const command = commands[commandID];
+
+        if (!command.processed) {
+          executeAction(command.action, command, this.props.userID);
+          firebase
+            .database()
+            .ref(`players/${this.props.userID}/commands/${commandID}`)
+            .update({ processed: true });
+        }
+
+        if (command.time + 10000 < Date.now()) {
+          firebase
+            .database()
+            .ref(`players/${this.props.userID}/commands/${commandID}`)
+            .remove();
+        }
+      });
   }
 
   render() {
@@ -168,5 +92,5 @@ class PlayerProxy extends React.Component {
 }
 
 export default connect((props, ref) => ({
-  command: `players/${props.userID}/command`,
+  commands: `players/${props.userID}/commands`,
 }))(PlayerProxy);
