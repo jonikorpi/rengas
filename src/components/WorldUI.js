@@ -1,35 +1,22 @@
 import React from "react";
-import { connect } from "react-firebase";
 
+import Firebase from "./Firebase";
 import Vision from "./Vision";
 import PlayerUI from "./PlayerUI";
 import LogoUI from "./LogoUI";
 
-class WorldUI extends React.Component {
+export default class WorldUI extends React.Component {
   randomSpawn = () => {};
 
   render() {
-    const { vision, stats, userID, isDevelopment } = this.props;
+    const { ownUnits, userID } = this.props;
 
-    return [
-      <PlayerUI
-        key="PlayerUI"
-        stats={stats}
-        userID={userID}
-        isDevelopment={isDevelopment}
-      />,
-      <LogoUI key="LogoUI" userID={userID} isDevelopment={isDevelopment} />,
-      <Vision
-        key="Vision"
-        vision={vision}
-        userID={userID}
-        isDevelopment={isDevelopment}
-      />,
-    ];
+    return (
+      <React.Fragment>
+        <PlayerUI key="PlayerUI" userID={userID} />
+        <LogoUI key="LogoUI" userID={userID} />
+        <Vision key="Vision" userID={userID} />
+      </React.Fragment>
+    );
   }
 }
-
-export default connect((props, ref) => ({
-  vision: `players/${props.userID}/session/vision`,
-  stats: `players/${props.userID}/session/stats`,
-}))(WorldUI);

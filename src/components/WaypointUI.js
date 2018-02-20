@@ -23,23 +23,16 @@ export default class WaypointUI extends React.Component {
         }}
       >
         {({ session }) => (
-          <LogMessage>
-            <button type="button" onClick={this.randomSpawn}>
-              Random spawn
-            </button>
-          </LogMessage>
+          <React.Fragment>
+            <LogMessage>
+              <button type="button" onClick={this.randomSpawn}>
+                Random spawn
+              </button>
+            </LogMessage>
+            Map UI will go here
+          </React.Fragment>
         )}
       </Firebase>
     );
-
-    // return [
-    //   action === "spawn" && <LogMessage key={keys++}>Spawning…</LogMessage>,
-    //   command !== undefined &&
-    //     action !== "spawn" && (
-    //       <button key={keys++} type="button" onClick={this.randomSpawn}>
-    //         Random spawn
-    //       </button>
-    //     ),
-    // ];
   }
 }

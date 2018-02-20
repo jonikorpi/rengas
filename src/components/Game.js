@@ -42,7 +42,11 @@ export default class Game extends React.Component {
             {({ units, online }) => {
               const loading = units === undefined;
               const unitList =
-                units && Object.keys(units).map(unitID => units[unitID]);
+                units &&
+                Object.keys(units).map(unitID => ({
+                  unitID: unitID,
+                  ...units[unitID],
+                }));
               const heroUnitExists =
                 unitList && unitList.reduce(checkForHeroUnit, false);
 
