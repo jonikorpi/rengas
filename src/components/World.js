@@ -32,12 +32,17 @@ class World extends React.Component {
                 <button
                   type="button"
                   className="tileButton"
-                  onClick={() =>
-                    this.setState({
-                      x: x,
-                      y: y,
-                    })
-                  }
+                  onClick={({ nativeEvent: { offsetX, offsetY, target } }) => {
+                    const xOffset =
+                      offsetX / target.getBoundingClientRect().width;
+                    const yOffset =
+                      offsetY / target.getBoundingClientRect().height;
+
+                    return this.setState({
+                      x: x + xOffset - 0.5,
+                      y: y + yOffset - 0.5,
+                    });
+                  }}
                 />
               </div>
             ))
