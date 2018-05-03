@@ -17,8 +17,9 @@
   http://codepen.io/CrocoDillon/pen/jgmwt?editors=0010 */
 
 html {
-  font-size: 150%; /* Fallback: used if browser doesn't support calc() */
-  font-size: calc(0.75em + 0.6vw + 0.6vh + 0.3vmin);
+  font-display: optional;
+  font-size: 133%; /* Fallback: used if browser doesn't support calc() */
+  font-size: calc(1em + 0.2vw + 0.2vh + 0.1vmin);
 
   /* Colors and other variables often needed by CSS go here,
      as a single source of truth, but still accessible
@@ -29,20 +30,6 @@ html {
 
   --black: black;
   --white: white;
-  --grey: grey;
-  --danger: red;
-
-  --shroud: black;
-  --halfShroud: rgba(0, 0, 0, 0.382);
-
-  --water: hsl(0, 0%, 50%);
-  --wave: hsl(0, 0%, 85.4%);
-  --ground: hsl(0, 0%, 14.6%);
-  --ground2: hsl(0, 0%, 9%);
-  --ground3: hsl(0, 0%, 5.6%);
-
-  --worldUILevel: 200;
-  --HUDLevel: 201;
 
   font-family: var(--fontFamily);
   background-color: var(--black);
@@ -51,11 +38,5 @@ html {
 
 body {
   line-height: 1rem;
-  font-size: 0.764rem; /* = line-height of 1.25 */
-}
-
-.text-shadow {
-  text-shadow: 1px 1px 0 var(--black), -1px -1px 0 var(--black),
-    1px -1px 0 var(--black), -1px 1px 0 var(--black), 0px 1px 0 var(--black),
-    0px -1px 0 var(--black), 1px 0px 0 var(--black), -1px 0px 0 var(--black);
+  font-size: 0.8rem; /* = line-height of 1.25 */
 }

@@ -4,19 +4,12 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "firebase": "^4.9.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "firebase": "^4.13.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "react-firebase": "^2.2.8",
-    "react-loadable": "^5.3.1",
-    "react-scripts": "1.1.1",
-    "serve": "^6.4.9",
-    "source-map-explorer": "^1.5.0",
-    "uuid": "^3.2.1"
-  },
-  "now": {
-    "name": "scrollworld-dev",
-    "alias": "scrollworld-dev.now.sh"
+    "react-scripts": "1.1.4",
+    "source-map-explorer": "^1.5.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,7 +20,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && cd ./build && now --static && cd ..",
-    "now-start": "NODE_ENV=production serve ./build"
+    "deploy": "yarn build && now ./build --name scrollworld"
   }
 }

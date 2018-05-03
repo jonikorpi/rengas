@@ -1,8 +1,13 @@
-const rules = {
-  worldWidth: 8,
-};
+const isDevelopment = process.env.NODE_ENV === "development";
 
-const listTilesInRange = (x, y, range = 1, diagonal = false) => {
+const listTilesInRange = (
+  x,
+  y,
+  range = 1,
+  diagonal = false,
+  xStart = 0,
+  xEnd = 8
+) => {
   const tiles = [];
 
   for (let xOffset = -range; xOffset <= range; xOffset++) {
@@ -10,8 +15,8 @@ const listTilesInRange = (x, y, range = 1, diagonal = false) => {
       const thisX = Math.floor(x + xOffset);
       const thisY = Math.floor(y + yOffset);
       const isInRange =
-        thisX < rules.worldWidth &&
-        thisX >= 0 &&
+        thisX < xEnd &&
+        thisX >= xStart &&
         (diagonal
           ? Math.sqrt(Math.pow(x - thisX, 2)) +
             Math.sqrt(Math.pow(y - thisY, 2))
@@ -36,4 +41,4 @@ const getNeighbours = (vision, x, y) =>
 // https://medium.com/@dtipson/creating-an-es6ish-compose-in-javascript-ac580b95104a
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
-export { rules, listTilesInRange, getNeighbours, compose };
+export { isDevelopment, listTilesInRange, getNeighbours, compose };

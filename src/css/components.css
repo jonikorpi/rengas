@@ -1,0 +1,60 @@
+#log {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  pointer-events: none;
+  padding: 0.5rem;
+  line-height: 0.75rem;
+  font-size: 0.618rem;
+}
+
+.backdrop {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  min-height: 100vh;
+}
+
+.grid {
+  --gridWidth: 3;
+  --gridHeight: 3;
+  --perspective: 1px;
+  --unit: calc(100 / var(--gridWidth) * 1vmin);
+  width: calc(var(--gridWidth) * var(--unit));
+  height: calc(var(--gridHeight) * var(--unit));
+  position: relative;
+}
+
+.static,
+.dynamic {
+  --x: 0;
+  --y: 0;
+  --z: 0;
+  position: absolute;
+  width: calc(var(--width) * var(--unit));
+  height: calc(var(--height) * var(--unit));
+  z-index: calc(100 + var(--z));
+}
+
+.static {
+  --width: 1;
+  --height: 1;
+  left: calc((0.5 + var(--x) - (var(--width) / 2)) * var(--unit));
+  top: calc(
+    (0.5 + var(--y) - (var(--height) / 2)) * var(--unit) - var(--z) *
+      var(--perspective)
+  );
+  outline: 1px solid rgba(255, 255, 255, 0.146);
+}
+
+.dynamic {
+  will-change: transform;
+  transform: translate3d(
+      calc((0.5 + var(--x)) * var(--unit)),
+      calc((0.5 + var(--y)) * var(--unit) - var(--z) * var(--perspective)),
+      0
+    )
+    translate(-50%, -50%);
+}

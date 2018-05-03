@@ -4,11 +4,12 @@ import firebase from "firebase/app";
 // import registerServiceWorker from "./registerServiceWorker";
 
 import Game from "./components/Game";
-import "./reset.css";
-import "./globals.css";
-import "./components.css";
+import { isDevelopment } from "./utilities/helpers";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+import "./css/reset.css";
+import "./css/globals.css";
+import "./css/safeAreas.css";
+import "./css/components.css";
 
 firebase.initializeApp(
   isDevelopment
@@ -30,8 +31,5 @@ firebase.initializeApp(
       }
 );
 
-ReactDOM.render(
-  <Game isDevelopment={isDevelopment} />,
-  document.getElementById("root")
-);
+ReactDOM.render(<Game />, document.getElementById("root"));
 // registerServiceWorker();
