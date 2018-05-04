@@ -15,16 +15,37 @@
   align-items: center;
   justify-items: center;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+.gridContainer {
+  --activeGridWidth: 3;
+  --activeGridHeight: 3;
+  --perspective: 1px;
+  --unit: calc(100 / (var(--activeGridWidth) + 2) * 1vmin);
+  position: relative;
+  margin: var(--unit);
 }
 
 .grid {
   --gridWidth: 3;
   --gridHeight: 3;
-  --perspective: 1px;
-  --unit: calc(100 / var(--gridWidth) * 1vmin);
+  --offsetX: 0;
+  --offsetY: 0;
+  display: grid;
+  grid: repeat(var(--gridHeight), var(--unit)) / repeat(
+      var(--gridWidth),
+      var(--unit)
+    );
   width: calc(var(--gridWidth) * var(--unit));
   height: calc(var(--gridHeight) * var(--unit));
   position: relative;
+}
+
+.grid.notActive {
+  position: absolute;
+  left: calc(var(--offsetX) * var(--unit));
+  top: calc(var(--offsetY) * var(--unit));
 }
 
 .static,
@@ -32,7 +53,6 @@
   --x: 0;
   --y: 0;
   --z: 0;
-  position: absolute;
   width: calc(var(--width) * var(--unit));
   height: calc(var(--height) * var(--unit));
   z-index: calc(100 + var(--z));
@@ -41,15 +61,17 @@
 .static {
   --width: 1;
   --height: 1;
-  left: calc((0.5 + var(--x) - (var(--width) / 2)) * var(--unit));
+  position: relative;
+  /* left: calc((0.5 + var(--x) - (var(--width) / 2)) * var(--unit));
   top: calc(
     (0.5 + var(--y) - (var(--height) / 2)) * var(--unit) - var(--z) *
       var(--perspective)
-  );
+  ); */
   outline: 1px solid rgba(255, 255, 255, 0.146);
 }
 
 .dynamic {
+  position: absolute;
   transition: transform 414ms;
   will-change: transform;
   transform: translate3d(
