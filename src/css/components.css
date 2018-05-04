@@ -30,8 +30,6 @@
 .grid {
   --gridWidth: 3;
   --gridHeight: 3;
-  --offsetX: 0;
-  --offsetY: 0;
   display: grid;
   grid: repeat(var(--gridHeight), var(--unit)) / repeat(
       var(--gridWidth),
@@ -43,6 +41,8 @@
 }
 
 .grid.notActive {
+  --offsetX: 0;
+  --offsetY: 0;
   position: absolute;
   left: calc(var(--offsetX) * var(--unit));
   top: calc(var(--offsetY) * var(--unit));
@@ -62,16 +62,14 @@
   --width: 1;
   --height: 1;
   position: relative;
-  /* left: calc((0.5 + var(--x) - (var(--width) / 2)) * var(--unit));
-  top: calc(
-    (0.5 + var(--y) - (var(--height) / 2)) * var(--unit) - var(--z) *
-      var(--perspective)
-  ); */
+  grid-area: calc(var(--y) + 1) / calc(var(--x) + 1);
   outline: 1px solid rgba(255, 255, 255, 0.146);
 }
 
 .dynamic {
   position: absolute;
+  left: 0;
+  top: 0;
   transition: transform 414ms;
   will-change: transform;
   transform: translate3d(

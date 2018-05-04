@@ -1,15 +1,5 @@
 import React from "react";
 
-const computeRegionSize = (region, isActive) => {
-  const xSize = region[1].x - region[0].x + 1;
-  const ySize = region[1].y - region[0].y + 1;
-  const isVertical = xSize < ySize;
-  const width = isVertical || (!isVertical && !isActive) ? xSize : ySize;
-  const height = isVertical || (!isVertical && !isActive) ? ySize : xSize;
-
-  return { width, height };
-};
-
 const createGrid = (x = 3, y = 3) =>
   Array(y)
     .fill(undefined)
@@ -17,15 +7,27 @@ const createGrid = (x = 3, y = 3) =>
 
 const regions = {
   first: {
-    0: { x: 2, y: 3, z: 0 },
-    1: { x: 9, y: 34, z: 0 },
+    location: {
+      x: 9,
+      y: 1,
+      z: 0,
+      x2: 4,
+      y2: 34,
+      z2: 0,
+    },
     connections: {
       second: true,
     },
   },
   second: {
-    0: { x: 10, y: 5, z: 0 },
-    1: { x: 34, y: 13, z: 0 },
+    location: {
+      x: 10,
+      y: 1,
+      z: 0,
+      x2: 34,
+      y2: 7,
+      z2: 0,
+    },
     connections: {
       first: true,
     },
@@ -33,46 +35,61 @@ const regions = {
 };
 
 class World extends React.Component {
-  state = { x: 2, y: 5, region: Object.keys(regions)[0] };
-  handleClick = (x, y, id) => this.setState({ x: x, y: y, region: id });
+  state = { playerX: 0, playerY: 0, region: Object.keys(regions)[0] };
+  handleClick = (x, y, id) =>
+    this.setState({ playerX: x, playerY: y, region: id });
 
   render() {
-    const { x, y, region } = this.state;
-    const activeRegion = regions[region];
-    const activeRegionProps = computeRegionSize(activeRegion, true);
+    const { playerX, playerY, region } = this.state;
+    const { x, y, x2, y2 } = regions[region].location;
+    const worldShouldRotate = Math.abs(x2 - x) > Math.abs(y2 - y);
+    const worldWidth =
+      (worldShouldRotate ? Math.abs(y2 - y) : Math.abs(x2 - x)) + 1;
+    const worldHeight =
+      (worldShouldRotate ? Math.abs(x2 - x) : Math.abs(y2 - y)) + 1;
+    const origoX = worldShouldRotate ? Math.max(x2, x) : Math.min(x2, x);
+    const origoY = Math.min(y2, y);
 
     return (
       <div className="backdrop">
         <div
           className="gridContainer"
           style={{
-            "--activeGridWidth": activeRegionProps.width,
-            "--activeGridHeight": activeRegionProps.height,
+            "--activeGridWidth": worldWidth,
+            "--activeGridHeight": worldHeight,
           }}
         >
           <Region
-            {...activeRegionProps}
             id={region}
-            origoX={activeRegion[0].x}
-            origoY={activeRegion[0].y}
+            {...regions[region].location}
             isActive={true}
+            shouldRotate={worldShouldRotate}
             handleClick={this.handleClick}
-          >
-            <Player x={x - activeRegion[0].x} y={y - activeRegion[0].y} />
-          </Region>
+            origoX={origoX}
+            origoY={origoY}
+          />
 
-          {Object.keys(activeRegion.connections).map(regionID => (
-            <Region
-              key={regionID}
-              id={regionID}
-              {...computeRegionSize(regions[regionID])}
-              origoX={regions[regionID][0].x}
-              origoY={regions[regionID][0].y}
-              offsetX={regions[regionID][0].x - activeRegion[0].x}
-              offsetY={regions[regionID][0].y - activeRegion[0].y}
-              handleClick={this.handleClick}
-            />
-          ))}
+          {Object.keys(regions[region].connections).map(regionID => {
+            return (
+              <Region
+                key={regionID}
+                id={regionID}
+                {...regions[regionID].location}
+                shouldRotate={worldShouldRotate}
+                handleClick={this.handleClick}
+                origoX={origoX}
+                origoY={origoY}
+              />
+            );
+          })}
+
+          <Player
+            x={playerX}
+            y={playerY}
+            shouldRotate={worldShouldRotate}
+            origoX={origoX}
+            origoY={origoY}
+          />
         </div>
       </div>
     );
@@ -82,52 +99,76 @@ class World extends React.Component {
 const Region = ({
   children,
   id,
-  width,
-  height,
-  isActive = false,
+  isActive,
   handleClick,
-  origoX = 0,
-  origoY = 0,
-  offsetX = 0,
-  offsetY = 0,
+  shouldRotate,
+  x,
+  y,
+  z,
+  x2,
+  y2,
+  z2,
+  origoX,
+  origoY,
 }) => {
+  const width = Math.abs(x2 - x) + 1;
+  const height = Math.abs(y2 - y) + 1;
+  const globalOrigoX = Math.min(x, x2);
+  const globalOrigoY = Math.min(y, y2);
+
+  const localWidth = shouldRotate ? height : width;
+  const localHeight = shouldRotate ? width : height;
+  const localOrigoX = shouldRotate ? Math.max(x2, x) : Math.min(x2, x);
+  const localOrigoY = Math.min(y2, y);
+
   return (
     <div
       className={`grid ${isActive ? "isActive" : "notActive"}`}
       onClick={this.moveTo}
       style={{
-        "--gridWidth": width,
-        "--gridHeight": height,
-        "--offsetX": offsetX,
-        "--offsetY": offsetY,
+        "--gridWidth": localWidth,
+        "--gridHeight": localHeight,
+        "--offsetX": shouldRotate ? localOrigoY - origoY : localOrigoX - origoX,
+        "--offsetY": shouldRotate
+          ? (localOrigoX - origoX) * -1
+          : localOrigoY - origoY,
       }}
     >
       {createGrid(width, height).map((row, y) =>
-        row.map((seed, x) => (
-          <div
-            className="static"
-            // style={{ "--x": x, "--y": y }}
-            key={`${x},${y}`}
-          >
-            <button
-              type="button"
-              className="tileButton"
-              onClick={({ nativeEvent: { offsetX, offsetY, target } }) => {
-                const rectangle = target.getBoundingClientRect();
-                const xOffset = offsetX / rectangle.width;
-                const yOffset = offsetY / rectangle.height;
+        row.map((seed, x) => {
+          const localX = shouldRotate ? y : x;
+          const localY = shouldRotate ? width - x - 1 : y;
 
-                return handleClick(
-                  origoX + x + xOffset - 0.5,
-                  origoY + y + yOffset - 0.5,
-                  id
-                );
-              }}
+          return (
+            <div
+              className="static"
+              style={{ "--x": localX, "--y": localY }}
+              key={`${x},${y}`}
             >
-              {origoX + x},{origoY + y}
-            </button>
-          </div>
-        ))
+              <button
+                type="button"
+                className="tileButton"
+                onClick={({ nativeEvent: { offsetX, offsetY, target } }) => {
+                  const rectangle = target.getBoundingClientRect();
+                  const xOffset = shouldRotate
+                    ? -(offsetY / rectangle.height) + 0.5
+                    : offsetX / rectangle.width - 0.5;
+                  const yOffset = shouldRotate
+                    ? offsetX / rectangle.width - 0.5
+                    : offsetY / rectangle.height - 0.5;
+
+                  return handleClick(
+                    globalOrigoX + x + xOffset,
+                    globalOrigoY + y + yOffset,
+                    id
+                  );
+                }}
+              >
+                {globalOrigoX + x},{globalOrigoY + y}
+              </button>
+            </div>
+          );
+        })
       )}
 
       {children}
@@ -135,22 +176,28 @@ const Region = ({
   );
 };
 
-const Player = ({ x, y }) => {
+const Player = ({ x, y, shouldRotate, origoX, origoY }) => {
+  const localX = shouldRotate ? y - origoY : x - origoX;
+  const localY = shouldRotate ? origoX - x : y - origoY;
+
   return (
     <React.Fragment>
       <div
         className="dynamic"
-        style={{ "--x": x, "--y": y, "--z": 2, color: "yellow" }}
+        style={{ "--x": localX, "--y": localY, "--z": 2, color: "yellow" }}
       >
         P
       </div>
       <div
         className="dynamic"
-        style={{ "--x": x, "--y": y, "--z": 1, color: "orange" }}
+        style={{ "--x": localX, "--y": localY, "--z": 1, color: "orange" }}
       >
         P
       </div>
-      <div className="dynamic" style={{ "--x": x, "--y": y, color: "red" }}>
+      <div
+        className="dynamic"
+        style={{ "--x": localX, "--y": localY, color: "red" }}
+      >
         P
       </div>
     </React.Fragment>
