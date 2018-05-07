@@ -41,4 +41,9 @@ const getNeighbours = (vision, x, y) =>
 // https://medium.com/@dtipson/creating-an-es6ish-compose-in-javascript-ac580b95104a
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
-export { isDevelopment, listTilesInRange, getNeighbours, compose };
+const random = (number = 1, seed = 1) => {
+  const rand = Math.sin(seed) * 10000;
+  return Math.abs((rand - Math.floor(rand)) * number);
+};
+
+export { isDevelopment, listTilesInRange, getNeighbours, compose, random };

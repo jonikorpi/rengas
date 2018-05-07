@@ -1,5 +1,7 @@
 import React from "react";
 
+import { random } from "../utilities/helpers.js";
+
 const createGrid = (x = 3, y = 3) =>
   Array(y)
     .fill(undefined)
@@ -139,6 +141,8 @@ const Region = ({
         row.map((seed, x) => {
           const localX = shouldRotate ? y : x;
           const localY = shouldRotate ? width - x - 1 : y;
+          const globalX = globalOrigoX + x;
+          const globalY = globalOrigoY + y;
 
           return (
             <div
@@ -149,6 +153,7 @@ const Region = ({
               <button
                 type="button"
                 className="tileButton"
+                title={`${globalX},${globalY}`}
                 onClick={({ nativeEvent: { offsetX, offsetY, target } }) => {
                   const rectangle = target.getBoundingClientRect();
                   const xOffset = shouldRotate
@@ -165,7 +170,7 @@ const Region = ({
                   );
                 }}
               >
-                {globalOrigoX + x},{globalOrigoY + y}
+                {random(1, globalX * globalY * globalY) > 0.875 ? "WALL" : ""}
               </button>
             </div>
           );
