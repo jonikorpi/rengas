@@ -201,7 +201,6 @@ class Player extends React.Component {
       dimensions.top +
       dimensions.height / 2 -
       window.innerHeight / 2;
-    console.log(dimensions, y);
     window.scrollTo(0, y);
   };
 
