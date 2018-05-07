@@ -35,7 +35,7 @@ const regions = {
 };
 
 class World extends React.Component {
-  state = { playerX: 0, playerY: 0, region: Object.keys(regions)[0] };
+  state = { playerX: 5, playerY: 2, region: Object.keys(regions)[0] };
   handleClick = (x, y, id) =>
     this.setState({ playerX: x, playerY: y, region: id });
 
@@ -89,6 +89,7 @@ class World extends React.Component {
             shouldRotate={worldShouldRotate}
             origoX={origoX}
             origoY={origoY}
+            region={region}
           />
         </div>
       </div>
@@ -176,32 +177,59 @@ const Region = ({
   );
 };
 
-const Player = ({ x, y, shouldRotate, origoX, origoY }) => {
-  const localX = shouldRotate ? y - origoY : x - origoX;
-  const localY = shouldRotate ? origoX - x : y - origoY;
+class Player extends React.Component {
+  componentDidMount() {
+    this.scrollToPlayer();
+  }
 
-  return (
-    <React.Fragment>
-      <div
-        className="dynamic"
-        style={{ "--x": localX, "--y": localY, "--z": 2, color: "yellow" }}
-      >
-        P
-      </div>
-      <div
-        className="dynamic"
-        style={{ "--x": localX, "--y": localY, "--z": 1, color: "orange" }}
-      >
-        P
-      </div>
-      <div
-        className="dynamic"
-        style={{ "--x": localX, "--y": localY, color: "red" }}
-      >
-        P
-      </div>
-    </React.Fragment>
-  );
-};
+  componentDidUpdate({ region }) {
+    if (region !== this.props.region) {
+      this.scrollToPlayer();
+    }
+  }
+
+  scrollToPlayer = () => {
+    const dimensions = this.element.getBoundingClientRect();
+    const y =
+      window.pageYOffset +
+      dimensions.top +
+      dimensions.height / 2 -
+      window.innerHeight / 2;
+    console.log(dimensions, y);
+    window.scrollTo(0, y);
+  };
+
+  render() {
+    const { x, y, shouldRotate, origoX, origoY } = this.props;
+    const localX = shouldRotate ? y - origoY : x - origoX;
+    const localY = shouldRotate ? origoX - x : y - origoY;
+
+    return (
+      <React.Fragment>
+        <div
+          ref={ref => {
+            this.element = ref;
+          }}
+          className="dynamic"
+          style={{ "--x": localX, "--y": localY, "--z": 2, color: "yellow" }}
+        >
+          P
+        </div>
+        <div
+          className="dynamic"
+          style={{ "--x": localX, "--y": localY, "--z": 1, color: "orange" }}
+        >
+          P
+        </div>
+        <div
+          className="dynamic"
+          style={{ "--x": localX, "--y": localY, color: "red" }}
+        >
+          P
+        </div>
+      </React.Fragment>
+    );
+  }
+}
 
 export default World;
