@@ -92,6 +92,7 @@ class World extends React.Component {
             origoX={origoX}
             origoY={origoY}
             region={region}
+            focusOnRegionChanges={true}
           />
         </div>
       </div>
@@ -187,8 +188,8 @@ class Player extends React.Component {
     this.scrollToPlayer();
   }
 
-  componentDidUpdate({ region }) {
-    if (region !== this.props.region) {
+  componentDidUpdate({ region, focusOnRegionChanges }) {
+    if (focusOnRegionChanges && region !== this.props.region) {
       this.scrollToPlayer();
     }
   }
