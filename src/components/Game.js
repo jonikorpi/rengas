@@ -6,25 +6,23 @@ import Firebase from "./Firebase";
 import World from "./World";
 
 const Game = () => (
-  <FirebaseUser>
-    {({ userID }) => (
-      <Firebase
-        query={{
-          online: ".info/connected",
-        }}
-      >
-        {({ online }) => (
-          <React.Fragment>
-            {!online && (
-              <LogMessage>Offline, connecting to database… </LogMessage>
-            )}
+  // <FirebaseUser>
+  //   {({ userID }) => (
+  //     <Firebase
+  //       query={{
+  //         online: ".info/connected",
+  //       }}
+  //     >
+  //       {({ online }) => (
+  <React.Fragment>
+    {/* {!online && <LogMessage>Offline, connecting to database… </LogMessage>} */}
 
-            <World />
-          </React.Fragment>
-        )}
-      </Firebase>
-    )}
-  </FirebaseUser>
+    <World />
+  </React.Fragment>
+  //       )}
+  //     </Firebase>
+  //   )}
+  // </FirebaseUser>
 );
 
 export default Game;
