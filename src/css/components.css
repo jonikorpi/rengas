@@ -10,63 +10,60 @@
   font-size: 0.618rem;
 }
 
-.backdrop {
+.world {
   display: grid;
   align-items: center;
   justify-items: center;
   min-height: 100vh;
   overflow: hidden;
+
+  /* should match top/bottom UI height */
+  /* or could be avoided using position:sticky maybe */
+  padding: 9vmin 0;
 }
 
-.gridContainer {
-  --activeGridWidth: 3;
-  --activeGridHeight: 3;
+.region {
+  --width: 3;
+  --height: 3;
+  --unit: calc(100 / (var(--width) + 0.5) * 1vmin);
   --perspective: 1px;
-  --unit: calc(100 / (var(--activeGridWidth) + 2) * 1vmin);
+  width: calc(var(--width) * var(--unit));
+  height: calc(var(--height) * var(--unit));
   position: relative;
-  margin: var(--unit);
 }
 
-.grid {
-  --gridWidth: 3;
-  --gridHeight: 3;
+.statics {
   display: grid;
-  grid: repeat(var(--gridHeight), var(--unit)) / repeat(
-      var(--gridWidth),
-      var(--unit)
-    );
-  width: calc(var(--gridWidth) * var(--unit));
-  height: calc(var(--gridHeight) * var(--unit));
-  position: relative;
+  grid: repeat(var(--height), var(--unit)) / repeat(var(--width), var(--unit));
 }
 
-.grid.notActive {
+/* .grid.notActive {
   --offsetX: 0;
   --offsetY: 0;
   position: absolute;
   left: calc(var(--offsetX) * var(--unit));
   top: calc(var(--offsetY) * var(--unit));
-}
+} */
 
 .static,
 .dynamic {
   --x: 0;
   --y: 0;
   --z: 0;
+  --width: 1;
+  --height: 1;
   width: calc(var(--width) * var(--unit));
   height: calc(var(--height) * var(--unit));
   z-index: calc(100 + var(--z));
 }
 
 .static {
-  --width: 1;
-  --height: 1;
   position: relative;
   grid-area: calc(var(--y) + 1) / calc(var(--x) + 1);
-  outline: 1px solid rgba(255, 255, 255, 0.146);
 }
 
 .dynamic {
+  pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;
@@ -84,4 +81,6 @@
   width: 100%;
   height: 100%;
   outline: none;
+  color: rgba(255, 255, 255, 0.382);
+  font-size: 10px;
 }
