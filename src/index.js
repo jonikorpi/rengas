@@ -10,7 +10,7 @@ import "jonikorpi-base-files/flexbox.css";
 
 import Game from "./components/Game";
 import { isDevelopment } from "./utilities/helpers";
-import "./css/components.css";
+import "./css/main.css";
 
 firebase.initializeApp(
   isDevelopment
