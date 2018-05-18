@@ -146,7 +146,7 @@ const Region = ({
                 {!isWall && (
                   <button
                     type="button"
-                    className="tileButton"
+                    className="tile-button"
                     title={`${globalX},${globalY}`}
                     onClick={({
                       nativeEvent: { offsetX, offsetY, target },
@@ -212,18 +212,21 @@ class Player extends React.Component {
           ref={ref => {
             this.element = ref;
           }}
-          className="dynamic"
+          className="dynamic flex justify-center align-center"
           style={{ "--x": x, "--y": y, "--z": 2, color: "yellow" }}
         >
           P
         </div>
         <div
-          className="dynamic"
+          className="dynamic flex justify-center align-center"
           style={{ "--x": x, "--y": y, "--z": 1, color: "orange" }}
         >
           P
         </div>
-        <div className="dynamic" style={{ "--x": x, "--y": y, color: "red" }}>
+        <div
+          className="dynamic flex justify-center align-center"
+          style={{ "--x": x, "--y": y, color: "red" }}
+        >
           P
         </div>
       </React.Fragment>

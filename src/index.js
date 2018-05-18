@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import firebase from "firebase/app";
 // import registerServiceWorker from "./registerServiceWorker";
+import "jonikorpi-base-files/reset.css";
+import "jonikorpi-base-files/baseline.css";
+import "jonikorpi-base-files/spacing.css";
+import "jonikorpi-base-files/safe-areas.css";
+import "jonikorpi-base-files/flexbox.css";
 
 import Game from "./components/Game";
 import { isDevelopment } from "./utilities/helpers";
-
-import "./css/reset.css";
-import "./css/globals.css";
-import "./css/safeAreas.css";
 import "./css/components.css";
 
 firebase.initializeApp(
