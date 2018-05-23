@@ -5,7 +5,7 @@ import "firebase/auth";
 class FirebaseUser extends React.Component {
   state = { userID: null, isAnonymous: null };
 
-  componentWillMount() {
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(user =>
       this.setState({
         userID: user && user.uid,
@@ -17,6 +17,10 @@ class FirebaseUser extends React.Component {
       .auth()
       .signInAnonymously()
       .catch(error => console.log(error));
+  }
+
+  componentWillUnmount() {
+    firebase.auth().signOut();
   }
 
   render() {
