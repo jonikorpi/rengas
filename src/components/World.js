@@ -1,68 +1,82 @@
 import React from "react";
 
-import { random } from "../utilities/helpers.js";
+import { random, createGrid } from "../utilities/helpers.js";
 
-const createGrid = (x = 3, y = 3) =>
-  Array(y)
-    .fill(undefined)
-    .map(() => Array(x).fill(undefined));
+const entities = {
+  $entityID: {
+    state: {
+      speed: 1,
+      vision: 5,
+      stealth: 0,
+      x: 0,
+      y: 0,
+      z: 0,
+      exactX: 0,
+      exactY: 0,
+    },
+    movingTo: {
+      since: Date.now(),
+      speed: 1, // must match state.speed * currentTile.speedModifier
+      x: 0,
+      y: 0,
+      z: 0,
+      exactX: 0, // (exactX - x < 1 || > -1)
+      exactY: 0, // (exactY - y < 1 || > -1)
+      validate: `
+        entity is already here
+        || regions/$regionID/x,y must exist and not be impassable
+          && z - ownZ === 0
+            || z - ownZ + zModifier + ownTile.zModifier === 0
+      `,
+    },
+    read: `
+      uid === entityID
+      || (x - readerX) + (y - readerY) + (z - readerZ) 
+        <= (readerRange - tile.stealth - entity.stealth) 
+        || <= (-readerRange + tile.stealth + entity.stealth)
+    `,
+  },
+};
 
 const regions = {
-  main: {
-    location: {
-      x: 9,
-      y: 1,
-      z: 0,
-      x2: 0,
-      y2: 34,
-      z2: 0,
+  $regionID: {
+    tiles: {
+      read: `in same region`,
+      "x,y": {
+        impassable: null,
+        stealth: null,
+        z: 0,
+        zModifier: 1, // = ramp upwards
+      },
     },
-    connections: {
-      right: true,
-      top: true,
-      bottom: true,
+    entities: {
+      "x,y": {
+        read: `
+          (x - readerX) + (y - readerY) + (z - readerZ) 
+            <= (readerRange - tile.stealth - entity.stealth) 
+              || <= (-readerRange + tile.stealth + entity.stealth)
+        `,
+        $entityID: true,
+      },
     },
-  },
-  right: {
-    location: {
-      x: 10,
-      y: 5,
-      z: 0,
-      x2: 34,
-      y2: 14,
-      z2: 0,
-    },
-    connections: {
-      main: true,
-    },
-  },
-  top: {
-    location: {
-      x: -10,
-      y: -10,
-      z: 0,
-      x2: 34,
-      y2: 0,
-      z2: 0,
-    },
-    connections: {
-      main: true,
-    },
-  },
-  bottom: {
-    location: {
-      x: -10,
-      y: 35,
-      z: 0,
-      x2: 34,
-      y2: 41,
-      z2: 0,
-    },
-    connections: {
-      main: true,
+    stealthEntities: {
+      "x,y": {
+        read: `
+          (x - readerX) + (y - readerY) + (z - readerZ) 
+            <= 1 && <= -1
+        `,
+        $entityID: true,
+      },
     },
   },
 };
+
+const regions = [...Array(4)].reduce((regions, v, regionID) => {
+  regions[regionID] = {
+    tiles: createGrid(8, Math.round(8 + random(26, regionID))),
+  };
+  return regions;
+}, {});
 
 class World extends React.Component {
   state = { playerX: 5, playerY: 2, region: Object.keys(regions)[2] };

@@ -41,9 +41,33 @@ const getNeighbours = (vision, x, y) =>
 // https://medium.com/@dtipson/creating-an-es6ish-compose-in-javascript-ac580b95104a
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
-const random = (number = 1, seed = 1) => {
-  const rand = Math.sin(seed) * 10000;
+const random = (number = 1, seed = Math.random()) => {
+  const rand = Math.sin(+seed) * 10000;
   return Math.abs((rand - Math.floor(rand)) * number);
 };
 
-export { isDevelopment, listTilesInRange, getNeighbours, compose, random };
+// const createGrid = (x = 3, y = 3) =>
+//   Array(y)
+//     .fill(undefined)
+//     .map(() => Array(x).fill(undefined));
+
+const createGrid = (width = 3, height = 3) => {
+  const grid = {};
+
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      grid[`${x},${y}`] = {};
+    }
+  }
+
+  return grid;
+};
+
+export {
+  isDevelopment,
+  listTilesInRange,
+  getNeighbours,
+  compose,
+  random,
+  createGrid,
+};
