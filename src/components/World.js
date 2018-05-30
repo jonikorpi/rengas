@@ -7,7 +7,7 @@ const entities = {
     state: {
       speed: 1,
       vision: 5,
-      stealth: 0,
+      stealthed: false,
       region: "regionID",
       position: {
         write: "uid === $entityID",
@@ -17,8 +17,8 @@ const entities = {
         exactY: 0, // (exactY - y < 1 || > -1)
         validate: `
           newData.x,y,exactX,exactY must be sane compared to data.moving.x,y,exactX,exactY
-          && region.entities.newData.x.y.entityID
-          && !region.entities.data.x.y.entityID
+          && region.entities.newData.x.y.entityID || && region.stealthedEntities.newData.x.y.entityID
+          && !region.entities.data.x.y.entityID || && !region.stealthedEntities.data.x.y.entityID
           && region.x,y must exist and not be impassable
         `,
       },
@@ -67,9 +67,10 @@ const entities = {
     },
     read: `
       uid === $entityID
-      || (x - readerX) + (y - readerY) + (z - readerZ) 
-        <= (readerRange - tile.stealth - entity.stealth) 
-        || <= (-readerRange + tile.stealth + entity.stealth)
+      || !state.stealthed 
+        && (x - readerX) + (y - readerY) + (z - readerZ) 
+          <= (readerRange - tile.stealth) || <= (-readerRange + tile.stealth)
+      || state.stealthed && (x - readerX) + (y - readerY) + (z - readerZ) <= 1 || <= -1
     `,
   },
 };
@@ -92,13 +93,24 @@ const regions = {
         $y: {
           read: `
           (x - readerX) + (y - readerY) + (z - readerZ) 
-            <= (readerRange - tile.stealth - entity.stealth) 
-              || <= (-readerRange + tile.stealth + entity.stealth)
+            <= (readerRange - tile.stealth) 
+              || <= (-readerRange + tile.stealth)
         `,
           $entityID: {
             value: true,
             validate: "entities/uid/region,x,y match this one or null",
           },
+        },
+      },
+    },
+  },
+  stealthedEntities: {
+    $x: {
+      $y: {
+        read: "(x - readerX) + (y - readerY) + (z - readerZ) <= 1 || <= -1",
+        $entityID: {
+          value: true,
+          validate: "entities/uid/region,x,y match this one or null",
         },
       },
     },
