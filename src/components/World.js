@@ -8,29 +8,65 @@ const entities = {
       speed: 1,
       vision: 5,
       stealth: 0,
-      x: 0,
-      y: 0,
-      z: 0,
-      exactX: 0,
-      exactY: 0,
+      region: "regionID",
+      position: {
+        write: "uid === $entityID",
+        x: 0,
+        y: 0,
+        exactX: 0, // (exactX - x < 1 || > -1)
+        exactY: 0, // (exactY - y < 1 || > -1)
+        validate: `
+          newData.x,y,exactX,exactY must be sane compared to data.moving.x,y,exactX,exactY
+          && region.entities.newData.x.y.entityID
+          && !region.entities.data.x.y.entityID
+          && region.x,y must exist and not be impassable
+        `,
+      },
     },
-    movingTo: {
-      since: Date.now(),
+    moving: {
+      write: "uid === $entityID",
+      time: Date.now(), // must match now
       speed: 1, // must match state.speed * currentTile.speedModifier
       x: 0,
       y: 0,
-      z: 0,
       exactX: 0, // (exactX - x < 1 || > -1)
       exactY: 0, // (exactY - y < 1 || > -1)
       validate: `
-        entity is already here
-        || regions/$regionID/x,y must exist and not be impassable
-          && z - ownZ === 0
-            || z - ownZ + zModifier + ownTile.zModifier === 0
+        !casting.stationary
+        && region.x,y must exist and not be impassable
+        && x,y is max. 1.5 tiles away from state.x,y
+        && tile.z - ownTile.z === 0
+          || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
       `,
     },
+    casting: {
+      write: "uid === $entityID",
+      startedAt: Date.now(), // must match now
+      type: "…",
+      stationary: true, // post-verify in function
+      validate: `
+        stationary && !moving
+        || !stationary
+      `,
+      finish: {
+        // triggers onCreate
+        finishedAt: Date.now() + 1000, // must match now
+        startedAt: Date.now() - 1000, // must match casting.startedAt
+        type: "…", // must match casting.type
+        stationary: true, // must match casting.type
+        validate:
+          "if is not null, cannot be set back to null unless casting is also null",
+      },
+    },
+    events: {
+      eventID: {
+        time: Date.now() - 1000,
+        type: "…",
+        additionalData: -50,
+      },
+    },
     read: `
-      uid === entityID
+      uid === $entityID
       || (x - readerX) + (y - readerY) + (z - readerZ) 
         <= (readerRange - tile.stealth - entity.stealth) 
         || <= (-readerRange + tile.stealth + entity.stealth)
@@ -42,30 +78,28 @@ const regions = {
   $regionID: {
     tiles: {
       read: `in same region`,
-      "x,y": {
-        impassable: null,
-        stealth: null,
-        z: 0,
-        zModifier: 1, // = ramp upwards
+      $x: {
+        $y: {
+          impassable: null,
+          stealth: null,
+          z: 0,
+          zModifier: 1, // = ramp upwards
+        },
       },
     },
     entities: {
-      "x,y": {
-        read: `
+      $x: {
+        $y: {
+          read: `
           (x - readerX) + (y - readerY) + (z - readerZ) 
             <= (readerRange - tile.stealth - entity.stealth) 
               || <= (-readerRange + tile.stealth + entity.stealth)
         `,
-        $entityID: true,
-      },
-    },
-    stealthEntities: {
-      "x,y": {
-        read: `
-          (x - readerX) + (y - readerY) + (z - readerZ) 
-            <= 1 && <= -1
-        `,
-        $entityID: true,
+          $entityID: {
+            value: true,
+            validate: "entities/uid/region,x,y match this one or null",
+          },
+        },
       },
     },
   },
