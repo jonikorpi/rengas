@@ -20,6 +20,7 @@ const entities = {
           && region.entities.newData.x.y.entityID || && region.stealthedEntities.newData.x.y.entityID
           && !region.entities.data.x.y.entityID || && !region.stealthedEntities.data.x.y.entityID
           && region.x,y must exist and not be impassable
+          && !moving || moving.time >= now
         `,
       },
     },
