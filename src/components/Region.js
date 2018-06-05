@@ -82,9 +82,10 @@ const regions = {
       read: `in same region`,
       $x: {
         $y: {
+          // null = hole
           impassable: null,
           stealth: null,
-          z: 0,
+          z: null,
           zModifier: 1, // = ramp upwards
         },
       },
