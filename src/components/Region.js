@@ -118,19 +118,20 @@ const regions = {
   },
 };
 
-const regions = [...Array(4)].reduce((regions, v, regionID) => {
-  regions[regionID] = {
-    tiles: createGrid(8, Math.round(8 + random(26, regionID))),
-  };
-  return regions;
-}, {});
+// const regions = [...Array(4)].reduce((regions, v, regionID) => {
+//   regions[regionID] = {
+//     tiles: createGrid(8, Math.round(8 + random(26, regionID))),
+//   };
+//   return regions;
+// }, {});
 
-class World extends React.Component {
+class Region extends React.Component {
   state = { playerX: 5, playerY: 2, region: Object.keys(regions)[2] };
   handleClick = (x, y, id) =>
     this.setState({ playerX: x, playerY: y, region: id });
 
   render() {
+    return null;
     const { playerX, playerY, region } = this.state;
 
     return (
@@ -155,93 +156,93 @@ class World extends React.Component {
   }
 }
 
-const Region = ({
-  children,
-  id,
-  handleClick,
-  shouldRotate = false,
-  x = 0,
-  y = 0,
-  z = 0,
-  x2 = 3,
-  y2 = 3,
-  z2 = 0,
-}) => {
-  const rotate = shouldRotate && Math.abs(x2 - x) > Math.abs(y2 - y);
-  const origoX = Math.min(x2, x);
-  const origoY = Math.min(y2, y);
+// const Region = ({
+//   children,
+//   id,
+//   handleClick,
+//   shouldRotate = false,
+//   x = 0,
+//   y = 0,
+//   z = 0,
+//   x2 = 3,
+//   y2 = 3,
+//   z2 = 0,
+// }) => {
+//   const rotate = shouldRotate && Math.abs(x2 - x) > Math.abs(y2 - y);
+//   const origoX = Math.min(x2, x);
+//   const origoY = Math.min(y2, y);
 
-  const realWidth = Math.abs(x2 - x) + 1;
-  const realHeight = Math.abs(y2 - y) + 1;
-  const width = rotate ? realHeight : realWidth;
-  const height = rotate ? realWidth : realHeight;
+//   const realWidth = Math.abs(x2 - x) + 1;
+//   const realHeight = Math.abs(y2 - y) + 1;
+//   const width = rotate ? realHeight : realWidth;
+//   const height = rotate ? realWidth : realHeight;
 
-  return (
-    <div
-      className="region"
-      onClick={this.moveTo}
-      style={{
-        "--width": width,
-        "--height": height,
-      }}
-    >
-      <div className="statics">
-        {createGrid(realWidth, realHeight).map((row, y) =>
-          row.map((seed, x) => {
-            const localX = rotate ? y : x;
-            const localY = rotate ? realWidth - x - 1 : y;
-            const globalX = origoX + x;
-            const globalY = origoY + y;
-            const isWall = random(1, globalX * globalY * globalY) > 0.875;
+//   return (
+//     <div
+//       className="region"
+//       onClick={this.moveTo}
+//       style={{
+//         "--width": width,
+//         "--height": height,
+//       }}
+//     >
+//       <div className="statics">
+//         {createGrid(realWidth, realHeight).map((row, y) =>
+//           row.map((seed, x) => {
+//             const localX = rotate ? y : x;
+//             const localY = rotate ? realWidth - x - 1 : y;
+//             const globalX = origoX + x;
+//             const globalY = origoY + y;
+//             const isWall = random(1, globalX * globalY * globalY) > 0.875;
 
-            return (
-              <div
-                className="static"
-                style={{
-                  "--x": localX,
-                  "--y": localY,
-                  backgroundColor: isWall ? "grey" : "hsl(0,0%, 23.6%)",
-                }}
-                key={`${x},${y}`}
-              >
-                {!isWall && (
-                  <button
-                    type="button"
-                    className="tile-button"
-                    title={`${globalX},${globalY}`}
-                    onClick={({
-                      nativeEvent: { offsetX, offsetY, target },
-                    }) => {
-                      const rectangle = target.getBoundingClientRect();
-                      const xOffset = rotate
-                        ? -(offsetY / rectangle.height) + 0.5
-                        : offsetX / rectangle.width - 0.5;
-                      const yOffset = rotate
-                        ? offsetX / rectangle.width - 0.5
-                        : offsetY / rectangle.height - 0.5;
+//             return (
+//               <div
+//                 className="static"
+//                 style={{
+//                   "--x": localX,
+//                   "--y": localY,
+//                   backgroundColor: isWall ? "grey" : "hsl(0,0%, 23.6%)",
+//                 }}
+//                 key={`${x},${y}`}
+//               >
+//                 {!isWall && (
+//                   <button
+//                     type="button"
+//                     className="tile-button"
+//                     title={`${globalX},${globalY}`}
+//                     onClick={({
+//                       nativeEvent: { offsetX, offsetY, target },
+//                     }) => {
+//                       const rectangle = target.getBoundingClientRect();
+//                       const xOffset = rotate
+//                         ? -(offsetY / rectangle.height) + 0.5
+//                         : offsetX / rectangle.width - 0.5;
+//                       const yOffset = rotate
+//                         ? offsetX / rectangle.width - 0.5
+//                         : offsetY / rectangle.height - 0.5;
 
-                      return handleClick(
-                        globalX + xOffset,
-                        globalY + yOffset,
-                        id
-                      );
-                    }}
-                  >
-                    {globalX},{globalY}
-                  </button>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
+//                       return handleClick(
+//                         globalX + xOffset,
+//                         globalY + yOffset,
+//                         id
+//                       );
+//                     }}
+//                   >
+//                     {globalX},{globalY}
+//                   </button>
+//                 )}
+//               </div>
+//             );
+//           })
+//         )}
+//       </div>
 
-      <div className="dynamics">
-        {children(origoX, origoY, rotate, realWidth, realHeight)}
-      </div>
-    </div>
-  );
-};
+//       <div className="dynamics">
+//         {children(origoX, origoY, rotate, realWidth, realHeight)}
+//       </div>
+//     </div>
+//   );
+// };
 
 class Player extends React.Component {
   componentDidMount() {
@@ -295,4 +296,4 @@ class Player extends React.Component {
   }
 }
 
-export default World;
+export default Region;

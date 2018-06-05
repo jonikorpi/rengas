@@ -8,7 +8,7 @@ import "jonikorpi-base-files/spacing.css";
 import "jonikorpi-base-files/safe-areas.css";
 import "jonikorpi-base-files/flexbox.css";
 
-import Game from "./components/Game";
+import App from "./components/App";
 import { isDevelopment } from "./utilities/helpers";
 import "./css/main.css";
 
@@ -34,7 +34,7 @@ firebase.initializeApp(
 
 ReactDOM.render(
   <React.StrictMode>
-    <Game />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
