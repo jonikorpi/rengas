@@ -91,7 +91,9 @@ class LimboPlayer extends React.Component {
     events: null,
   };
 
-  handleMovement = (x, y) =>
+  handleMovement = (x, y) => {
+    const { tiles, width, height } = this.props;
+
     this.setState({
       moving: {
         time: Date.now(),
@@ -102,6 +104,7 @@ class LimboPlayer extends React.Component {
         exactY: y,
       },
     });
+  };
 
   render() {
     const { children } = this.props;

@@ -14,7 +14,7 @@ const NewPlayer = setHasPlayedBefore => (
       <Region>
         <LimboTiles>
           {(tiles, width, height) => (
-            <LimboPlayer>
+            <LimboPlayer tiles={tiles} width={width} height={height}>
               {(player, handleMovement) => (
                 <React.Fragment>
                   <div
