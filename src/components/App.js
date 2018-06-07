@@ -2,7 +2,7 @@ import React from "react";
 // import { Persist } from "react-persist";
 
 import NewPlayer from "./NewPlayer";
-import * as ReturningPlayer from "./NewPlayer";
+// import ReturningPlayer from "./ReturningPlayer";
 
 class App extends React.Component {
   state = {
@@ -13,15 +13,15 @@ class App extends React.Component {
     this.setState({ hasPlayedBefore: hasOrHasNot });
 
   render() {
-    const { hasPlayedBefore } = this.state;
+    // const { hasPlayedBefore } = this.state;
 
     return (
       <React.Fragment>
-        {hasPlayedBefore ? (
+        {/* {hasPlayedBefore ? (
           <ReturningPlayer />
-        ) : (
-          <NewPlayer setHasPlayedBefore={this.setHasPlayedBefore} />
-        )}
+        ) : ( */}
+        <NewPlayer setHasPlayedBefore={this.setHasPlayedBefore} />
+        {/* )} */}
         {/* <Persist
           name="hasPlayedBefore"
           data={hasPlayedBefore}

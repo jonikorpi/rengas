@@ -23,28 +23,29 @@ html {
 }
 
 .region {
-  --width: 3;
-  --height: 3;
-  --unit: calc(100 / (var(--width) + 0.5) * 1vmin);
+  --size: 9.5;
+  --unit: calc(100 / var(--size) * 1vmin);
   --perspective: 1px;
-  width: calc(var(--width) * var(--unit));
-  height: calc(var(--height) * var(--unit));
+  --xPerspective: 0;
+  --yPerspective: 1;
   position: relative;
-  margin: calc(var(--unit) / 4) 0;
+  margin: calc(var(--unit) / 2) 0;
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .region {
+    --unit: calc(100 / var(--size) * 0.854vmin);
+  }
 }
 
 .statics {
+  --width: 3;
+  --height: 3;
+  width: calc(var(--width) * var(--unit));
+  height: calc(var(--height) * var(--unit));
   display: grid;
   grid: repeat(var(--height), var(--unit)) / repeat(var(--width), var(--unit));
 }
-
-/* .grid.notActive {
-  --offsetX: 0;
-  --offsetY: 0;
-  position: absolute;
-  left: calc(var(--offsetX) * var(--unit));
-  top: calc(var(--offsetY) * var(--unit));
-} */
 
 .static,
 .dynamic {
@@ -71,8 +72,14 @@ html {
   /* transition: transform 414ms; */
   will-change: transform;
   transform: translate3d(
-      calc((0.5 + var(--x)) * var(--unit)),
-      calc((0.5 + var(--y)) * var(--unit) - var(--z) * var(--perspective)),
+      calc(
+        (0.5 + var(--x)) * var(--unit) - var(--z) * var(--perspective) *
+          var(--yPerspective)
+      ),
+      calc(
+        (0.5 + var(--y)) * var(--unit) - var(--z) * var(--perspective) *
+          var(--yPerspective)
+      ),
       0
     )
     translate(-50%, -50%);

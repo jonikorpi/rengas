@@ -52,11 +52,11 @@ const random = (number = 1, seed = Math.random()) => {
 //     .map(() => Array(x).fill(undefined));
 
 const createGrid = (width = 3, height = 3) => {
-  const grid = {};
+  const grid = [];
 
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
-      grid[`${x},${y}`] = {};
+      grid.push({ x: x, y: y });
     }
   }
 
