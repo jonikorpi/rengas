@@ -72,6 +72,42 @@ const player = {
   `,
 };
 
-const LimboPlayer = ({ children }) => children(player);
+class LimboPlayer extends React.Component {
+  state = {
+    state: {
+      speed: 1,
+      vision: 5,
+      stealthed: null,
+      region: 0,
+      position: {
+        x: 0,
+        y: 0,
+        exactX: 0,
+        exactY: 0,
+      },
+    },
+    moving: null,
+    casting: null,
+    events: null,
+  };
+
+  handleMovement = (x, y) =>
+    this.setState({
+      moving: {
+        time: Date.now(),
+        speed: this.state.state.speed,
+        x: Math.floor(x),
+        y: Math.floor(y),
+        exactX: x,
+        exactY: y,
+      },
+    });
+
+  render() {
+    const { children } = this.props;
+
+    return children(this.state, this.handleMovement);
+  }
+}
 
 export default LimboPlayer;

@@ -1,6 +1,7 @@
 import React from "react";
 
 // import AuthUI from "./AuthUI";
+import Region from "./Region";
 import LimboTiles from "./LimboTiles";
 import LimboPlayer from "./LimboPlayer";
 import Tile from "./Tile";
@@ -10,28 +11,36 @@ import CameraTarget from "./CameraTarget";
 const NewPlayer = setHasPlayedBefore => (
   <React.Fragment>
     <div className="world">
-      <div className="region">
+      <Region>
         <LimboTiles>
           {(tiles, width, height) => (
-            <div
-              className="statics"
-              style={{ "--width": width, "--height": height }}
-            >
-              {tiles.map(tile => <Tile {...tile} />)}
-            </div>
+            <LimboPlayer>
+              {(player, handleMovement) => (
+                <React.Fragment>
+                  <div
+                    className="statics"
+                    style={{ "--width": width, "--height": height }}
+                  >
+                    {tiles.map(tile => (
+                      <Tile
+                        key={`${tile.x},${tile.y}`}
+                        {...tile}
+                        handleMovement={handleMovement}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="dynamics">
+                    <Entity {...player}>
+                      <CameraTarget region={player.region} />
+                    </Entity>
+                  </div>
+                </React.Fragment>
+              )}
+            </LimboPlayer>
           )}
         </LimboTiles>
-
-        <div className="dynamics">
-          <LimboPlayer>
-            {player => (
-              <Entity {...player}>
-                <CameraTarget region={player.region} />
-              </Entity>
-            )}
-          </LimboPlayer>
-        </div>
-      </div>
+      </Region>
     </div>
 
     {/* Sparse onboarding tutorial */}

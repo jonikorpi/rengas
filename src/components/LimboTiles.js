@@ -7,7 +7,7 @@ const region = {
     read: `in same region`,
     $x: {
       $y: {
-        // null = hole
+        // null = hole?
         // impassable: random(1, x * y * y) > 0.875,
         stealth: null,
         z: null,
@@ -45,7 +45,13 @@ const region = {
 
 const width = 9;
 const height = 34;
-const tiles = createGrid(width, height);
+const tiles = createGrid(width, height).map(tile => ({
+  ...tile,
+  impassable: random(1, tile.x * tile.y * tile.y) > 0.875,
+  // stealth: null,
+  // z: null,
+  // zModifier: null,
+}));
 
 const LimboTiles = ({ children }) => children(tiles, width, height);
 
