@@ -74,7 +74,7 @@ html {
   transform: translate3d(
       calc(
         (0.5 + var(--x)) * var(--unit) - var(--z) * var(--perspective) *
-          var(--yPerspective)
+          var(--xPerspective)
       ),
       calc(
         (0.5 + var(--y)) * var(--unit) - var(--z) * var(--perspective) *
