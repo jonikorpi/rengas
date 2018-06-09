@@ -46,15 +46,13 @@ const player = {
       stationary && !moving
       || !stationary
     `,
-    finish: {
-      // triggers onCreate
-      finishedAt: Date.now() + 1000, // must match now
-      startedAt: Date.now() - 1000, // must match casting.startedAt
-      type: "…", // must match casting.type
-      stationary: true, // must match casting.type
-      validate:
-        "if is not null, cannot be set back to null unless casting is also null",
-    },
+  },
+  finishedCasting: {
+    // triggers onCreate
+    finishedAt: Date.now() + 1000, // must match now
+    startedAt: Date.now() - 1000, // must match casting.startedAt
+    type: "…", // must match casting.type
+    stationary: true, // must match casting.type
   },
   events: {
     eventID: {
