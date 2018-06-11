@@ -1,7 +1,7 @@
 import React from "react";
 
 const Entity = ({ children, state, moving, casting, events }) => {
-  const { x, y, exactX, exactY } = moving ? moving : state;
+  const { x, y, exactX, exactY } = moving ? moving : state.position;
 
   return (
     <div className="entity" style={{ "--x": exactX, "--y": exactY }}>

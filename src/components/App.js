@@ -34,8 +34,8 @@ class App extends React.Component {
           {user => (
             <Player offline={!hasPlayedBefore}>
               {(player, handleMovement) => {
-                const centerTilesOn = player.y ? player.y : 0;
-                const tileVisionRange = 5;
+                const centerTilesOn = player.state.position.y;
+                const tileVisionRange = 8;
                 const yOffset = centerTilesOn - tileVisionRange;
                 const inLimbo = !player.region;
 

@@ -54,6 +54,28 @@ const tiles = createGrid(width, height).map(tile => ({
   // zModifier: null,
 }));
 
-const LimboTiles = ({ children }) => children(tiles, width, height);
+const LimboTiles = ({ children, loadFrom, loadTo }) => {
+  const underflowStart = loadFrom < 0 ? height + loadFrom : null;
+  const overflowEnd = loadTo > height ? loadTo - height : null;
+  const start = loadFrom <= 0 ? 0 : loadFrom;
+  const end = loadTo < height ? loadTo : height;
+
+  const visibleTiles = tiles.filter(
+    tile =>
+      (tile.y >= start && tile.y <= end) ||
+      (underflowStart !== null &&
+        tile.y >= underflowStart &&
+        tile.y <= height) ||
+      (overflowEnd !== null && tile.y >= 0 && tile.y <= overflowEnd)
+  );
+
+  // for (let index = loadFrom; index < loadTo; index++) {
+  //   if (index < 0) {
+  //     tiles
+  //   }
+  // }
+
+  return children(visibleTiles, width, height);
+};
 
 export default LimboTiles;

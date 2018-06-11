@@ -43,7 +43,7 @@ html {
 
 .statics {
   width: calc(var(--width) * var(--unit));
-  height: calc(var(--height) * var(--unit));
+  /* height: calc(var(--height) * var(--unit)); */
   display: grid;
   grid: repeat(var(--height), var(--unit)) / repeat(var(--width), var(--unit));
 }

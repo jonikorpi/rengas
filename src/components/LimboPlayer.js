@@ -10,13 +10,13 @@ const player = {
       write: "uid === $entityID",
       x: 0,
       y: 0,
-      exactX: 0, // (exactX - x < 1 || > -1)
-      exactY: 0, // (exactY - y < 1 || > -1)
+      exactX: 0, // (exactX - x < 1 && > -1)
+      exactY: 0, // (exactY - y < 1 && > -1)
       validate: `
         newData.x,y,exactX,exactY must be sane compared to data.moving.x,y,exactX,exactY
         && region.entities.newData.x.y.entityID || && region.stealthedEntities.newData.x.y.entityID
         && !region.entities.data.x.y.entityID || && !region.stealthedEntities.data.x.y.entityID
-        && region.y.x must be within bounds and not be impassable
+        && region.y.x must be within bounds and not impassable
         && !moving || moving.time >= now
       `,
     },
@@ -27,11 +27,11 @@ const player = {
     speed: 1, // must match state.speed * currentTile.speedModifier
     x: 0,
     y: 0,
-    exactX: 0, // (exactX - x < 1 || > -1)
-    exactY: 0, // (exactY - y < 1 || > -1)
+    exactX: 0, // (exactX - x < 1 && > -1)
+    exactY: 0, // (exactY - y < 1 && > -1)
     validate: `
       !casting.stationary
-      && region.y.x must be within bounds and not be impassable
+      && region.y.x must be within bounds and not impassable
       && x,y is max. 1.5 tiles away from state.x,y
       && tile.z - ownTile.z === 0
         || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
@@ -93,13 +93,13 @@ class LimboPlayer extends React.Component {
     const { tiles, width, height } = this.props;
 
     this.setState({
-      moving: {
-        time: Date.now(),
-        speed: this.state.state.speed,
-        x: Math.floor(x),
-        y: Math.floor(y),
-        exactX: x,
-        exactY: y,
+      state: {
+        position: {
+          x: Math.floor(x),
+          y: Math.floor(y),
+          exactX: x,
+          exactY: y,
+        },
       },
     });
   };
