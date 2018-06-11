@@ -28,6 +28,9 @@ html {
   --perspective: 1px;
   --xPerspective: 0;
   --yPerspective: 1;
+  --width: 3;
+  --height: 3;
+  --yOffset: 0;
   position: relative;
   margin: calc(var(--unit) / 2) 0;
 }
@@ -39,8 +42,6 @@ html {
 }
 
 .statics {
-  --width: 3;
-  --height: 3;
   width: calc(var(--width) * var(--unit));
   height: calc(var(--height) * var(--unit));
   display: grid;
@@ -49,8 +50,6 @@ html {
 
 .static,
 .dynamic {
-  --x: 0;
-  --y: 0;
   --z: 0;
   --width: 1;
   --height: 1;

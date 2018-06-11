@@ -4,31 +4,31 @@ const Entity = ({ children, state, moving, casting, events }) => {
   const { x, y, exactX, exactY } = moving ? moving : state;
 
   return (
-    <React.Fragment>
+    <div className="entity" style={{ "--x": exactX, "--y": exactY }}>
       <div
         ref={ref => {
           this.element = ref;
         }}
         className="dynamic flex justify-center align-center"
-        style={{ "--x": exactX, "--y": exactY, "--z": 2, color: "yellow" }}
+        style={{ "--z": 2, color: "yellow" }}
       >
         P
       </div>
       <div
         className="dynamic flex justify-center align-center"
-        style={{ "--x": exactX, "--y": exactY, "--z": 1, color: "orange" }}
+        style={{ "--z": 1, color: "orange" }}
       >
         P
       </div>
       <div
         className="dynamic flex justify-center align-center"
-        style={{ "--x": exactX, "--y": exactY, color: "red" }}
+        style={{ color: "red" }}
       >
         P
       </div>
 
-      {children}
-    </React.Fragment>
+      {children && <div className="dynamic">{children}</div>}
+    </div>
   );
 };
 
