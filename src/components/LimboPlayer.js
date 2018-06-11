@@ -16,7 +16,7 @@ const player = {
         newData.x,y,exactX,exactY must be sane compared to data.moving.x,y,exactX,exactY
         && region.entities.newData.x.y.entityID || && region.stealthedEntities.newData.x.y.entityID
         && !region.entities.data.x.y.entityID || && !region.stealthedEntities.data.x.y.entityID
-        && region.x,y must exist and not be impassable
+        && region.y.x must be within bounds and not be impassable
         && !moving || moving.time >= now
       `,
     },
@@ -31,7 +31,7 @@ const player = {
     exactY: 0, // (exactY - y < 1 || > -1)
     validate: `
       !casting.stationary
-      && region.x,y must exist and not be impassable
+      && region.y.x must be within bounds and not be impassable
       && x,y is max. 1.5 tiles away from state.x,y
       && tile.z - ownTile.z === 0
         || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0

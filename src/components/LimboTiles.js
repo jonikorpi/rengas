@@ -3,10 +3,11 @@ import React from "react";
 import { random, createGrid } from "../utilities/helpers.js";
 
 const region = {
+  length: 34,
   tiles: {
-    read: `in same region`,
-    $x: {
-      $y: {
+    $y: {
+      read: `entities/uid/y - $y is within sane range`,
+      $x: {
         // null = hole?
         // impassable: random(1, x * y * y) > 0.875,
         stealth: null,
