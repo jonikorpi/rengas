@@ -49,39 +49,43 @@ class App extends React.Component {
                       const visibleTiles = [];
 
                       return (
-                        <div
-                          className="region"
-                          style={{
-                            "--yOffset": yOffset,
-                            "--width": width,
-                            "--height": height,
-                          }}
-                        >
-                          <div className="statics">
-                            {tiles.map(tile => (
-                              <Tile
-                                key={`${tile.x},${tile.y}`}
-                                {...tile}
-                                handleMovement={handleMovement}
-                              />
-                            ))}
-                          </div>
+                        <div className="world">
+                          <div
+                            className="region"
+                            style={{
+                              "--yOffset": yOffset,
+                              "--width": width,
+                              "--height": height,
+                            }}
+                          >
+                            <div className="statics">
+                              {tiles.map(tile => (
+                                <Tile
+                                  key={`${tile.x},${tile.y}`}
+                                  {...tile}
+                                  handleMovement={handleMovement}
+                                />
+                              ))}
+                            </div>
 
-                          <div className="dynamics">
-                            <Entity {...player}>
-                              <CameraTarget
-                                reCenterWhenThisChanges={player.region || null}
-                              />
-                            </Entity>
-                            <EntityLoader inLimbo={inLimbo}>
-                              {foundEntities =>
-                                foundEntities.map(entityID => (
-                                  <Firebase>
-                                    {entity => <Entity {...entity} />}
-                                  </Firebase>
-                                ))
-                              }
-                            </EntityLoader>
+                            <div className="dynamics">
+                              <Entity {...player}>
+                                <CameraTarget
+                                  reCenterWhenThisChanges={
+                                    player.region || null
+                                  }
+                                />
+                              </Entity>
+                              <EntityLoader inLimbo={inLimbo}>
+                                {foundEntities =>
+                                  foundEntities.map(entityID => (
+                                    <Firebase>
+                                      {entity => <Entity {...entity} />}
+                                    </Firebase>
+                                  ))
+                                }
+                              </EntityLoader>
+                            </div>
                           </div>
                         </div>
                       );
