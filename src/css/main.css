@@ -20,6 +20,7 @@ html {
   align-items: center;
   justify-items: center;
   overflow: hidden;
+  min-height: 100vh;
 }
 
 .region {
