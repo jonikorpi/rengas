@@ -1,9 +1,16 @@
 import React from "react";
 
-const Tile = ({ children, handleMovement, x = 0, y = 0, impassable }) => {
+const Tile = ({
+  children,
+  handleMovement,
+  x = 0,
+  y = 0,
+  impassable = false,
+  visible = false,
+}) => {
   return (
     <div
-      className="static"
+      className={`static ${visible ? "visible" : "not-visible"}`}
       style={{
         "--x": x,
         "--y": y,

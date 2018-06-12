@@ -45,7 +45,7 @@ const region = {
 };
 
 const width = 9;
-const height = 34;
+const height = 55;
 const tiles = createGrid(width, height).map(tile => ({
   ...tile,
   impassable: random(1, tile.x * tile.y * tile.y) > 0.875,
@@ -54,7 +54,7 @@ const tiles = createGrid(width, height).map(tile => ({
   // zModifier: null,
 }));
 
-const LimboTiles = ({ children, loadFrom, loadTo }) => {
+const LimboTiles = ({ children, loadFrom = 0, loadTo = height - 1 }) => {
   const visibleTiles = tiles.filter(
     tile =>
       tile.y >= Math.max(0, loadFrom) && tile.y <= Math.min(height - 1, loadTo)

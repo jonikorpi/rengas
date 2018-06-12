@@ -34,15 +34,16 @@ class App extends React.Component {
           {user => (
             <Player offline={!hasPlayedBefore}>
               {(player, handleMovement) => {
-                const centerTilesOn = player.state.position.y;
-                const tileVisionRange = 8;
+                // const centerTilesOn = player.state.position.y;
+                // const tileVisionRange = 10;
+                const entityVisionRange = 5;
                 const inLimbo = !player.region;
 
                 return (
                   <TileData
                     inLimbo={inLimbo}
-                    loadFrom={centerTilesOn - tileVisionRange}
-                    loadTo={centerTilesOn + tileVisionRange}
+                    // loadFrom={centerTilesOn - tileVisionRange}
+                    // loadTo={centerTilesOn + tileVisionRange}
                   >
                     {(tiles, width, height) => {
                       const visibleTiles = [];
@@ -61,6 +62,13 @@ class App extends React.Component {
                                 <Tile
                                   key={`${tile.x},${tile.y}`}
                                   {...tile}
+                                  visible={
+                                    Math.abs(tile.x - player.state.position.x) +
+                                      Math.abs(
+                                        tile.y - player.state.position.y
+                                      ) <=
+                                    entityVisionRange
+                                  }
                                   handleMovement={handleMovement}
                                 />
                               ))}
@@ -125,7 +133,7 @@ const Player = ({ offline = false, children }) =>
 const EntityLoader = ({ inLimbo, children }) =>
   inLimbo ? children([]) : <Firebase>{children}</Firebase>;
 
-const TileData = ({ inLimbo, loadFrom = 0, loadTo = 0, children }) =>
+const TileData = ({ inLimbo, loadFrom, loadTo, children }) =>
   inLimbo ? (
     <LimboTiles loadFrom={loadFrom} loadTo={loadTo}>
       {children}

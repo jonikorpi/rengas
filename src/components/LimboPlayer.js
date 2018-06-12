@@ -25,10 +25,12 @@ const player = {
     write: "uid === $entityID",
     time: Date.now(), // must match now
     speed: 1, // must match state.speed * currentTile.speedModifier
-    x: 0,
-    y: 0,
-    exactX: 0, // (exactX - x < 1 && > -1)
-    exactY: 0, // (exactY - y < 1 && > -1)
+    position: {
+      x: 0,
+      y: 0,
+      exactX: 0, // (exactX - x < 1 && > -1)
+      exactY: 0, // (exactY - y < 1 && > -1)
+    },
     validate: `
       !casting.stationary
       && region.y.x must be within bounds and not impassable
@@ -90,10 +92,20 @@ class LimboPlayer extends React.Component {
   };
 
   handleMovement = (x, y) => {
-    const { tiles, width, height } = this.props;
+    const { state, moving } = this.state;
 
     this.setState({
       state: {
+        position: {
+          x: moving ? moving.position.x : state.position.x,
+          y: moving ? moving.position.y : state.position.y,
+          exactX: moving ? moving.position.exactX : state.position.exactX,
+          exactY: moving ? moving.position.exactY : state.position.exactY,
+        },
+      },
+      moving: {
+        time: Date.now(),
+        speed: 1,
         position: {
           x: Math.floor(x),
           y: Math.floor(y),
