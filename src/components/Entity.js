@@ -107,14 +107,8 @@ class Dynamic extends React.PureComponent {
 
 const createTransform = (x = 0, y = 0) => `
   translate3d(
-    calc(
-      (0.5 + ${x}) * var(--unit) - var(--z) * var(--perspective) *
-        var(--xPerspective)
-    ),
-    calc(
-      (0.5 + ${y}) * var(--unit) - var(--z) * var(--perspective) *
-        var(--yPerspective)
-    ),
+    calc((0.5 + ${x}) * var(--unit)),
+    calc((0.5 + ${y}) * var(--unit)),
     0
   )
   translate(-50%, -50%)

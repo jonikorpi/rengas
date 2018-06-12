@@ -56,14 +56,14 @@ html {
   width: calc(var(--width) * var(--unit));
   height: calc(var(--height) * var(--unit));
   z-index: calc(100 + var(--z));
+  top: calc(var(--z) * var(--perspective) * var(--yPerspective) * -1);
+  left: calc(var(--z) * var(--perspective) * var(--xPerspective) * -1);
 }
 
 .static {
   --x: 0;
   --y: 0;
   position: relative;
-  top: calc(-var(--z) * var(--perspective) * var(--yPerspective));
-  left: calc(-var(--z) * var(--perspective) * var(--xPerspective));
   grid-area: calc(var(--y) + 1) / calc(var(--x) + 1);
 }
 
@@ -73,8 +73,6 @@ html {
 
 .dynamic {
   position: absolute;
-  left: 0;
-  top: 0;
   will-change: transform;
 }
 
