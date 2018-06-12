@@ -17,7 +17,7 @@ const Entity = ({ children, state, moving, casting, events }) => {
       <Dynamic {...dynamicProps}>
         <div
           className="flex justify-center align-center"
-          style={{ color: "red" }}
+          style={{ color: "red", height: "100%" }}
         >
           P
         </div>
@@ -25,7 +25,7 @@ const Entity = ({ children, state, moving, casting, events }) => {
       <Dynamic {...dynamicProps} z={1}>
         <div
           className="flex justify-center align-center"
-          style={{ color: "orange" }}
+          style={{ color: "orange", height: "100%" }}
         >
           P
         </div>
@@ -33,13 +33,16 @@ const Entity = ({ children, state, moving, casting, events }) => {
       <Dynamic {...dynamicProps} z={2}>
         <div
           className="flex justify-center align-center"
-          style={{ color: "yellow" }}
+          style={{ color: "yellow", height: "100%" }}
         >
           P
         </div>
-
-        {children && <div className="dynamic">{children}</div>}
       </Dynamic>
+      {children && (
+        <Dynamic {...dynamicProps} z={2}>
+          {children}
+        </Dynamic>
+      )}
     </React.Fragment>
   );
 };
