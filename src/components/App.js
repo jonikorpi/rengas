@@ -36,7 +36,6 @@ class App extends React.Component {
               {(player, handleMovement) => {
                 const centerTilesOn = player.state.position.y;
                 const tileVisionRange = 8;
-                const yOffset = centerTilesOn - tileVisionRange;
                 const inLimbo = !player.region;
 
                 return (
@@ -53,7 +52,6 @@ class App extends React.Component {
                           <div
                             className="region"
                             style={{
-                              "--yOffset": yOffset,
                               "--width": width,
                               "--height": height,
                             }}

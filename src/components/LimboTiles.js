@@ -55,18 +55,9 @@ const tiles = createGrid(width, height).map(tile => ({
 }));
 
 const LimboTiles = ({ children, loadFrom, loadTo }) => {
-  const underflowStart = loadFrom < 0 ? height + loadFrom : null;
-  const overflowEnd = loadTo > height ? loadTo - height : null;
-  const start = loadFrom <= 0 ? 0 : loadFrom;
-  const end = loadTo < height ? loadTo : height;
-
   const visibleTiles = tiles.filter(
     tile =>
-      (tile.y >= start && tile.y <= end) ||
-      (underflowStart !== null &&
-        tile.y >= underflowStart &&
-        tile.y <= height) ||
-      (overflowEnd !== null && tile.y >= 0 && tile.y <= overflowEnd)
+      tile.y >= Math.max(0, loadFrom) && tile.y <= Math.min(height - 1, loadTo)
   );
 
   // for (let index = loadFrom; index < loadTo; index++) {

@@ -31,7 +31,6 @@ html {
   --yPerspective: 1;
   --width: 3;
   --height: 3;
-  --yOffset: 0;
   position: relative;
   margin: calc(var(--unit) / 2) 0;
 }
