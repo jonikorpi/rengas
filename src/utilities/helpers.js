@@ -63,6 +63,10 @@ const createGrid = (width = 3, height = 3) => {
   return grid;
 };
 
+const lerp = (v0, v1, t) => {
+  return v0 * (1 - t) + v1 * t;
+};
+
 export {
   isDevelopment,
   listTilesInRange,
@@ -70,4 +74,5 @@ export {
   compose,
   random,
   createGrid,
+  lerp,
 };

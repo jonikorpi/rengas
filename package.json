@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "easystarjs": "^0.4.3",
     "firebase": "^5.0.4",
     "jonikorpi-base-files": "^9.1.2",
     "react": "^16.4.0",

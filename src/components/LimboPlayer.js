@@ -91,35 +91,36 @@ class LimboPlayer extends React.Component {
     events: null,
   };
 
-  handleMovement = (x, y) => {
-    const { state, moving } = this.state;
-
+  move = (xFrom, yFrom, xTo = null, yTo = null) => {
     this.setState({
       state: {
         position: {
-          x: moving ? moving.position.x : state.position.x,
-          y: moving ? moving.position.y : state.position.y,
-          exactX: moving ? moving.position.exactX : state.position.exactX,
-          exactY: moving ? moving.position.exactY : state.position.exactY,
+          x: Math.floor(xFrom),
+          y: Math.floor(yFrom),
+          exactX: xFrom,
+          exactY: yFrom,
         },
       },
-      moving: {
-        time: Date.now(),
-        speed: 1,
-        position: {
-          x: Math.floor(x),
-          y: Math.floor(y),
-          exactX: x,
-          exactY: y,
-        },
-      },
+      moving:
+        xTo !== null && yTo !== null
+          ? {
+              time: Date.now(),
+              speed: this.state.state.speed,
+              position: {
+                x: Math.floor(xTo),
+                y: Math.floor(yTo),
+                exactX: xTo,
+                exactY: yTo,
+              },
+            }
+          : null,
     });
   };
 
   render() {
     const { children } = this.props;
 
-    return children(this.state, this.handleMovement);
+    return children(this.state, this.move);
   }
 }
 

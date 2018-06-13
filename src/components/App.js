@@ -8,6 +8,7 @@ import LimboTiles from "./LimboTiles";
 import Tile from "./Tile";
 import Entity from "./Entity";
 import CameraTarget from "./CameraTarget";
+import MovementManager from "./MovementManager";
 
 class App extends React.Component {
   state = {
@@ -33,7 +34,7 @@ class App extends React.Component {
         <User offline={!hasPlayedBefore}>
           {user => (
             <Player offline={!hasPlayedBefore}>
-              {(player, handleMovement) => {
+              {(player, move) => {
                 // const centerTilesOn = player.state.position.y;
                 // const tileVisionRange = 10;
                 const entityVisionRange = 5;
@@ -49,51 +50,62 @@ class App extends React.Component {
                       const visibleTiles = [];
 
                       return (
-                        <div className="world">
-                          <div
-                            className="region"
-                            style={{
-                              "--width": width,
-                              "--height": height,
-                            }}
-                          >
-                            <div className="statics">
-                              {tiles.map(tile => (
-                                <Tile
-                                  key={`${tile.x},${tile.y}`}
-                                  {...tile}
-                                  visible={
-                                    Math.abs(tile.x - player.state.position.x) +
-                                      Math.abs(
-                                        tile.y - player.state.position.y
-                                      ) <=
-                                    entityVisionRange
-                                  }
-                                  handleMovement={handleMovement}
-                                />
-                              ))}
-                            </div>
+                        <MovementManager
+                          state={player.state}
+                          moving={player.moving}
+                          tiles={tiles}
+                          move={move}
+                        >
+                          {headTowards => (
+                            <div className="world">
+                              <div
+                                className="region"
+                                style={{
+                                  "--width": width,
+                                  "--height": height,
+                                }}
+                              >
+                                <div className="statics">
+                                  {tiles.map(tile => (
+                                    <Tile
+                                      key={`${tile.x},${tile.y}`}
+                                      {...tile}
+                                      visible={
+                                        Math.abs(
+                                          tile.x - player.state.position.x
+                                        ) +
+                                          Math.abs(
+                                            tile.y - player.state.position.y
+                                          ) <=
+                                        entityVisionRange
+                                      }
+                                      headTowards={headTowards}
+                                    />
+                                  ))}
+                                </div>
 
-                            <div className="dynamics">
-                              <Entity {...player}>
-                                <CameraTarget
-                                  reCenterWhenThisChanges={
-                                    player.region || null
-                                  }
-                                />
-                              </Entity>
-                              <EntityLoader inLimbo={inLimbo}>
-                                {foundEntities =>
-                                  foundEntities.map(entityID => (
-                                    <Firebase>
-                                      {entity => <Entity {...entity} />}
-                                    </Firebase>
-                                  ))
-                                }
-                              </EntityLoader>
+                                <div className="dynamics">
+                                  <Entity {...player}>
+                                    <CameraTarget
+                                      reCenterWhenThisChanges={
+                                        player.region || null
+                                      }
+                                    />
+                                  </Entity>
+                                  <EntityLoader inLimbo={inLimbo}>
+                                    {foundEntities =>
+                                      foundEntities.map(entityID => (
+                                        <Firebase>
+                                          {entity => <Entity {...entity} />}
+                                        </Firebase>
+                                      ))
+                                    }
+                                  </EntityLoader>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          )}
+                        </MovementManager>
                       );
                     }}
                   </TileData>

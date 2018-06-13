@@ -71,20 +71,24 @@ class Dynamic extends React.PureComponent {
       const distance = Math.sqrt(
         Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)
       );
-      const animation = element.animate(
-        [
-          { transform: createTransform(fromX, fromY) },
-          { transform: createTransform(toX, toY) },
-        ],
-        {
-          duration: speed * distance * 1000,
-          easing: "linear",
-          fill: "both",
-        }
-      );
+      const duration = speed * Math.abs(distance) * 1000;
 
-      animation.startTime = time - performance.timing.navigationStart;
-      animations.push(animation);
+      if (duration > 0) {
+        const animation = element.animate(
+          [
+            { transform: createTransform(fromX, fromY) },
+            { transform: createTransform(toX, toY) },
+          ],
+          {
+            duration: duration,
+            easing: "linear",
+            fill: "both",
+          }
+        );
+
+        animation.startTime = time - performance.timing.navigationStart;
+        animations.push(animation);
+      }
     } else {
       element.style.setProperty("transform", createTransform(fromX, fromY));
     }
@@ -107,8 +111,8 @@ class Dynamic extends React.PureComponent {
 
 const createTransform = (x = 0, y = 0) => `
   translate3d(
-    calc((0.5 + ${x}) * var(--unit)),
-    calc((0.5 + ${y}) * var(--unit)),
+    calc((${x}) * var(--unit)),
+    calc((${y}) * var(--unit)),
     0
   )
   translate(-50%, -50%)
