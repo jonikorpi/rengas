@@ -1,156 +1,104 @@
 import React from "react";
-import EasyStar from "easystarjs";
 
 import { lerp } from "../utilities/helpers.js";
 
 class MovementManager extends React.Component {
-  pathfinding = new EasyStar.js();
-  updateLoop = null;
+  loop = null;
+  loopActive = false;
 
-  moving = false;
-  fromExactX = null;
-  fromExactY = null;
-  toExactX = null;
-  toExactY = null;
-
-  componentDidMount() {
-    this.updateTiles();
-
-    this.pathfinding.setAcceptableTiles([1, 2, 3]);
-    this.pathfinding.setTileCost(2, 2);
-    this.pathfinding.setTileCost(3, 3);
-    this.pathfinding.enableCornerCutting();
-  }
-
-  componentWillUnmount() {
-    if (this.updateLoop) {
-      window.cancelAnimationFrame(this.updateLoop);
+  componentDidUpdate() {
+    if (this.props.moving) {
+      this.loopActive = true;
+      this.loop = window.requestAnimationFrame(this.updatePosition);
     }
   }
 
-  componentDidUpdate() {
-    this.updateTiles();
+  componentWillUnmount() {
+    if (this.loop) {
+      window.cancelAnimationFrame(this.loop);
+    }
   }
 
-  updateTiles = () => {
-    const { tiles } = this.props;
+  headTowards = (exactX, exactY) => {
+    const { state, move, tiles } = this.props;
+    const x = Math.floor(exactX);
+    const y = Math.floor(exactY);
 
-    this.pathfinding.setGrid(tiles.reduce(pathfindingGridFromTiles, []));
-  };
+    const currentPosition = this.getCurrentPosition();
 
-  headTowards = (toExactX, toExactY) => {
-    const { state } = this.props;
-
-    if (this.moving) {
-      this.stopAndStartMoving(toExactX, toExactY);
+    if (x === currentPosition.x && y === currentPosition.y) {
+      move(state.position.exactX, state.position.exactY, exactX, exactY);
     } else {
-      this.startMoving(state.exactX, state.exactY, toExactX, toExactY);
+      const path = findPath(
+        [currentPosition.x, currentPosition.y],
+        [x, y],
+        tiles
+      );
+      const lastPoint = path[path.length - 1];
+      const pathIsFree = lastPoint[0] === x && lastPoint[1] === y;
+
+      if (pathIsFree) {
+        move(state.position.exactX, state.position.exactY, exactX, exactY);
+      } else {
+        move(
+          state.position.exactX,
+          state.position.exactY,
+          lastPoint[0] + 0.5,
+          lastPoint[1] + 0.5
+        );
+      }
     }
   };
 
   stop = () => {
-    if (this.updateLoop) {
-      window.cancelAnimationFrame(this.updateLoop);
-    }
-
-    const stoppedAtX = 0;
-    const stoppedAtY = 0;
-
-    // finds current x,y from path by lerping it,
-    // then commits it to state
-
-    this.fromExactX = null;
-    this.fromExactY = null;
-    this.toExactX = null;
-    this.toExactY = null;
-    this.moving = false;
-    return [stoppedAtX, stoppedAtY];
+    const { move } = this.props;
+    const currentPosition = this.getCurrentPosition();
+    move(currentPosition.exactX, currentPosition.exactY);
   };
 
-  stopAndStartMoving = (toExactX, toExactY) => {
-    const [stoppedAtX, stoppedAtY] = this.stop();
-
-    this.startMoving(stoppedAtX, stoppedAtY, toExactX, toExactY);
+  getCurrentPosition = () => {
+    const { state, moving } = this.props;
+    return moving
+      ? calculateCurrentPosition(state, moving)
+      : { ...state.position };
   };
 
-  startMoving = (fromExactX, fromExactY, toExactX, toExactY) => {
-    this.moving = true;
+  updatePosition = () => {
+    const { state, moving, move } = this.props;
+    const currentPosition = this.getCurrentPosition();
 
-    const fromX = Math.floor(fromExactX);
-    const fromY = Math.floor(fromExactY);
-    const toX = Math.floor(toExactX);
-    const toY = Math.floor(toExactY);
-    const isInsideSameTile = fromX === toX && fromY === toY;
+    const tileHasChanged =
+      currentPosition.x !== state.position.x ||
+      currentPosition.y !== state.position.y;
+    const destinationReachedButStillMoving =
+      moving &&
+      currentPosition.exactX === moving.exactX &&
+      currentPosition.exactY === moving.exactY;
 
-    this.fromExactX = fromExactX;
-    this.fromExactY = fromExactY;
-    this.toExactX = toExactX;
-    this.toExactY = toExactY;
-
-    if (isInsideSameTile) {
-      this.commitMovement([
-        { x: fromExactX, y: fromExactY },
-        { x: toExactX, y: toExactY },
-      ]);
-    } else {
-      this.findPath(fromX, fromY, toX, toY);
-    }
-  };
-
-  findPath = (fromX, fromY, toX, toY) => {
-    this.pathfinding.findPath(fromX, fromY, toX, toY, this.commitPath);
-    this.pathfinding.calculate();
-  };
-
-  commitPath = path => {
-    const waypoints = [...path];
-
-    if (waypoints && waypoints.length > 1) {
-      waypoints[0].x = this.fromExactX;
-      waypoints[0].y = this.fromExactY;
-      waypoints[waypoints.length - 1].x = this.toExactX;
-      waypoints[waypoints.length - 1].y = this.toExactY;
-
-      this.commitMovement(waypoints);
-    } else {
-      this.stop();
-      console.warn("Could not find proper path", path);
-    }
-  };
-
-  commitMovement = waypoints => {
-    const { state, move } = this.props;
-
-    const distance = Math.sqrt(
-      Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)
+    console.log(
+      "tileHasChanged",
+      tileHasChanged,
+      "destinationReachedButStillMoving",
+      destinationReachedButStillMoving,
+      currentPosition
+      // state.position
+      // moving
     );
-    this.startTime = Date.now();
-    this.arrivalTime = this.startTime + state.speed * Math.abs(distance) * 1000;
 
-    move(fromX, fromY, toX, toY);
-    this.updateLoop = window.requestAnimationFrame(this.checkForArrival);
-  };
+    if (tileHasChanged || destinationReachedButStillMoving) {
+      move(
+        currentPosition.exactX,
+        currentPosition.exactY,
+        destinationReachedButStillMoving ? undefined : moving.exactX,
+        destinationReachedButStillMoving ? undefined : moving.exactY
+      );
+      this.loopActive = false;
+    }
 
-  checkForArrival = timestamp => {
-    const { arrivalTime } = this;
-    const now = timestamp + performance.timing.navigationStart;
-    const arrived = arrivalTime <= now;
-
-    if (arrived) {
-      const arrivedAtHeading =
-        this.headingX === this.toExactX && this.headingY === this.toExactY;
-      if (arrivedAtHeading) {
-        this.stop();
-      } else {
-        this.startMoving(
-          this.toExactX,
-          this.toExactY,
-          this.headingX,
-          this.headingY
-        );
-      }
+    if (this.loopActive && moving) {
+      this.loop = window.requestAnimationFrame(this.updatePosition);
     } else {
-      this.updateLoop = window.requestAnimationFrame(this.checkForArrival);
+      this.loopActive = false;
     }
   };
 
@@ -159,10 +107,59 @@ class MovementManager extends React.Component {
   }
 }
 
-const pathfindingGridFromTiles = (results, tile) => {
-  results[tile.y] = results[tile.y] ? results[tile.y] : [];
-  results[tile.y][tile.x] = tile.impassable ? 0 : 1;
-  return results;
+// do this
+const calculateCurrentPosition = (state, moving) => {
+  const { time, speed } = moving;
+  const now = Date.now();
+  const distance = Math.sqrt(
+    Math.pow(state.position.exactX - moving.exactX, 2) +
+      Math.pow(state.position.exactY - moving.exactY, 2)
+  );
+  const arrival = time + speed * Math.abs(distance) * 1000;
+  const progress = Math.max(0, Math.min(1, now / arrival));
+  const exactX = lerp(state.position.exactX, moving.exactX, progress);
+  const exactY = lerp(state.position.exactY, moving.exactY, progress);
+
+  return {
+    exactX,
+    exactY,
+    x: Math.floor(exactX),
+    y: Math.floor(exactY),
+  };
+};
+
+const findPath = (from, to, tiles) => {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const nx = Math.abs(dx);
+  const ny = Math.abs(dy);
+  const signX = dx > 0 ? 1 : -1;
+  const signY = dy > 0 ? 1 : -1;
+
+  let point = [...from];
+  let points = [point];
+
+  for (let ix = 0, iy = 0; ix < nx || iy < ny; ) {
+    const nextStepIsHorizontal = (0.5 + ix) / nx < (0.5 + iy) / ny;
+    const canStepHorizontally = tiles[point[0] + signX][point[1]] !== 0;
+    const canStepVertically = tiles[point[0]][point[1] + signY] !== 0;
+
+    if (nextStepIsHorizontal && canStepHorizontally) {
+      // next step is horizontal
+      point[0] += signX;
+      ix++;
+    } else if (canStepVertically) {
+      // next step is vertical
+      point[1] += signY;
+      iy++;
+    } else {
+      // can't take a step
+      break;
+    }
+    points.push([point[0], point[1]]);
+  }
+
+  return points;
 };
 
 export default MovementManager;

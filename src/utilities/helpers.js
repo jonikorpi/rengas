@@ -63,8 +63,9 @@ const createGrid = (width = 3, height = 3) => {
   return grid;
 };
 
-const lerp = (v0, v1, t) => {
-  return v0 * (1 - t) + v1 * t;
+const lerp = (v1, v0, t) => {
+  const result = v0 * (1 - t) + v1 * t;
+  return result;
 };
 
 export {

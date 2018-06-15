@@ -6,8 +6,8 @@ const Entity = ({ children, state, moving, casting, events }) => {
   const dynamicProps = {
     fromX: exactX,
     fromY: exactY,
-    toX: moving && moving.position ? moving.position.exactX : undefined,
-    toY: moving && moving.position ? moving.position.exactY : undefined,
+    toX: moving ? moving.exactX : undefined,
+    toY: moving ? moving.exactY : undefined,
     time: moving && moving.time,
     speed: moving && moving.speed,
   };

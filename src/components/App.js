@@ -53,7 +53,7 @@ class App extends React.Component {
                         <MovementManager
                           state={player.state}
                           moving={player.moving}
-                          tiles={tiles}
+                          tiles={tiles.reduce(pathfindingGridFromTiles, [])}
                           move={move}
                         >
                           {headTowards => (
@@ -155,5 +155,11 @@ const TileData = ({ inLimbo, loadFrom, loadTo, children }) =>
   ) : (
     <Firebase>{children}</Firebase>
   );
+
+const pathfindingGridFromTiles = (results, tile) => {
+  results[tile.x] = results[tile.x] ? results[tile.x] : [];
+  results[tile.x][tile.y] = tile.impassable ? 0 : 1;
+  return results;
+};
 
 export default App;

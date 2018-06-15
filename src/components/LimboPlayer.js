@@ -17,29 +17,23 @@ const player = {
         && region.y.x must be within bounds and not impassable
         && (region.entities.newData.x.y.entityID || region.stealthedEntities.newData.x.y.entityID)
         && (!region.entities.data.x.y.entityID && !region.stealthedEntities.data.x.y.entityID)
-        && region.y.x must be within bounds and not impassable
       `,
     },
   },
   moving: {
     write: "uid === $entityID",
-    time: Date.now(), // must match now
-    speed: 1, // must match state.speed * currentTile.speedModifier
-    path: {
-      "x,y": {
-        x: 0,
-        y: 0,
-        exactX: 0, // (exactX - x < 1 && > -1)
-        exactY: 0, // (exactY - y < 1 && > -1)
-        validate: `
-          && region.y.x must be within bounds and not impassable
-          && x,y is max. 1.5 tiles away from state.x,y
-          && tile.z - ownTile.z === 0
-            || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
-        `,
-      },
-    },
-    validate: "!casting.stationary",
+    time: Date.now(), // === now
+    speed: 1, // === state.speed * currentTile.speedModifier
+    x: 0,
+    y: 0,
+    exactX: 0, // (exactX - x < 1 && > -1)
+    exactY: 0, // (exactY - y < 1 && > -1)
+    validate: `
+      !casting.stationary
+      && region.y.x must be within bounds and not impassable
+      && tile.z - ownTile.z === 0
+        || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
+    `,
   },
   casting: {
     write: "uid === $entityID",
@@ -109,12 +103,10 @@ class LimboPlayer extends React.Component {
           ? {
               time: Date.now(),
               speed: this.state.state.speed,
-              position: {
-                x: Math.floor(xTo),
-                y: Math.floor(yTo),
-                exactX: xTo,
-                exactY: yTo,
-              },
+              x: Math.floor(xTo),
+              y: Math.floor(yTo),
+              exactX: xTo,
+              exactY: yTo,
             }
           : null,
     });
