@@ -8,20 +8,10 @@ class MovementManager extends React.Component {
   updateLoop = null;
 
   moving = false;
-  headingX = null;
-  headingY = null;
-
-  fromX = null;
-  fromY = null;
   fromExactX = null;
   fromExactY = null;
-  toX = null;
-  toY = null;
   toExactX = null;
   toExactY = null;
-
-  startTime = null;
-  arrivalTime = null;
 
   componentDidMount() {
     this.updateTiles();
@@ -48,45 +38,62 @@ class MovementManager extends React.Component {
     this.pathfinding.setGrid(tiles.reduce(pathfindingGridFromTiles, []));
   };
 
-  headTowards = (toX, toY) => {
+  headTowards = (toExactX, toExactY) => {
     const { state } = this.props;
-    const { exactX, exactY } = state.position;
-
-    this.headingX = toX;
-    this.headingY = toY;
-
-    this.startMoving(exactX, exactY, toX, toY);
-  };
-
-  startMoving = (fromX, fromY, toX, toY) => {
-    this.fromExactX = fromX;
-    this.fromExactY = fromY;
 
     if (this.moving) {
-      if (this.updateLoop) {
-        window.cancelAnimationFrame(this.updateLoop);
-      }
-      this.stop();
+      this.stopAndStartMoving(toExactX, toExactY);
+    } else {
+      this.startMoving(state.exactX, state.exactY, toExactX, toExactY);
+    }
+  };
+
+  stop = () => {
+    if (this.updateLoop) {
+      window.cancelAnimationFrame(this.updateLoop);
     }
 
+    const stoppedAtX = 0;
+    const stoppedAtY = 0;
+
+    // finds current x,y from path by lerping it,
+    // then commits it to state
+
+    this.fromExactX = null;
+    this.fromExactY = null;
+    this.toExactX = null;
+    this.toExactY = null;
+    this.moving = false;
+    return [stoppedAtX, stoppedAtY];
+  };
+
+  stopAndStartMoving = (toExactX, toExactY) => {
+    const [stoppedAtX, stoppedAtY] = this.stop();
+
+    this.startMoving(stoppedAtX, stoppedAtY, toExactX, toExactY);
+  };
+
+  startMoving = (fromExactX, fromExactY, toExactX, toExactY) => {
     this.moving = true;
-    this.toExactX = toX;
-    this.toExactY = toY;
 
-    this.fromX = Math.floor(this.fromExactX);
-    this.fromY = Math.floor(this.fromExactY);
-    this.toX = Math.floor(this.toExactX);
-    this.toY = Math.floor(this.toExactY);
+    const fromX = Math.floor(fromExactX);
+    const fromY = Math.floor(fromExactY);
+    const toX = Math.floor(toExactX);
+    const toY = Math.floor(toExactY);
+    const isInsideSameTile = fromX === toX && fromY === toY;
 
-    if (this.fromX === this.toX && this.fromY === this.toY) {
-      this.commitMovement(
-        this.fromExactX,
-        this.fromExactY,
-        this.toExactX,
-        this.toExactY
-      );
+    this.fromExactX = fromExactX;
+    this.fromExactY = fromExactY;
+    this.toExactX = toExactX;
+    this.toExactY = toExactY;
+
+    if (isInsideSameTile) {
+      this.commitMovement([
+        { x: fromExactX, y: fromExactY },
+        { x: toExactX, y: toExactY },
+      ]);
     } else {
-      this.findPath(this.fromX, this.fromY, this.toX, this.toY);
+      this.findPath(fromX, fromY, toX, toY);
     }
   };
 
@@ -96,19 +103,22 @@ class MovementManager extends React.Component {
   };
 
   commitPath = path => {
-    if (path && path[1]) {
-      this.commitMovement(
-        this.fromExactX,
-        this.fromExactY,
-        path[1].x,
-        path[1].y
-      );
+    const waypoints = [...path];
+
+    if (waypoints && waypoints.length > 1) {
+      waypoints[0].x = this.fromExactX;
+      waypoints[0].y = this.fromExactY;
+      waypoints[waypoints.length - 1].x = this.toExactX;
+      waypoints[waypoints.length - 1].y = this.toExactY;
+
+      this.commitMovement(waypoints);
     } else {
+      this.stop();
       console.warn("Could not find proper path", path);
     }
   };
 
-  commitMovement = (fromX, fromY, toX, toY) => {
+  commitMovement = waypoints => {
     const { state, move } = this.props;
 
     const distance = Math.sqrt(
@@ -142,26 +152,6 @@ class MovementManager extends React.Component {
     } else {
       this.updateLoop = window.requestAnimationFrame(this.checkForArrival);
     }
-  };
-
-  stop = () => {
-    const { startTime, arrivalTime } = this;
-    const now = Date.now();
-
-    if (now >= arrivalTime) {
-      this.props.move(this.toExactX, this.toExactY);
-    } else {
-      const completion = (arrivalTime - now) / (arrivalTime - startTime);
-      const stoppedAtX = lerp(this.fromExactX, this.toExactX, completion);
-      const stoppedAtY = lerp(this.fromExactY, this.toExactY, completion);
-
-      this.fromExactX = stoppedAtX;
-      this.fromExactY = stoppedAtY;
-
-      this.props.move(stoppedAtX, stoppedAtY);
-    }
-
-    this.moving = false;
   };
 
   render() {

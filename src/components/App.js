@@ -143,6 +143,8 @@ const Player = ({ offline = false, children }) =>
   );
 
 const EntityLoader = ({ inLimbo, children }) =>
+  // each visible tile
+  // region realm index
   inLimbo ? children([]) : <Firebase>{children}</Firebase>;
 
 const TileData = ({ inLimbo, loadFrom, loadTo, children }) =>

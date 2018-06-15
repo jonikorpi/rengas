@@ -13,11 +13,11 @@ const player = {
       exactX: 0, // (exactX - x < 1 && > -1)
       exactY: 0, // (exactY - y < 1 && > -1)
       validate: `
-        newData.x,y,exactX,exactY must be sane compared to data.moving.x,y,exactX,exactY
-        && region.entities.newData.x.y.entityID || && region.stealthedEntities.newData.x.y.entityID
-        && !region.entities.data.x.y.entityID || && !region.stealthedEntities.data.x.y.entityID
+        newData.x,y must be sane compared to data.moving.x,y
         && region.y.x must be within bounds and not impassable
-        && !moving || moving.time >= now
+        && (region.entities.newData.x.y.entityID || region.stealthedEntities.newData.x.y.entityID)
+        && (!region.entities.data.x.y.entityID && !region.stealthedEntities.data.x.y.entityID)
+        && region.y.x must be within bounds and not impassable
       `,
     },
   },
@@ -25,19 +25,21 @@ const player = {
     write: "uid === $entityID",
     time: Date.now(), // must match now
     speed: 1, // must match state.speed * currentTile.speedModifier
-    position: {
-      x: 0,
-      y: 0,
-      exactX: 0, // (exactX - x < 1 && > -1)
-      exactY: 0, // (exactY - y < 1 && > -1)
+    path: {
+      "x,y": {
+        x: 0,
+        y: 0,
+        exactX: 0, // (exactX - x < 1 && > -1)
+        exactY: 0, // (exactY - y < 1 && > -1)
+        validate: `
+          && region.y.x must be within bounds and not impassable
+          && x,y is max. 1.5 tiles away from state.x,y
+          && tile.z - ownTile.z === 0
+            || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
+        `,
+      },
     },
-    validate: `
-      !casting.stationary
-      && region.y.x must be within bounds and not impassable
-      && x,y is max. 1.5 tiles away from state.x,y
-      && tile.z - ownTile.z === 0
-        || tile.z - ownTile.z + tile.zModifier + ownTile.zModifier === 0
-    `,
+    validate: "!casting.stationary",
   },
   casting: {
     write: "uid === $entityID",
@@ -69,6 +71,7 @@ const player = {
       && (x - readerX) + (y - readerY) + (z - readerZ) 
         <= (readerRange - tile.stealth) || <= (-readerRange + tile.stealth)
     || state.stealthed && (x - readerX) + (y - readerY) + (z - readerZ) <= 1 || <= -1
+    || same region and same realm
   `,
 };
 

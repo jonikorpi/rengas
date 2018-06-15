@@ -42,6 +42,9 @@ const region = {
       },
     },
   },
+  realmEntities: {
+    $realmID: { $entityID: true },
+  },
 };
 
 const width = 9;
