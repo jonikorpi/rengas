@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^5.0.4",
+    "firebase": "^5.1.0",
     "jonikorpi-base-files": "^9.1.2",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "react-firebase": "^2.2.8",
-    "react-scripts": "^2.0.0-next.66cc7a90",
+    "react-scripts": "^1.1.4",
     "source-map-explorer": "^1.5.0",
     "web-animations-js": "^2.3.1"
   },
